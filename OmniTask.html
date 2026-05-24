@@ -233,8 +233,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
       <button onclick="filterTravel('other')" id="filter-other" class="travel-filter">🌐 其他</button>
     </div>
     <div id="travel-list"></div>
-    <div id="travel-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)">
-      <div style="background:var(--surface);border-radius:20px 20px 0 0;padding:24px 20px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto">
+    <div id="travel-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px">
+      <div style="background:var(--surface);border-radius:20px;padding:24px 20px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.3)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
           <div style="font-size:15px;font-weight:800;color:var(--text);flex:1;line-height:1.4" id="modal-title"></div>
           <button onclick="document.getElementById('travel-modal').style.display='none'" style="background:rgba(0,0,0,0.08);border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:10px">✕</button>
