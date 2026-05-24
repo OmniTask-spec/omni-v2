@@ -233,6 +233,58 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
       </div>
       <div style="background:rgba(0,180,120,0.08);border:1px solid rgba(0,180,120,0.2);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--text);line-height:1.8">🌏 完成任務累積旅遊專用金，即可兌換精選旅遊行程！每天簽到、完成YT任務、店家任務，讓旅行夢想更近一步。</div>
     </div>
+
+    <!-- 點數規則說明 -->
+    <div style="background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(96,165,250,0.06));border:1px solid rgba(167,139,250,0.3);border-radius:16px;padding:16px;margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+        <div style="font-size:20px">🎯</div>
+        <div style="font-size:15px;font-weight:800;color:#a78bfa">點數獲得規則</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:10px 12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">📺 YT任務</div>
+            <div style="font-size:13px;font-weight:800;color:#a78bfa">+200 點／次</div>
+          </div>
+          <div style="font-size:11px;color:var(--muted)">2部影片點讚分享，每次完成獲得 200 點 · 每週上限 3,000 點</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:10px 12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">🏪 探店任務</div>
+            <div style="font-size:13px;font-weight:800;color:#a78bfa">+500 點／次</div>
+          </div>
+          <div style="font-size:11px;color:var(--muted)">每週限一次，完成探店回饋表即可獲得</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:10px 12px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">🤖 數據推流任務</div>
+            <div style="font-size:13px;font-weight:800;color:#a78bfa">+250 點／次</div>
+          </div>
+          <div style="font-size:11px;color:var(--muted)">每次完成獲得 250 點 · 每週上限 3,000 點</div>
+        </div>
+      </div>
+      <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.25);border-radius:10px;padding:10px 12px;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:#a78bfa;margin-bottom:6px">🔥 連續任務加碼點數</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:3px 10px;font-size:11px;color:#c4b5fd">1週 +150點</span>
+          <span style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:3px 10px;font-size:11px;color:#c4b5fd">2週 +300點</span>
+          <span style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:3px 10px;font-size:11px;color:#c4b5fd">3週 +450點</span>
+          <span style="background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);border-radius:20px;padding:3px 10px;font-size:11px;color:#c4b5fd">以此類推</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <div style="flex:1;min-width:120px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.25);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">每週點數上限</div>
+          <div style="font-size:18px;font-weight:800;color:#60a5fa;font-family:'Orbitron',sans-serif">6,000</div>
+          <div style="font-size:10px;color:var(--muted)">點</div>
+        </div>
+        <div style="flex:1;min-width:120px;background:rgba(10,171,110,0.08);border:1px solid rgba(10,171,110,0.25);border-radius:10px;padding:10px;text-align:center">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:4px">折抵比例</div>
+          <div style="font-size:18px;font-weight:800;color:var(--green);font-family:'Orbitron',sans-serif">1:1</div>
+          <div style="font-size:10px;color:var(--muted)">1點 = $1元</div>
+        </div>
+      </div>
+    </div>
     <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;-webkit-overflow-scrolling:touch">
       <button onclick="filterTravel('all')" id="filter-all" class="travel-filter active-filter">🌏 全部</button>
       <button onclick="filterTravel('japan')" id="filter-japan" class="travel-filter">🇯🇵 日本</button>
