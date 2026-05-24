@@ -21,13 +21,13 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
 .brand-header h2{font-size:13px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
 .auth-card{background:var(--surface);border:1px solid var(--border2);border-radius:22px;padding:36px 32px;backdrop-filter:blur(20px);box-shadow:0 0 60px rgba(0,100,255,0.12),0 8px 32px rgba(30,70,160,0.1);position:relative;overflow:hidden}
 .auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent)}
-.auth-card h1{font-size:18px;font-weight:700;color:var(--accent2);margin-bottom:6px;text-align:center;letter-spacing:1px}
+.auth-card h1{font-size:20px;font-weight:800;color:var(--text);margin-bottom:6px;text-align:center;letter-spacing:.5px}
 .auth-card>p{color:var(--muted);font-size:13px;margin-bottom:26px;text-align:center}
 .field-label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;margin-top:16px}
 .auth-card input{width:100%;padding:13px 16px;background:rgba(255,255,255,0.8);border:1px solid var(--border2);border-radius:11px;color:var(--text);font-size:15px;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s}
 .auth-card input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,144,255,0.15)}
 .auth-card input::placeholder{color:rgba(85,119,170,0.7)}
-.auth-login-btn{width:100%;padding:14px;margin-top:22px;background:linear-gradient(135deg,var(--accent3),var(--accent),var(--accent2));border:none;border-radius:11px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:1px;box-shadow:0 4px 24px rgba(0,144,255,0.4);transition:transform .15s}
+.auth-login-btn{width:100%;padding:14px;margin-top:22px;background:linear-gradient(135deg,#0aab6e,#2272e8);border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;box-shadow:0 4px 20px rgba(0,160,120,0.3);transition:transform .15s}
 .auth-login-btn:hover{transform:translateY(-1px)}
 .auth-login-btn:disabled{opacity:0.6;cursor:default;transform:none}
 #auth-error{color:var(--red);font-size:13px;margin-top:12px;text-align:center;min-height:20px}
@@ -99,6 +99,18 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+.travel-filter{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid var(--border2);background:var(--surface);color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s;font-family:inherit}
+.active-filter{background:linear-gradient(135deg,#0aab6e,#2272e8);color:#fff;border-color:transparent;box-shadow:0 2px 10px rgba(10,171,110,0.3)}
+.travel-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.travel-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,144,255,0.1)}
+.travel-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0aab6e,#2272e8)}
+.travel-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.travel-card-title{font-size:13px;font-weight:700;color:var(--text);line-height:1.5;flex:1}
+.travel-price{font-size:13px;font-weight:800;color:#e03f5e;white-space:nowrap}
+.travel-card-meta{display:flex;gap:8px;flex-wrap:wrap}
+.travel-tag{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600}
+
 </style>
 </head>
 <body>
@@ -116,13 +128,13 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
       <h2>會員簽到平台</h2>
     </div>
     <div class="auth-card">
-      <h1>🔐 會員登入</h1>
-      <p>請輸入你的會員編號與密碼</p>
-      <span class="field-label">會員編號</span>
+      <h1>👋 歡迎回來！</h1>
+      <p>輸入你的帳號，開始今天的任務吧 ✨</p>
+      <span class="field-label">👤 會員編號</span>
       <input id="uid-input" type="text" placeholder="例：U12345 或 12345" autocomplete="off">
-      <span class="field-label">密碼</span>
+      <span class="field-label">🔑 密碼</span>
       <input id="pass-input" type="password" placeholder="請輸入密碼">
-      <button class="auth-login-btn" id="login-btn">登 入</button>
+      <button class="auth-login-btn" id="login-btn">開始任務 →</button>
       <div id="auth-error"></div>
     </div>
   </div>
@@ -143,16 +155,16 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
     <div style="flex:1">
       <div style="display:flex;align-items:baseline;gap:6px">
         <span style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="global-bonus-amount">0</span>
-        <span style="font-size:11px;color:var(--muted)">元｜累積任務獎金</span>
+        <span style="font-size:11px;color:var(--muted)">元｜旅遊專用金</span>
       </div>
-      <div style="font-size:10px;color:var(--muted);margin-top:1px">YT任務 + 店家任務 合計</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:1px">YT任務 + 店家任務 累積</div>
     </div>
-    <button id="global-withdraw-btn" style="background:linear-gradient(135deg,#00b894,var(--green));border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;padding:8px 14px;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap">申請領款</button>
+    <button id="global-withdraw-btn" style="background:linear-gradient(135deg,#00b894,var(--green));border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;padding:8px 14px;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap">✈️ 兌換旅遊專用金</button>
   </div>
 
   <div class="tabs">
     <button class="tab-btn active" data-tab="tab-checkin">📅 簽到</button>
-    <button class="tab-btn" data-tab="tab-news">🏦 幣託介紹</button>
+    <button class="tab-btn" data-tab="tab-news">✈️ 旅遊</button>
     <button class="tab-btn" data-tab="tab-tasks">📋 YT任務</button>
     <button class="tab-btn" data-tab="tab-store">🏪 店家任務</button>
     <button class="tab-btn" data-tab="tab-ai">🤖 AI任務</button>
@@ -184,47 +196,51 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
       </div>
     </div>
     <div style="margin-top:18px;margin-bottom:6px">
-      <button onclick="document.querySelectorAll('.tab-btn')[1].click()" style="width:100%;background:linear-gradient(135deg,rgba(0,30,80,0.95),rgba(0,15,50,0.98));border:1px solid rgba(0,144,255,0.35);border-radius:14px;padding:12px 16px;cursor:pointer;text-align:left;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#005aff,#0090ff,#00c8ff,#00e5a0)"></div>
+      <button onclick="document.querySelectorAll('.tab-btn')[1].click()" style="width:100%;background:linear-gradient(135deg,rgba(0,100,60,0.12),rgba(34,114,232,0.10));border:1px solid rgba(0,180,120,0.35);border-radius:14px;padding:12px 16px;cursor:pointer;text-align:left;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#0aab6e,#2272e8,#1a9fd4)"></div>
         <div style="display:flex;align-items:center;gap:12px">
-          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#0050c8,#0090ff);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🏦</div>
+          <div style="width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#0aab6e,#2272e8);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">✈️</div>
           <div style="flex:1;text-align:left">
-            <div style="font-size:14px;font-weight:800;color:#00c8ff">幣託 BitoPro</div>
-            <div style="font-size:11px;color:#5577aa;margin-top:2px">什麼是幣託？安全性・好處介紹 →</div>
+            <div style="font-size:14px;font-weight:800;color:var(--green)">旅遊專區</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:2px">精選旅遊行程・用旅遊專用金圓夢 →</div>
           </div>
-          <div style="color:#5577aa;font-size:18px">›</div>
+          <div style="color:var(--muted);font-size:18px">›</div>
         </div>
       </button>
     </div>
   </div>
 
-  <!-- 幣託介紹 TAB -->
+  <!-- 旅遊 TAB -->
   <div class="tab-pane" id="tab-news">
-    <div style="background:linear-gradient(135deg,rgba(0,40,100,0.8),rgba(0,20,60,0.95));border:1px solid var(--border2);border-radius:16px;padding:20px 18px 16px;margin-bottom:14px;position:relative;overflow:hidden">
-      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#005aff,#0090ff,#00c8ff,#00e5a0)"></div>
-      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-        <div style="width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#0050c8,#0090ff);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0">🏦</div>
+    <div style="background:linear-gradient(135deg,rgba(0,180,120,0.12),rgba(34,114,232,0.10));border:1px solid rgba(0,180,120,0.25);border-radius:16px;padding:18px 16px;margin-bottom:14px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#0aab6e,#2272e8,#1a9fd4)"></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <div style="font-size:36px">✈️</div>
         <div>
-          <div style="font-size:18px;font-weight:900;color:var(--accent3)">幣託 BitoPro</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:2px">台灣合法加密貨幣交易所・企業資金流轉工具</div>
+          <div style="font-size:17px;font-weight:800;color:var(--text)">旅遊專區</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">用旅遊專用金，圓你的旅行夢想</div>
         </div>
       </div>
-      <p style="font-size:13px;color:#99bbdd;line-height:1.7">幣託（BitoPro）是台灣最早取得金管會登記的合法加密貨幣交易平台之一，專為個人與企業提供安全、快速的數位資產管理服務。</p>
+      <div style="background:rgba(0,180,120,0.08);border:1px solid rgba(0,180,120,0.2);border-radius:10px;padding:10px 14px;font-size:13px;color:var(--text);line-height:1.8">🌏 完成任務累積旅遊專用金，即可兌換精選旅遊行程！每天簽到、完成YT任務、店家任務，讓旅行夢想更近一步。</div>
     </div>
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:800;color:var(--accent2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px">🏆 為什麼選擇幣託？</div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(0,90,255,0.3),rgba(0,144,255,0.15));border:1px solid rgba(0,144,255,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🏛️</div><div><div style="font-size:13px;font-weight:700;color:var(--text)">台灣合法登記平台</div><div style="font-size:11px;color:var(--muted);margin-top:3px;line-height:1.6">已於金融監督管理委員會完成虛擬資產服務業者（VASP）登記，是台灣少數合規的交易所之一。</div></div></div>
-        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(0,90,255,0.3),rgba(0,144,255,0.15));border:1px solid rgba(0,144,255,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">💸</div><div><div style="font-size:13px;font-weight:700;color:var(--text)">降低跨境手續費</div><div style="font-size:11px;color:var(--muted);margin-top:3px;line-height:1.6">傳統銀行電匯動輒數百元手續費，透過 USDT 出金大幅節省成本，適合企業大額資金流轉。</div></div></div>
-        <div style="display:flex;align-items:flex-start;gap:12px"><div style="width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,rgba(0,90,255,0.3),rgba(0,144,255,0.15));border:1px solid rgba(0,144,255,0.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📊</div><div><div style="font-size:13px;font-weight:700;color:var(--text)">資產透明可追蹤</div><div style="font-size:11px;color:var(--muted);margin-top:3px;line-height:1.6">所有交易紀錄均可在帳戶中查詢，資金流向清晰，方便財務管理與對帳。</div></div></div>
+    <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:14px;-webkit-overflow-scrolling:touch">
+      <button onclick="filterTravel('all')" id="filter-all" class="travel-filter active-filter">🌏 全部</button>
+      <button onclick="filterTravel('japan')" id="filter-japan" class="travel-filter">🇯🇵 日本</button>
+      <button onclick="filterTravel('korea')" id="filter-korea" class="travel-filter">🇰🇷 韓國</button>
+      <button onclick="filterTravel('thai')" id="filter-thai" class="travel-filter">🇹🇭 泰國</button>
+      <button onclick="filterTravel('sea')" id="filter-sea" class="travel-filter">🌴 東南亞</button>
+      <button onclick="filterTravel('europe')" id="filter-europe" class="travel-filter">🇪🇺 歐洲</button>
+      <button onclick="filterTravel('other')" id="filter-other" class="travel-filter">🌐 其他</button>
+    </div>
+    <div id="travel-list"></div>
+    <div id="travel-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)">
+      <div style="background:var(--surface);border-radius:20px 20px 0 0;padding:24px 20px;width:100%;max-width:480px;max-height:80vh;overflow-y:auto">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div style="font-size:15px;font-weight:800;color:var(--text);flex:1;line-height:1.4" id="modal-title"></div>
+          <button onclick="document.getElementById('travel-modal').style.display='none'" style="background:rgba(0,0,0,0.08);border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-left:10px">✕</button>
+        </div>
+        <div id="modal-body"></div>
       </div>
-    </div>
-    <div style="background:linear-gradient(135deg,rgba(0,229,160,0.08),rgba(0,144,255,0.06));border:1px solid rgba(0,229,160,0.25);border-radius:14px;padding:16px;margin-bottom:10px">
-      <div style="font-size:12px;font-weight:800;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">🎁 OmniTask 任鏈科技 × 幣託</div>
-      <p style="font-size:12px;color:#aaccee;line-height:1.8">新用戶完成幣託身份驗證（KYC）後，即可獲得 <strong style="color:var(--green)">OmniTask 任鏈科技專屬活動獎勵</strong>。詳情請洽助理，把握機會！</p>
-    </div>
-    <div style="text-align:center;margin-top:14px;margin-bottom:4px">
-      <a href="https://www.bitopro.com" target="_blank" rel="noopener" style="display:inline-block;padding:12px 32px;background:linear-gradient(135deg,var(--accent3),var(--accent),var(--accent2));border-radius:30px;color:#fff;font-size:13px;font-weight:800;text-decoration:none;letter-spacing:1px;box-shadow:0 4px 20px rgba(0,144,255,0.4)">前往幣託官網 →</a>
     </div>
   </div>
 
@@ -340,8 +356,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
       </div>
     </div>
     <div id="withdraw-panel" style="display:none;background:rgba(0,229,160,0.05);border:1px solid rgba(0,229,160,0.25);border-radius:14px;padding:16px;margin-bottom:14px">
-      <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px">💸 申請領款</div>
-      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">請至平台提領後，在此登記金額，管理員確認後將從獎金扣除。</div>
+      <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:10px">✈️ 兌換旅遊專用金</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">請至平台提領後，在此登記金額，管理員確認後將從旅遊專用金扣除。</div>
       <input type="number" id="withdraw-amount" min="1" placeholder="輸入申請金額（元）" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.85);border:1px solid rgba(0,229,160,0.35);border-radius:9px;color:var(--text);font-size:15px;outline:none;font-family:inherit;margin-bottom:10px">
       <div id="withdraw-pending-notice" style="display:none;color:#ffc800;font-size:12px;margin-bottom:10px">⏳ 已有一筆申請待審核，請等管理員確認後再申請。</div>
       <button id="withdraw-submit-btn" style="width:100%;padding:12px;background:linear-gradient(135deg,#00b894,var(--green));border:none;border-radius:9px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">送出申請</button>
@@ -575,6 +591,7 @@ async function renderAiSlots() {
   }
 }
 
+document.querySelector('[data-tab="tab-news"]').addEventListener('click', () => { renderTravelList(); });
 document.querySelector('[data-tab="tab-ai"]').addEventListener('click', () => {
   if (currentUID) { loadAiTaskHistory(); renderAiSlots(); }
 });
@@ -630,7 +647,7 @@ async function doLogin() {
     const fullUID = uid.startsWith('U') ? uid : 'U' + uid;
     const data = await fsGet(`members/${fullUID}`);
     if (!data) { errEl.textContent = '找不到此會員編號'; btn.textContent = '登 入'; btn.disabled = false; return; }
-    if (data.password !== pass) { errEl.textContent = '密碼錯誤'; btn.textContent = '登 入'; btn.disabled = false; return; }
+    if (data.password !== pass) { errEl.textContent = '密碼錯誤'; btn.textContent = '開始任務 →'; btn.disabled = false; return; }
     currentUID = fullUID;
     localStorage.setItem('omni_uid', fullUID);
     localStorage.setItem('omni_pass', pass);
@@ -638,7 +655,7 @@ async function doLogin() {
     document.getElementById('member-app').style.display = 'block';
     document.getElementById('member-uid-badge').textContent = fullUID;
     initMember();
-  } catch(e) { errEl.textContent = '連線錯誤：' + e.message; btn.textContent = '登 入'; btn.disabled = false; }
+  } catch(e) { errEl.textContent = '連線錯誤：' + e.message; btn.textContent = '開始任務 →'; btn.disabled = false; }
 }
 
 (async () => {
@@ -812,7 +829,7 @@ document.getElementById('withdraw-submit-btn').addEventListener('click', async (
   if (!amt || amt <= 0) { showToast('請輸入有效金額', true); return; }
   const memberData = await fsGet(`members/${currentUID}`);
   const bonus = (memberData && memberData.bonus) || 0;
-  if (amt > bonus) { showToast(`金額超過獎金餘額（$${bonus}）`, true); return; }
+  if (amt > bonus) { showToast(`金額超過旅遊專用金餘額（$${bonus}）`, true); return; }
   const btn = document.getElementById('withdraw-submit-btn');
   btn.textContent = '送出中...'; btn.disabled = true;
   try {
@@ -867,6 +884,90 @@ async function uploadScreenshot(taskId, taskName, fileInput, submitBtn, commentE
     submitBtn.textContent = '📤 送出截圖與心得等候審核'; submitBtn.disabled = false;
   }
 }
+
+// ── 旅遊行程資料 ──
+const TRAVEL_DATA = [
+  { id:1, cat:'japan', flag:'🇯🇵', country:'日本', title:'九州仲夏風·由布院之森（草原星空夜·夢語湯布院5日）', date:'7月12/26', price:'$61,900起', days:5, highlight:'草原星空・由布院温泉・森之呼吸', desc:'漫步由布院夢幻小鎮，感受星空下的溫泉療癒時光，探索九州大地的原始自然之美。' },
+  { id:2, cat:'japan', flag:'🇯🇵', country:'日本', title:'步履寫詩·走進山海秘境（熊野古道·東方朝聖之路6日）', date:'9月03/10', price:'$99,900起', days:6, highlight:'熊野古道・世界遺產・山海秘境', desc:'沿著千年朝聖古道，感受日本最神秘的靈山文化，山海之間書寫你的旅行詩篇。' },
+  { id:3, cat:'japan', flag:'🇯🇵', country:'日本', title:'立山三段染·秋畫上高地（峽谷鐵道縱·犬山英迪格6日）', date:'11月10/17', price:'$78,900起', days:6, highlight:'立山秋色・上高地・峽谷鐵道', desc:'秋天最美的日本，立山的三段染色、上高地的楓紅倒影，讓每一格都是風景明信片。' },
+  { id:4, cat:'japan', flag:'🇯🇵', country:'日本', title:'東京迪士尼·富士急樂園（歐風輕井澤·哈利波特三大樂園6日）', date:'8月01/22', price:'$79,900起', days:6, highlight:'迪士尼・富士急・哈利波特', desc:'三大主題樂園一次玩透！加上歐風輕井澤的悠閒氣息，大人小孩都喜歡。' },
+  { id:5, cat:'japan', flag:'🇯🇵', country:'日本', title:'北海道道東·阿寒湖秋水（層雲峽伊人·秋色紅葉狩7日）', date:'10月03/17', price:'$104,900起', days:7, highlight:'阿寒湖・層雲峽・北海道紅葉', desc:'北海道最美的秋天，阿寒湖的神秘幽靜、層雲峽的壯麗紅葉，留下一生難忘的秋景。' },
+  { id:6, cat:'korea', flag:'🇰🇷', country:'韓國', title:'穿越過去到現在·遇見千年歷史（釜山+慶洲私家遊5日）', date:'10月05/18', price:'$114,500起', days:5, highlight:'慶洲古都・釜山海景・千年文化', desc:'從現代港都釜山到千年古都慶洲，感受韓國最深厚的歷史文化底蘊。' },
+  { id:7, cat:'korea', flag:'🇰🇷', country:'韓國', title:'走進韓國·饕餮韓食（首爾+仁川私家遊5日）', date:'10月16/25', price:'$138,000起', days:5, highlight:'首爾美食・仁川・韓食文化', desc:'以美食為主軸的首爾之旅，從街頭小吃到米其林餐廳，用味蕾記錄韓國文化。' },
+  { id:8, cat:'thai', flag:'🇹🇭', country:'泰國', title:'清邁百年私房（靜謐Anantara·洲際古韻風華5日）', date:'7月17/22', price:'$59,900起', days:5, highlight:'清邁古城・Anantara酒店・蘭納文化', desc:'金旅獎精選！入住頂級Anantara度假村，探索清邁古城的百年歷史與靜謐之美。' },
+  { id:9, cat:'thai', flag:'🇹🇭', country:'泰國', title:'蘇梅·泰Chill旅（藏在海角的優雅·悠時光輕奢6日）', date:'9月03/16', price:'$79,900起', days:6, highlight:'蘇梅島・海景泳池・輕奢度假', desc:'蘇梅島的純淨海水與椰林沙灘，配上頂級輕奢度假村，療癒你所有的疲憊。' },
+  { id:10, cat:'thai', flag:'🇹🇭', country:'泰國', title:'泰北雙城·清邁洲際美學（清萊安納塔拉·蘭納文化饗旅6日）', date:'8月05/26', price:'$93,900起', days:6, highlight:'清邁・清萊・白廟・蘭納文化', desc:'泰北雙城之旅，清邁的古典優雅與清萊白廟的神秘壯觀，體驗最道地的蘭納文化。' },
+  { id:11, cat:'sea', flag:'🇻🇳', country:'越南', title:'潮中越·慢遊會安（奢旅峴港洲際·星廚美味饗宴5日）', date:'7月17/31', price:'$71,900起', days:5, highlight:'會安古鎮・峴港洲際・米其林', desc:'金旅獎精選！會安燈籠映照的黃昏古鎮，加上峴港洲際的星廚饗宴，奢旅中越。' },
+  { id:12, cat:'sea', flag:'🇻🇳', country:'越南', title:'北越雙城記·下龍灣洲際（海景2晚·鐵道景觀列車·索菲特傳奇5日）', date:'8月08/29', price:'$61,900起', days:5, highlight:'下龍灣・河內・鐵道咖啡街', desc:'搭乘景觀列車穿越越南山川，在下龍灣洲際豪華郵輪上欣賞世界遺產的壯麗海景。' },
+  { id:13, cat:'sea', flag:'🇲🇾', country:'馬來西亞', title:'吉隆坡璀璨夜·馬六甲古風華（Fun玩馬來西亞5日）', date:'7月08/22', price:'$57,900起', days:5, highlight:'吉隆坡・馬六甲古城・多元文化', desc:'馬來西亞最精華的雙城之旅，吉隆坡的現代璀璨夜景與馬六甲的百年歷史風華。' },
+  { id:14, cat:'sea', flag:'🇲🇾', country:'馬來西亞', title:'馬國Chill旅·私享綠中海（宿泊天際Hyatt·米其林饗宴5日）', date:'7月15/29', price:'$73,900起', days:5, highlight:'天際Hyatt・米其林・綠中海', desc:'入住吉隆坡最頂級的天際Hyatt，俯瞰雙峰塔夜景，品嚐米其林星級料理。' },
+  { id:15, cat:'sea', flag:'🇲🇾', country:'馬來西亞', title:'大馬三城慢旅（舌尖南洋食光·漫步殖民風華6日）', date:'8月07/21', price:'$61,900起', days:6, highlight:'三城慢旅・南洋美食・殖民建築', desc:'以美食為線索，漫步馬來西亞三座城市的殖民歷史街道，用舌尖感受南洋文化。' },
+  { id:16, cat:'sea', flag:'🇲🇻', country:'馬爾地夫', title:'FUN趣馬爾地夫~海上豪華樂園~五星思雅瑪世界渡假村7日', date:'10月05/12/19', price:'$118,000起', days:7, highlight:'水上屋・珊瑚礁・五星渡假村', desc:'天堂中的天堂！思雅瑪世界渡假村的水上屋，讓你沉浸在最純淨的印度洋海水中。' },
+  { id:17, cat:'europe', flag:'🇫🇷', country:'法國/英國', title:'倫敦風華：藍牌導遊·皇室足跡·藝術盛宴10日', date:'10月16', price:'$298,000起', days:10, highlight:'倫敦・巴黎・藍牌導遊', desc:'由藍牌專業導遊帶領，深度探訪皇室足跡與世界頂級藝術殿堂，感受歐洲最精緻的文化底蘊。' },
+  { id:18, cat:'europe', flag:'🇫🇷', country:'法國', title:'雙師帶路-南法建築·法國孛艮地酒莊12日', date:'10月03', price:'$269,000起', days:12, highlight:'南法・孛艮地酒莊・建築美學', desc:'由兩位專業導師帶領，深入南法葡萄酒莊與建築瑰寶，品味最純粹的法式生活美學。' },
+  { id:19, cat:'europe', flag:'🇨🇭', country:'瑞士', title:'瑞士鐵道—三大景觀列車·五大名峰·策馬特·頭等艙Swiss Pass15日', date:'9月18', price:'$253,000起', days:15, highlight:'景觀列車・馬特洪峰・策馬特', desc:'搭乘瑞士頂級景觀列車穿越阿爾卑斯山，五大名峰與策馬特的壯麗雪景令人屏息。' },
+  { id:20, cat:'europe', flag:'🇨🇭', country:'瑞士', title:'瑞士巴士—悠然慢遊·絕美三大名峰·秘境雙湖13日', date:'9月21', price:'$266,000起', days:13, highlight:'三大名峰・秘境雙湖・慢旅瑞士', desc:'不趕行程的瑞士慢旅，在秘境雙湖旁的靜謐中，欣賞三大名峰最美的倒影。' },
+  { id:21, cat:'other', flag:'🇦🇪', country:'杜拜', title:'創意杜拜阿布達比沙迦（帆船酒店·法拉利樂園·羅浮宮·沙漠滑沙8日）', date:'9月06', price:'$194,900起', days:8, highlight:'帆船酒店・沙漠滑沙・羅浮宮', desc:'探索杜拜最奢華的一面，從帆船酒店到沙漠滑沙，再到阿布達比的羅浮宮，震撼每一秒。' },
+  { id:22, cat:'other', flag:'🇨🇦', country:'加拿大', title:'美麗星世界黃刀鎮洛磯12日（黃刀極光·班夫國家公園·硫磺山纜車）', date:'10月14', price:'$209,900起', days:12, highlight:'極光・洛磯山・班夫國家公園', desc:'追逐北極光的夢想之旅！黃刀鎮的極光搖曳加上洛磯山脈的壯麗山色，絕對一生難忘。' },
+];
+
+let currentFilter = 'all';
+
+function filterTravel(cat) {
+  currentFilter = cat;
+  document.querySelectorAll('.travel-filter').forEach(b => b.classList.remove('active-filter'));
+  document.getElementById('filter-' + cat).classList.add('active-filter');
+  renderTravelList();
+}
+
+function renderTravelList() {
+  const list = document.getElementById('travel-list');
+  const data = currentFilter === 'all' ? TRAVEL_DATA : TRAVEL_DATA.filter(t => t.cat === currentFilter);
+  if (!data.length) { list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:30px">此分類暫無行程</div>'; return; }
+  list.innerHTML = data.map(t => `
+    <div class="travel-card" onclick="showTravelDetail(${t.id})">
+      <div class="travel-card-header">
+        <div class="travel-card-title">${t.flag} ${t.title}</div>
+        <div class="travel-price">${t.price}</div>
+      </div>
+      <div class="travel-card-meta">
+        <span class="travel-tag" style="background:rgba(10,171,110,0.1);color:var(--green);border:1px solid rgba(10,171,110,0.25)">📅 ${t.date}</span>
+        <span class="travel-tag" style="background:rgba(34,114,232,0.1);color:var(--accent2);border:1px solid rgba(34,114,232,0.2)">🗓 ${t.days}天</span>
+        <span class="travel-tag" style="background:rgba(100,140,200,0.1);color:var(--muted);border:1px solid var(--border)">📍 ${t.country}</span>
+      </div>
+    </div>`).join('');
+}
+
+function showTravelDetail(id) {
+  const t = TRAVEL_DATA.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('modal-title').textContent = t.flag + ' ' + t.title;
+  document.getElementById('modal-body').innerHTML = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+      <span class="travel-tag" style="background:rgba(10,171,110,0.1);color:var(--green);border:1px solid rgba(10,171,110,0.25);font-size:12px;padding:5px 12px">📅 出發：${t.date}</span>
+      <span class="travel-tag" style="background:rgba(34,114,232,0.1);color:var(--accent2);border:1px solid rgba(34,114,232,0.2);font-size:12px;padding:5px 12px">🗓 ${t.days}天行程</span>
+    </div>
+    <div style="background:rgba(10,171,110,0.06);border:1px solid rgba(10,171,110,0.2);border-radius:10px;padding:12px 14px;margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px">✨ 行程亮點</div>
+      <div style="font-size:13px;color:var(--text)">${t.highlight}</div>
+    </div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:16px">${t.desc}</div>
+    <div style="background:linear-gradient(135deg,rgba(224,63,94,0.08),rgba(224,63,94,0.04));border:1px solid rgba(224,63,94,0.2);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:11px;color:var(--muted)">旅遊專用金可折抵</div>
+        <div style="font-size:20px;font-weight:800;color:#e03f5e">${t.price}</div>
+      </div>
+      <div style="font-size:28px">✈️</div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">詳細行程請洽助理，用旅遊專用金圓你的夢！</div>
+  `;
+  document.getElementById('travel-modal').style.display = 'flex';
+}
+window.filterTravel = filterTravel;
+window.showTravelDetail = showTravelDetail;
+
+// 初始渲染旅遊
+if (document.getElementById("travel-list")) renderTravelList();
 </script>
 </body>
 </html>
