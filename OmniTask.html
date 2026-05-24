@@ -887,28 +887,28 @@ async function uploadScreenshot(taskId, taskName, fileInput, submitBtn, commentE
 
 // ── 旅遊行程資料 ──
 const TRAVEL_DATA = [
-  { id:1, cat:'japan', flag:'🇯🇵', country:'日本', title:'九州仲夏風·由布院之森（草原星空夜·夢語湯布院5日）', date:'7月12/26', price:'$61,900起', days:5, highlight:'草原星空・由布院温泉・森之呼吸', desc:'漫步由布院夢幻小鎮，感受星空下的溫泉療癒時光，探索九州大地的原始自然之美。' },
-  { id:2, cat:'japan', flag:'🇯🇵', country:'日本', title:'步履寫詩·走進山海秘境（熊野古道·東方朝聖之路6日）', date:'9月03/10', price:'$99,900起', days:6, highlight:'熊野古道・世界遺產・山海秘境', desc:'沿著千年朝聖古道，感受日本最神秘的靈山文化，山海之間書寫你的旅行詩篇。' },
-  { id:3, cat:'japan', flag:'🇯🇵', country:'日本', title:'立山三段染·秋畫上高地（峽谷鐵道縱·犬山英迪格6日）', date:'11月10/17', price:'$78,900起', days:6, highlight:'立山秋色・上高地・峽谷鐵道', desc:'秋天最美的日本，立山的三段染色、上高地的楓紅倒影，讓每一格都是風景明信片。' },
-  { id:4, cat:'japan', flag:'🇯🇵', country:'日本', title:'東京迪士尼·富士急樂園（歐風輕井澤·哈利波特三大樂園6日）', date:'8月01/22', price:'$79,900起', days:6, highlight:'迪士尼・富士急・哈利波特', desc:'三大主題樂園一次玩透！加上歐風輕井澤的悠閒氣息，大人小孩都喜歡。' },
-  { id:5, cat:'japan', flag:'🇯🇵', country:'日本', title:'北海道道東·阿寒湖秋水（層雲峽伊人·秋色紅葉狩7日）', date:'10月03/17', price:'$104,900起', days:7, highlight:'阿寒湖・層雲峽・北海道紅葉', desc:'北海道最美的秋天，阿寒湖的神秘幽靜、層雲峽的壯麗紅葉，留下一生難忘的秋景。' },
-  { id:6, cat:'korea', flag:'🇰🇷', country:'韓國', title:'穿越過去到現在·遇見千年歷史（釜山+慶洲私家遊5日）', date:'10月05/18', price:'$114,500起', days:5, highlight:'慶洲古都・釜山海景・千年文化', desc:'從現代港都釜山到千年古都慶洲，感受韓國最深厚的歷史文化底蘊。' },
-  { id:7, cat:'korea', flag:'🇰🇷', country:'韓國', title:'走進韓國·饕餮韓食（首爾+仁川私家遊5日）', date:'10月16/25', price:'$138,000起', days:5, highlight:'首爾美食・仁川・韓食文化', desc:'以美食為主軸的首爾之旅，從街頭小吃到米其林餐廳，用味蕾記錄韓國文化。' },
-  { id:8, cat:'thai', flag:'🇹🇭', country:'泰國', title:'清邁百年私房（靜謐Anantara·洲際古韻風華5日）', date:'7月17/22', price:'$59,900起', days:5, highlight:'清邁古城・Anantara酒店・蘭納文化', desc:'金旅獎精選！入住頂級Anantara度假村，探索清邁古城的百年歷史與靜謐之美。' },
-  { id:9, cat:'thai', flag:'🇹🇭', country:'泰國', title:'蘇梅·泰Chill旅（藏在海角的優雅·悠時光輕奢6日）', date:'9月03/16', price:'$79,900起', days:6, highlight:'蘇梅島・海景泳池・輕奢度假', desc:'蘇梅島的純淨海水與椰林沙灘，配上頂級輕奢度假村，療癒你所有的疲憊。' },
-  { id:10, cat:'thai', flag:'🇹🇭', country:'泰國', title:'泰北雙城·清邁洲際美學（清萊安納塔拉·蘭納文化饗旅6日）', date:'8月05/26', price:'$93,900起', days:6, highlight:'清邁・清萊・白廟・蘭納文化', desc:'泰北雙城之旅，清邁的古典優雅與清萊白廟的神秘壯觀，體驗最道地的蘭納文化。' },
-  { id:11, cat:'sea', flag:'🇻🇳', country:'越南', title:'潮中越·慢遊會安（奢旅峴港洲際·星廚美味饗宴5日）', date:'7月17/31', price:'$71,900起', days:5, highlight:'會安古鎮・峴港洲際・米其林', desc:'金旅獎精選！會安燈籠映照的黃昏古鎮，加上峴港洲際的星廚饗宴，奢旅中越。' },
-  { id:12, cat:'sea', flag:'🇻🇳', country:'越南', title:'北越雙城記·下龍灣洲際（海景2晚·鐵道景觀列車·索菲特傳奇5日）', date:'8月08/29', price:'$61,900起', days:5, highlight:'下龍灣・河內・鐵道咖啡街', desc:'搭乘景觀列車穿越越南山川，在下龍灣洲際豪華郵輪上欣賞世界遺產的壯麗海景。' },
-  { id:13, cat:'sea', flag:'🇲🇾', country:'馬來西亞', title:'吉隆坡璀璨夜·馬六甲古風華（Fun玩馬來西亞5日）', date:'7月08/22', price:'$57,900起', days:5, highlight:'吉隆坡・馬六甲古城・多元文化', desc:'馬來西亞最精華的雙城之旅，吉隆坡的現代璀璨夜景與馬六甲的百年歷史風華。' },
-  { id:14, cat:'sea', flag:'🇲🇾', country:'馬來西亞', title:'馬國Chill旅·私享綠中海（宿泊天際Hyatt·米其林饗宴5日）', date:'7月15/29', price:'$73,900起', days:5, highlight:'天際Hyatt・米其林・綠中海', desc:'入住吉隆坡最頂級的天際Hyatt，俯瞰雙峰塔夜景，品嚐米其林星級料理。' },
-  { id:15, cat:'sea', flag:'🇲🇾', country:'馬來西亞', title:'大馬三城慢旅（舌尖南洋食光·漫步殖民風華6日）', date:'8月07/21', price:'$61,900起', days:6, highlight:'三城慢旅・南洋美食・殖民建築', desc:'以美食為線索，漫步馬來西亞三座城市的殖民歷史街道，用舌尖感受南洋文化。' },
-  { id:16, cat:'sea', flag:'🇲🇻', country:'馬爾地夫', title:'FUN趣馬爾地夫~海上豪華樂園~五星思雅瑪世界渡假村7日', date:'10月05/12/19', price:'$118,000起', days:7, highlight:'水上屋・珊瑚礁・五星渡假村', desc:'天堂中的天堂！思雅瑪世界渡假村的水上屋，讓你沉浸在最純淨的印度洋海水中。' },
-  { id:17, cat:'europe', flag:'🇫🇷', country:'法國/英國', title:'倫敦風華：藍牌導遊·皇室足跡·藝術盛宴10日', date:'10月16', price:'$298,000起', days:10, highlight:'倫敦・巴黎・藍牌導遊', desc:'由藍牌專業導遊帶領，深度探訪皇室足跡與世界頂級藝術殿堂，感受歐洲最精緻的文化底蘊。' },
-  { id:18, cat:'europe', flag:'🇫🇷', country:'法國', title:'雙師帶路-南法建築·法國孛艮地酒莊12日', date:'10月03', price:'$269,000起', days:12, highlight:'南法・孛艮地酒莊・建築美學', desc:'由兩位專業導師帶領，深入南法葡萄酒莊與建築瑰寶，品味最純粹的法式生活美學。' },
-  { id:19, cat:'europe', flag:'🇨🇭', country:'瑞士', title:'瑞士鐵道—三大景觀列車·五大名峰·策馬特·頭等艙Swiss Pass15日', date:'9月18', price:'$253,000起', days:15, highlight:'景觀列車・馬特洪峰・策馬特', desc:'搭乘瑞士頂級景觀列車穿越阿爾卑斯山，五大名峰與策馬特的壯麗雪景令人屏息。' },
-  { id:20, cat:'europe', flag:'🇨🇭', country:'瑞士', title:'瑞士巴士—悠然慢遊·絕美三大名峰·秘境雙湖13日', date:'9月21', price:'$266,000起', days:13, highlight:'三大名峰・秘境雙湖・慢旅瑞士', desc:'不趕行程的瑞士慢旅，在秘境雙湖旁的靜謐中，欣賞三大名峰最美的倒影。' },
-  { id:21, cat:'other', flag:'🇦🇪', country:'杜拜', title:'創意杜拜阿布達比沙迦（帆船酒店·法拉利樂園·羅浮宮·沙漠滑沙8日）', date:'9月06', price:'$194,900起', days:8, highlight:'帆船酒店・沙漠滑沙・羅浮宮', desc:'探索杜拜最奢華的一面，從帆船酒店到沙漠滑沙，再到阿布達比的羅浮宮，震撼每一秒。' },
-  { id:22, cat:'other', flag:'🇨🇦', country:'加拿大', title:'美麗星世界黃刀鎮洛磯12日（黃刀極光·班夫國家公園·硫磺山纜車）', date:'10月14', price:'$209,900起', days:12, highlight:'極光・洛磯山・班夫國家公園', desc:'追逐北極光的夢想之旅！黃刀鎮的極光搖曳加上洛磯山脈的壯麗山色，絕對一生難忘。' },
+  { id:1, cat:'japan', flag:'🇯🇵', country:'日本', img:'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80', title:'九州仲夏風·由布院之森（草原星空夜·夢語湯布院5日）', date:'7月12/26', price:'$61,900起', days:5, highlight:'草原星空・由布院温泉・森之呼吸', desc:'漫步由布院夢幻小鎮，感受星空下的溫泉療癒時光，探索九州大地的原始自然之美。' },
+  { id:2, cat:'japan', flag:'🇯🇵', country:'日本', img:'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80', title:'步履寫詩·走進山海秘境（熊野古道·東方朝聖之路6日）', date:'9月03/10', price:'$99,900起', days:6, highlight:'熊野古道・世界遺產・山海秘境', desc:'沿著千年朝聖古道，感受日本最神秘的靈山文化，山海之間書寫你的旅行詩篇。' },
+  { id:3, cat:'japan', flag:'🇯🇵', country:'日本', img:'https://images.unsplash.com/photo-1542051841857-5f90071e7989?w=800&q=80', title:'立山三段染·秋畫上高地（峽谷鐵道縱·犬山英迪格6日）', date:'11月10/17', price:'$78,900起', days:6, highlight:'立山秋色・上高地・峽谷鐵道', desc:'秋天最美的日本，立山的三段染色、上高地的楓紅倒影，讓每一格都是風景明信片。' },
+  { id:4, cat:'japan', flag:'🇯🇵', country:'日本', img:'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80', title:'東京迪士尼·富士急樂園（歐風輕井澤·哈利波特三大樂園6日）', date:'8月01/22', price:'$79,900起', days:6, highlight:'迪士尼・富士急・哈利波特', desc:'三大主題樂園一次玩透！加上歐風輕井澤的悠閒氣息，大人小孩都喜歡。' },
+  { id:5, cat:'japan', flag:'🇯🇵', country:'日本', img:'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&q=80', title:'北海道道東·阿寒湖秋水（層雲峽伊人·秋色紅葉狩7日）', date:'10月03/17', price:'$104,900起', days:7, highlight:'阿寒湖・層雲峽・北海道紅葉', desc:'北海道最美的秋天，阿寒湖的神秘幽靜、層雲峽的壯麗紅葉，留下一生難忘的秋景。' },
+  { id:6, cat:'korea', flag:'🇰🇷', country:'韓國', img:'https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?w=800&q=80', title:'穿越過去到現在·遇見千年歷史（釜山+慶洲私家遊5日）', date:'10月05/18', price:'$114,500起', days:5, highlight:'慶洲古都・釜山海景・千年文化', desc:'從現代港都釜山到千年古都慶洲，感受韓國最深厚的歷史文化底蘊。' },
+  { id:7, cat:'korea', flag:'🇰🇷', country:'韓國', img:'https://images.unsplash.com/photo-1601621915196-2621bfb0cd6e?w=800&q=80', title:'走進韓國·饕餮韓食（首爾+仁川私家遊5日）', date:'10月16/25', price:'$138,000起', days:5, highlight:'首爾美食・仁川・韓食文化', desc:'以美食為主軸的首爾之旅，從街頭小吃到米其林餐廳，用味蕾記錄韓國文化。' },
+  { id:8, cat:'thai', flag:'🇹🇭', country:'泰國', img:'https://images.unsplash.com/photo-1563492065599-3520f775eeed?w=800&q=80', title:'清邁百年私房（靜謐Anantara·洲際古韻風華5日）', date:'7月17/22', price:'$59,900起', days:5, highlight:'清邁古城・Anantara酒店・蘭納文化', desc:'金旅獎精選！入住頂級Anantara度假村，探索清邁古城的百年歷史與靜謐之美。' },
+  { id:9, cat:'thai', flag:'🇹🇭', country:'泰國', img:'https://images.unsplash.com/photo-1506665531195-3566af2b4dfa?w=800&q=80', title:'蘇梅·泰Chill旅（藏在海角的優雅·悠時光輕奢6日）', date:'9月03/16', price:'$79,900起', days:6, highlight:'蘇梅島・海景泳池・輕奢度假', desc:'蘇梅島的純淨海水與椰林沙灘，配上頂級輕奢度假村，療癒你所有的疲憊。' },
+  { id:10, cat:'thai', flag:'🇹🇭', country:'泰國', img:'https://images.unsplash.com/photo-1528181304800-259b08848526?w=800&q=80', title:'泰北雙城·清邁洲際美學（清萊安納塔拉·蘭納文化饗旅6日）', date:'8月05/26', price:'$93,900起', days:6, highlight:'清邁・清萊・白廟・蘭納文化', desc:'泰北雙城之旅，清邁的古典優雅與清萊白廟的神秘壯觀，體驗最道地的蘭納文化。' },
+  { id:11, cat:'sea', flag:'🇻🇳', country:'越南', img:'https://images.unsplash.com/photo-1555921015-5532091f6026?w=800&q=80', title:'潮中越·慢遊會安（奢旅峴港洲際·星廚美味饗宴5日）', date:'7月17/31', price:'$71,900起', days:5, highlight:'會安古鎮・峴港洲際・米其林', desc:'金旅獎精選！會安燈籠映照的黃昏古鎮，加上峴港洲際的星廚饗宴，奢旅中越。' },
+  { id:12, cat:'sea', flag:'🇻🇳', country:'越南', img:'https://images.unsplash.com/photo-1528127269322-539801943592?w=800&q=80', title:'北越雙城記·下龍灣洲際（海景2晚·鐵道景觀列車·索菲特傳奇5日）', date:'8月08/29', price:'$61,900起', days:5, highlight:'下龍灣・河內・鐵道咖啡街', desc:'搭乘景觀列車穿越越南山川，在下龍灣洲際豪華郵輪上欣賞世界遺產的壯麗海景。' },
+  { id:13, cat:'sea', flag:'🇲🇾', country:'馬來西亞', img:'https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80', title:'吉隆坡璀璨夜·馬六甲古風華（Fun玩馬來西亞5日）', date:'7月08/22', price:'$57,900起', days:5, highlight:'吉隆坡・馬六甲古城・多元文化', desc:'馬來西亞最精華的雙城之旅，吉隆坡的現代璀璨夜景與馬六甲的百年歷史風華。' },
+  { id:14, cat:'sea', flag:'🇲🇾', country:'馬來西亞', img:'https://images.unsplash.com/photo-1567449303183-ae0d6ed1498b?w=800&q=80', title:'馬國Chill旅·私享綠中海（宿泊天際Hyatt·米其林饗宴5日）', date:'7月15/29', price:'$73,900起', days:5, highlight:'天際Hyatt・米其林・綠中海', desc:'入住吉隆坡最頂級的天際Hyatt，俯瞰雙峰塔夜景，品嚐米其林星級料理。' },
+  { id:15, cat:'sea', flag:'🇲🇾', country:'馬來西亞', img:'https://images.unsplash.com/photo-1501780392773-287d506245a5?w=800&q=80', title:'大馬三城慢旅（舌尖南洋食光·漫步殖民風華6日）', date:'8月07/21', price:'$61,900起', days:6, highlight:'三城慢旅・南洋美食・殖民建築', desc:'以美食為線索，漫步馬來西亞三座城市的殖民歷史街道，用舌尖感受南洋文化。' },
+  { id:16, cat:'sea', flag:'🇲🇻', country:'馬爾地夫', img:'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&q=80', title:'FUN趣馬爾地夫~海上豪華樂園~五星思雅瑪世界渡假村7日', date:'10月05/12/19', price:'$118,000起', days:7, highlight:'水上屋・珊瑚礁・五星渡假村', desc:'天堂中的天堂！思雅瑪世界渡假村的水上屋，讓你沉浸在最純淨的印度洋海水中。' },
+  { id:17, cat:'europe', flag:'🇬🇧', country:'英國/法國', img:'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800&q=80', title:'倫敦風華：藍牌導遊·皇室足跡·藝術盛宴10日', date:'10月16', price:'$298,000起', days:10, highlight:'倫敦・巴黎・藍牌導遊', desc:'由藍牌專業導遊帶領，深度探訪皇室足跡與世界頂級藝術殿堂，感受歐洲最精緻的文化底蘊。' },
+  { id:18, cat:'europe', flag:'🇫🇷', country:'法國', img:'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=800&q=80', title:'雙師帶路-南法建築·法國孛艮地酒莊12日', date:'10月03', price:'$269,000起', days:12, highlight:'南法・孛艮地酒莊・建築美學', desc:'由兩位專業導師帶領，深入南法葡萄酒莊與建築瑰寶，品味最純粹的法式生活美學。' },
+  { id:19, cat:'europe', flag:'🇨🇭', country:'瑞士', img:'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', title:'瑞士鐵道—三大景觀列車·五大名峰·策馬特·頭等艙Swiss Pass15日', date:'9月18', price:'$253,000起', days:15, highlight:'景觀列車・馬特洪峰・策馬特', desc:'搭乘瑞士頂級景觀列車穿越阿爾卑斯山，五大名峰與策馬特的壯麗雪景令人屏息。' },
+  { id:20, cat:'europe', flag:'🇨🇭', country:'瑞士', img:'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80', title:'瑞士巴士—悠然慢遊·絕美三大名峰·秘境雙湖13日', date:'9月21', price:'$266,000起', days:13, highlight:'三大名峰・秘境雙湖・慢旅瑞士', desc:'不趕行程的瑞士慢旅，在秘境雙湖旁的靜謐中，欣賞三大名峰最美的倒影。' },
+  { id:21, cat:'other', flag:'🇦🇪', country:'杜拜', img:'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=80', title:'創意杜拜阿布達比沙迦（帆船酒店·法拉利樂園·羅浮宮·沙漠滑沙8日）', date:'9月06', price:'$194,900起', days:8, highlight:'帆船酒店・沙漠滑沙・羅浮宮', desc:'探索杜拜最奢華的一面，從帆船酒店到沙漠滑沙，再到阿布達比的羅浮宮，震撼每一秒。' },
+  { id:22, cat:'other', flag:'🇨🇦', country:'加拿大', img:'https://images.unsplash.com/photo-1531169628054-836a35a6a56b?w=800&q=80', title:'美麗星世界黃刀鎮洛磯12日（黃刀極光·班夫國家公園·硫磺山纜車）', date:'10月14', price:'$209,900起', days:12, highlight:'極光・洛磯山・班夫國家公園', desc:'追逐北極光的夢想之旅！黃刀鎮的極光搖曳加上洛磯山脈的壯麗山色，絕對一生難忘。' },
 ];
 
 let currentFilter = 'all';
@@ -926,6 +926,7 @@ function renderTravelList() {
   if (!data.length) { list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:30px">此分類暫無行程</div>'; return; }
   list.innerHTML = data.map(t => `
     <div class="travel-card" onclick="showTravelDetail(${t.id})">
+      ${t.img ? `<div style="width:100%;height:160px;border-radius:10px;overflow:hidden;margin-bottom:10px;background:rgba(0,0,0,0.1)"><img src="${t.img}" alt="${t.country}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentNode.style.display='none'"></div>` : ''}
       <div class="travel-card-header">
         <div class="travel-card-title">${t.flag} ${t.title}</div>
         <div class="travel-price">${t.price}</div>
@@ -943,6 +944,7 @@ function showTravelDetail(id) {
   if (!t) return;
   document.getElementById('modal-title').textContent = t.flag + ' ' + t.title;
   document.getElementById('modal-body').innerHTML = `
+    ${t.img ? `<div style="width:100%;height:200px;border-radius:12px;overflow:hidden;margin-bottom:14px"><img src="${t.img}" alt="${t.country}" style="width:100%;height:100%;object-fit:cover;display:block"></div>` : ''}
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
       <span class="travel-tag" style="background:rgba(10,171,110,0.1);color:var(--green);border:1px solid rgba(10,171,110,0.25);font-size:12px;padding:5px 12px">📅 出發：${t.date}</span>
       <span class="travel-tag" style="background:rgba(34,114,232,0.1);color:var(--accent2);border:1px solid rgba(34,114,232,0.2);font-size:12px;padding:5px 12px">🗓 ${t.days}天行程</span>
