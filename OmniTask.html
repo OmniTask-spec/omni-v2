@@ -152,12 +152,22 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
 
   <div id="global-bonus-bar" style="display:none;background:linear-gradient(135deg,rgba(0,229,160,0.12),rgba(0,144,255,0.08));border-bottom:1px solid rgba(0,229,160,0.25);padding:10px 18px;align-items:center;gap:12px;position:sticky;top:52px;z-index:90;backdrop-filter:blur(12px)">
     <div style="font-size:18px">💰</div>
-    <div style="flex:1">
-      <div style="display:flex;align-items:baseline;gap:6px">
-        <span style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="global-bonus-amount">0</span>
-        <span style="font-size:11px;color:var(--muted)">元｜旅遊專用金</span>
+    <div style="flex:1;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:4px">
+          <span style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="global-bonus-amount">0</span>
+          <span style="font-size:11px;color:var(--muted)">元旅遊金</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:1px">YT任務 + 店家任務</div>
       </div>
-      <div style="font-size:10px;color:var(--muted);margin-top:1px">YT任務 + 店家任務 累積</div>
+      <div style="width:1px;height:28px;background:rgba(100,140,200,0.2);flex-shrink:0"></div>
+      <div>
+        <div style="display:flex;align-items:baseline;gap:4px">
+          <span style="font-family:'Orbitron',sans-serif;font-size:18px;font-weight:900;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="global-pts-amount">0</span>
+          <span style="font-size:11px;color:var(--muted)">點數</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:1px">可折抵旅遊行程</div>
+      </div>
     </div>
     <button id="global-withdraw-btn" style="background:linear-gradient(135deg,#00b894,var(--green));border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;padding:8px 14px;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap">✈️ 兌換旅遊專用金</button>
   </div>
@@ -283,18 +293,41 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
         </div>
         <div style="border-top:1px solid var(--border2);margin:0 0 16px"></div>
         <div style="font-size:13px;font-weight:700;color:var(--accent2);margin-bottom:14px">體驗回饋內容</div>
-        ${[['1️⃣ 本次接待服務給您的整體感受','例如：服務態度、專業介紹、親切程度、應對方式等','store-q1'],
-           ['2️⃣ 店內環境與氛圍體驗','例如：整潔度、舒適感、空間氣氛、音樂、燈光等','store-q2'],
-           ['3️⃣ 本次消費／體驗過程中印象最深刻的地方','可分享讓您加分或特別有感的細節','store-q3'],
-           ['4️⃣ 對於商品／服務內容的實際感受','例如：品質、效果、實用性、價格感受等','store-q4'],
-           ['5️⃣ 店內動線與整體安排是否順暢','例如：等候流程、座位安排、空間規劃等','store-q5'],
-           ['6️⃣ 是否會願意再次回訪？原因是什麼？','請說明您的原因','store-q6'],
-           ['7️⃣ 如果推薦給朋友，您會怎麼介紹這間店？','請說明您會如何推薦','store-q7']].map(([q,hint,id])=>`
         <div style="margin-bottom:16px;background:rgba(0,144,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:12px">
-          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">${q}</div>
-          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">${hint}</div>
-          <textarea id="${id}" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
-        </div>`).join('')}
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">1️⃣ 本次接待服務給您的整體感受</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">例如：服務態度、專業介紹、親切程度、應對方式等</div>
+          <textarea id="store-q1" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div style="margin-bottom:16px;background:rgba(0,144,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:12px">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">2️⃣ 店內環境與氛圍體驗</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">例如：整潔度、舒適感、空間氣氛、音樂、燈光等</div>
+          <textarea id="store-q2" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div style="margin-bottom:16px;background:rgba(0,144,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:12px">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">3️⃣ 本次消費／體驗過程中印象最深刻的地方</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">可分享讓您加分或特別有感的細節</div>
+          <textarea id="store-q3" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div style="margin-bottom:16px;background:rgba(0,144,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:12px">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">4️⃣ 對於商品／服務內容的實際感受</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">例如：品質、效果、實用性、價格感受等</div>
+          <textarea id="store-q4" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div style="margin-bottom:16px;background:rgba(0,144,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:12px">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">5️⃣ 店內動線與整體安排是否順暢</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">例如：等候流程、座位安排、空間規劃等</div>
+          <textarea id="store-q5" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div style="margin-bottom:16px;background:rgba(0,144,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:12px">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">6️⃣ 是否會願意再次回訪？原因是什麼？</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">請說明您的原因</div>
+          <textarea id="store-q6" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div style="margin-bottom:16px;background:rgba(0,144,255,0.04);border:1px solid var(--border2);border-radius:10px;padding:12px">
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">7️⃣ 如果推薦給朋友，您會怎麼介紹這間店？</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">請說明您會如何推薦</div>
+          <textarea id="store-q7" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
+        </div>
         <div style="margin-bottom:16px;background:rgba(148,163,184,0.05);border:1px solid var(--border2);border-radius:10px;padding:12px">
           <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px">8️⃣ 其他建議 <span style="font-size:11px;font-weight:400;color:var(--muted)">（選填）</span></div>
           <textarea id="store-q8" placeholder="✍️ 請填寫回饋內容..." rows="3" style="width:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:13px;color:var(--text);outline:none;box-sizing:border-box;font-family:inherit;resize:vertical"></textarea>
@@ -399,6 +432,7 @@ const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${Stri
 const dateStr  = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 
 let currentUID = null;
+let currentPts = 0;
 
 function showToast(msg, err = false) {
   const t = document.getElementById('toast');
@@ -759,8 +793,10 @@ async function renderTasks() {
     const ytReviews       = (memberData && memberData.ytReviews)       || {};
     const ytRejectReasons = (memberData && memberData.ytRejectReasons) || {};
     const bonus           = (memberData && memberData.bonus)           || 0;
+    currentPts = (memberData && memberData.pts) || 0;
     document.getElementById('global-bonus-bar').style.display = 'flex';
     document.getElementById('global-bonus-amount').textContent = bonus;
+    document.getElementById('global-pts-amount').textContent = currentPts;
     const ytDocs = await fsList('yt_tasks');
     const ytEl = document.getElementById('yt-slots-list');
     ytEl.innerHTML = '';
@@ -1055,6 +1091,19 @@ function showTravelDetail(id) {
         <div style="font-size:20px;font-weight:800;color:#e03f5e">${t.price}</div>
       </div>
       <div style="font-size:28px">✈️</div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(96,165,250,0.06));border:1px solid rgba(167,139,250,0.3);border-radius:10px;padding:14px;margin-top:10px">
+      <div style="font-size:12px;font-weight:700;color:#a78bfa;margin-bottom:10px">🎯 點數折抵試算</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:12px;color:var(--muted)">我的點數</div>
+        <div style="font-size:14px;font-weight:800;color:#a78bfa;font-family:'Orbitron',sans-serif">${currentPts} 點</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:12px;color:var(--muted)">可折抵金額</div>
+        <div style="font-size:14px;font-weight:800;color:#60a5fa">$${currentPts} 元</div>
+      </div>
+      <div style="height:1px;background:rgba(167,139,250,0.2);margin:10px 0"></div>
+      <div style="font-size:11px;color:var(--muted);text-align:center">1點 = $1元折抵・點數折抵請洽助理確認</div>
     </div>
     <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">詳細行程請洽助理，用旅遊專用金圓你的夢！</div>
   `;
