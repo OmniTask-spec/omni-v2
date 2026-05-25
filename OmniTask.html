@@ -152,12 +152,22 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
 
   <div id="global-bonus-bar" style="display:none;background:linear-gradient(135deg,rgba(0,229,160,0.12),rgba(0,144,255,0.08));border-bottom:1px solid rgba(0,229,160,0.25);padding:10px 18px;align-items:center;gap:12px;position:sticky;top:52px;z-index:90;backdrop-filter:blur(12px)">
     <div style="font-size:18px">💰</div>
-    <div style="flex:1">
-      <div style="display:flex;align-items:baseline;gap:6px">
-        <span style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="global-bonus-amount">0</span>
-        <span style="font-size:11px;color:var(--muted)">元｜旅遊專用金</span>
+    <div style="flex:1;display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:6px">
+          <span style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--green),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="global-bonus-amount">0</span>
+          <span style="font-size:11px;color:var(--muted)">元｜旅遊獎金</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:1px">YT任務 + 店家任務 累積</div>
       </div>
-      <div style="font-size:10px;color:var(--muted);margin-top:1px">YT任務 + 店家任務 累積</div>
+      <div style="width:1px;height:28px;background:rgba(100,140,200,0.2);flex-shrink:0"></div>
+      <div>
+        <div style="display:flex;align-items:baseline;gap:6px">
+          <span style="font-family:'Orbitron',sans-serif;font-size:20px;font-weight:900;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent" id="global-pts-amount">0</span>
+          <span style="font-size:11px;color:var(--muted)">點數</span>
+        </div>
+        <div style="font-size:10px;color:var(--muted);margin-top:1px">可折抵旅遊行程</div>
+      </div>
     </div>
     <button id="global-withdraw-btn" style="background:linear-gradient(135deg,#00b894,var(--green));border:none;border-radius:10px;color:#fff;font-size:12px;font-weight:700;padding:8px 14px;cursor:pointer;font-family:inherit;flex-shrink:0;white-space:nowrap">✈️ 兌換旅遊專用金</button>
   </div>
@@ -332,7 +342,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
       <div style="font-size:36px;flex-shrink:0">▶️</div>
       <div>
         <div style="font-size:13px;font-weight:700;color:var(--text)">觀看 YouTube 影片賺取獎勵</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">每部影片上傳截圖與心得，通過審核即入帳 <strong style="color:var(--green)">100元</strong></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">每部影片上傳截圖與心得，通過審核即入帳 <strong style="color:var(--green)">+200元</strong> 旅遊獎金 ＋ <strong style="color:#a78bfa">+200點</strong></div>
       </div>
     </div>
     <div id="yt-slots-list"></div>
@@ -483,7 +493,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
       <div style="font-size:36px;flex-shrink:0">▶️</div>
       <div>
         <div style="font-size:13px;font-weight:700;color:var(--text)">觀看 YouTube 影片賺取獎勵</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">每部影片上傳截圖與心得，通過審核即入帳 <strong style="color:var(--green)">100元</strong></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">每部影片上傳截圖與心得，通過審核即入帳 <strong style="color:var(--green)">+200元</strong> 旅遊獎金 ＋ <strong style="color:#a78bfa">+200點</strong></div>
       </div>
     </div>
     <div id="yt-slots-list"></div>
@@ -877,6 +887,7 @@ async function renderTasks() {
     const bonus           = (memberData && memberData.bonus)           || 0;
     document.getElementById('global-bonus-bar').style.display = 'flex';
     document.getElementById('global-bonus-amount').textContent = bonus;
+    if(document.getElementById('global-pts-amount')) document.getElementById('global-pts-amount').textContent = currentPts;
     const ytDocs = await fsList('yt_tasks');
     const ytEl = document.getElementById('yt-slots-list');
     ytEl.innerHTML = '';
@@ -897,7 +908,7 @@ async function renderTasks() {
       const uploadHTML = canUpload ? `
         <div class="upload-area" id="upload-area-${taskId}">
           <input type="file" accept="image/*" id="file-input-${taskId}">
-          <div class="upload-area-hint"><div class="uicon">📸</div><div>上傳截圖（按讚＋訂閱）</div><div style="font-size:10px;margin-top:3px">送出後等候審核，通過入帳 <strong style="color:var(--green)">100元</strong></div></div>
+          <div class="upload-area-hint"><div class="uicon">📸</div><div>上傳截圖（按讚＋訂閱）</div><div style="font-size:10px;margin-top:3px">送出後等候審核，通過入帳 <strong style="color:var(--green)">+200元</strong> ＋ <strong style="color:#a78bfa">+200點</strong></div></div>
           <img class="upload-preview" id="preview-${taskId}" alt="預覽">
         </div>
         <textarea id="comment-${taskId}" placeholder="✍️ 請輸入觀看心得（至少10字）..." style="width:100%;margin-top:10px;padding:11px 14px;background:rgba(255,255,255,0.85);border:1px solid rgba(0,144,255,0.3);border-radius:9px;color:var(--text);font-size:13px;font-family:inherit;resize:vertical;min-height:80px;outline:none;box-sizing:border-box"></textarea>
