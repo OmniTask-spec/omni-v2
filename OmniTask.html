@@ -497,7 +497,7 @@ body::after{content:'';position:fixed;inset:0;z-index:0;background-image:linear-
         <div style="font-size:11px;color:var(--muted);margin-top:2px">每部影片上傳截圖與心得，通過審核即入帳 <strong style="color:var(--green)">+200元</strong> 旅遊獎金 ＋ <strong style="color:#a78bfa">+200點</strong></div>
       </div>
     </div>
-    <div id="yt-slots-list"></div>
+    <div id="yt-slots-list-2"></div>
   </div>
 </div>
 
@@ -526,6 +526,7 @@ const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${Stri
 const dateStr  = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 
 let currentUID = null;
+let currentPts = 0;
 
 function showToast(msg, err = false) {
   const t = document.getElementById('toast');
@@ -719,6 +720,8 @@ async function renderAiSlots() {
 }
 
 document.querySelector('[data-tab="tab-news"]').addEventListener('click', () => { renderTravelList(); });
+document.querySelector('[data-tab="tab-tasks"]').addEventListener('click', () => { if (currentUID) renderTasks(); });
+document.querySelector('[data-tab="tab-setting"]').addEventListener('click', () => { if (currentUID) renderTasks(); });
 document.querySelector('[data-tab="tab-ai"]').addEventListener('click', () => {
   if (currentUID) { loadAiTaskHistory(); renderAiSlots(); }
 });
@@ -891,7 +894,9 @@ async function renderTasks() {
     if(document.getElementById('global-pts-amount')) document.getElementById('global-pts-amount').textContent = currentPts;
     const ytDocs = await fsList('yt_tasks');
     const ytEl = document.getElementById('yt-slots-list');
+    const ytEl2 = document.getElementById('yt-slots-list-2');
     ytEl.innerHTML = '';
+    if (ytEl2) ytEl2.innerHTML = '';
     if (isSunday()) { ytEl.innerHTML = '<div class="task-card"><div class="task-name" style="color:var(--muted)">📅 今日（週日）無 YT 任務</div></div>'; return; }
     if (!ytDocs.length) { ytEl.innerHTML = '<div class="task-card"><div class="task-name" style="color:var(--muted)">目前沒有 YT 影片任務</div></div>'; return; }
     ytDocs.forEach(({ id: taskId, data: t }, idx) => {
@@ -921,6 +926,7 @@ async function renderTasks() {
         ${t.url?`<a class="yt-watch-btn" href="${t.url}" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:${canUpload?'10px':'0'}">▶ 前往觀看</a>`:''}
         ${uploadHTML}`;
       ytEl.appendChild(section);
+      if (ytEl2) ytEl2.appendChild(section.cloneNode(true));
       if (!canUpload) return;
       const fileInput = document.getElementById(`file-input-${taskId}`);
       const preview   = document.getElementById(`preview-${taskId}`);
@@ -957,6 +963,7 @@ document.getElementById('withdraw-submit-btn').addEventListener('click', async (
   if (!amt || amt <= 0) { showToast('請輸入有效金額', true); return; }
   const memberData = await fsGet(`members/${currentUID}`);
   const bonus = (memberData && memberData.bonus) || 0;
+    currentPts = (memberData && memberData.pts) || 0;
   if (amt > bonus) { showToast(`金額超過旅遊專用金餘額（$${bonus}）`, true); return; }
   const btn = document.getElementById('withdraw-submit-btn');
   btn.textContent = '送出中...'; btn.disabled = true;
@@ -1156,42 +1163,42 @@ function showTravelDetail(id) {
   const t = TRAVEL_DATA.find(x => x.id === id);
   if (!t) return;
   document.getElementById('modal-title').textContent = t.flag + ' ' + t.title;
-  document.getElementById('modal-body').innerHTML = `
-    ${t.img ? `<div style="width:100%;height:200px;border-radius:12px;overflow:hidden;margin-bottom:14px"><img src="${t.img}" alt="${t.country}" style="width:100%;height:100%;object-fit:cover;display:block"></div>` : ''}
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
-      <span class="travel-tag" style="background:rgba(10,171,110,0.1);color:var(--green);border:1px solid rgba(10,171,110,0.25);font-size:12px;padding:5px 12px">📅 出發：${t.date}</span>
-      <span class="travel-tag" style="background:rgba(34,114,232,0.1);color:var(--accent2);border:1px solid rgba(34,114,232,0.2);font-size:12px;padding:5px 12px">🗓 ${t.days}天行程</span>
-    </div>
-    <div style="background:rgba(10,171,110,0.06);border:1px solid rgba(10,171,110,0.2);border-radius:10px;padding:12px 14px;margin-bottom:12px">
-      <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px">✨ 行程亮點</div>
-      <div style="font-size:13px;color:var(--text)">${t.highlight}</div>
-    </div>
-    <div style="font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:16px">${t.desc}</div>
-    <div style="background:linear-gradient(135deg,rgba(224,63,94,0.08),rgba(224,63,94,0.04));border:1px solid rgba(224,63,94,0.2);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <div style="font-size:11px;color:var(--muted)">旅遊專用金可折抵</div>
-        <div style="font-size:20px;font-weight:800;color:#e03f5e">${t.price}</div>
-      </div>
-      <div style="font-size:28px">✈️</div>
-    </div>
-    <div style="background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(96,165,250,0.06));border:1px solid rgba(167,139,250,0.3);border-radius:10px;padding:14px;margin-top:10px">
-      <div style="font-size:12px;font-weight:700;color:#a78bfa;margin-bottom:10px">🎯 點數兌換資訊</div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <div style="font-size:12px;color:var(--muted)">本行程所需點數</div>
-        <div style="font-size:16px;font-weight:800;color:#a78bfa;font-family:'Orbitron',sans-serif">${t.pts ? t.pts.toLocaleString() : '--'} 點</div>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-        <div style="font-size:12px;color:var(--muted)">我的點數</div>
-        <div style="font-size:14px;font-weight:800;color:${currentPts >= (t.pts||0) ? '#10b981' : '#f87171'};font-family:'Orbitron',sans-serif">${currentPts} 點</div>
-      </div>
-      <div style="height:1px;background:rgba(167,139,250,0.2);margin:10px 0"></div>
-      <div style="font-size:12px;font-weight:600;text-align:center;color:${currentPts >= (t.pts||0) ? '#10b981' : '#f87171'}">${currentPts >= (t.pts||0) ? '✅ 點數已足夠兌換此行程！' : ('還差 ' + ((t.pts||0) - currentPts).toLocaleString() + ' 點')}</div>
-      <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px">點數折抵請洽助理確認</div>
-    </div>
-    <div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">詳細行程請洽助理，用旅遊專用金圓你的夢！</div>
-  `;
+  const descParagraphs = t.desc ? t.desc.split('\n\n').map(p => '<p style="margin-bottom:10px">' + p + '</p>').join('') : '';
+  const featuresHtml = t.features ? '<div style="background:rgba(34,114,232,0.05);border:1px solid rgba(34,114,232,0.18);border-radius:10px;padding:12px 14px;margin-bottom:14px"><div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:10px;letter-spacing:1px">🗺️ 行程特色</div><div style="display:flex;flex-direction:column;gap:7px">' + t.features.map(f => '<div style="font-size:12.5px;color:var(--text);line-height:1.5">' + f + '</div>').join('') + '</div></div>' : '';
+  const imgHtml = t.img ? '<div style="width:100%;height:200px;border-radius:12px;overflow:hidden;margin-bottom:14px"><img src="' + t.img + '" alt="' + t.country + '" style="width:100%;height:100%;object-fit:cover;display:block"></div>' : '';
+  const ptsNeeded = t.pts || 0;
+  const hasEnough = currentPts >= ptsNeeded;
+  const ptsStatusColor = hasEnough ? '#10b981' : '#f87171';
+  const ptsStatusText = hasEnough ? '✅ 點數已足夠兌換此行程！' : ('還差 ' + (ptsNeeded - currentPts).toLocaleString() + ' 點');
+  document.getElementById('modal-body').innerHTML =
+    imgHtml +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">' +
+      '<span class="travel-tag" style="background:rgba(10,171,110,0.1);color:var(--green);border:1px solid rgba(10,171,110,0.25);font-size:12px;padding:5px 12px">📅 出發：' + t.date + '</span>' +
+      '<span class="travel-tag" style="background:rgba(34,114,232,0.1);color:var(--accent2);border:1px solid rgba(34,114,232,0.2);font-size:12px;padding:5px 12px">🗓 ' + t.days + '天行程</span>' +
+      '<span class="travel-tag" style="background:rgba(100,140,200,0.1);color:var(--muted);border:1px solid var(--border);font-size:12px;padding:5px 12px">📍 ' + t.country + '</span>' +
+    '</div>' +
+    '<div style="background:rgba(10,171,110,0.06);border:1px solid rgba(10,171,110,0.2);border-radius:10px;padding:12px 14px;margin-bottom:14px">' +
+      '<div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px">✨ 行程亮點</div>' +
+      '<div style="font-size:13px;color:var(--text);font-weight:500">' + t.highlight + '</div>' +
+    '</div>' +
+    '<div style="font-size:13px;color:var(--text);line-height:1.9;margin-bottom:14px;opacity:0.85">' + descParagraphs + '</div>' +
+    featuresHtml +
+    '<div style="background:linear-gradient(135deg,rgba(224,63,94,0.08),rgba(224,63,94,0.04));border:1px solid rgba(224,63,94,0.2);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between">' +
+      '<div><div style="font-size:11px;color:var(--muted)">旅遊專用金可折抵</div><div style="font-size:20px;font-weight:800;color:#e03f5e">' + t.price + '</div></div>' +
+      '<div style="font-size:28px">✈️</div>' +
+    '</div>' +
+    '<div style="background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(96,165,250,0.06));border:1px solid rgba(167,139,250,0.3);border-radius:10px;padding:14px;margin-top:10px">' +
+      '<div style="font-size:12px;font-weight:700;color:#a78bfa;margin-bottom:10px">🎯 點數兌換資訊</div>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-size:12px;color:var(--muted)">本行程所需點數</div><div style="font-size:16px;font-weight:800;color:#a78bfa;font-family:Orbitron,sans-serif">' + (ptsNeeded ? ptsNeeded.toLocaleString() : '--') + ' 點</div></div>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><div style="font-size:12px;color:var(--muted)">我的點數</div><div style="font-size:14px;font-weight:800;color:' + ptsStatusColor + ';font-family:Orbitron,sans-serif">' + currentPts + ' 點</div></div>' +
+      '<div style="height:1px;background:rgba(167,139,250,0.2);margin:10px 0"></div>' +
+      '<div style="font-size:12px;font-weight:600;text-align:center;color:' + ptsStatusColor + '">' + ptsStatusText + '</div>' +
+      '<div style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px">點數折抵請洽助理確認</div>' +
+    '</div>' +
+    '<div style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px">詳細行程請洽助理，用旅遊專用金圓你的夢！</div>';
   document.getElementById('travel-modal').style.display = 'flex';
 }
+
 window.filterTravel = filterTravel;
 window.showTravelDetail = showTravelDetail;
 
