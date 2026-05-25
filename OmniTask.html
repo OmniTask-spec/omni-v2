@@ -1123,7 +1123,7 @@ function renderTravelList() {
     const grad = CAT_GRADIENTS[t.cat] || CAT_GRADIENTS.other;
     const emoji = CAT_EMOJI[t.cat] || '✈️';
     return `
-    <div class="travel-card" onclick="showTravelDetail(${t.id})">
+    <div class="travel-card" data-id="${t.id}" style="cursor:pointer">
       <div style="width:100%;height:160px;border-radius:10px;overflow:hidden;margin-bottom:10px;position:relative;background:${grad}">
         ${t.img ? `<img src="${t.img}" alt="${t.country}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0" onerror="this.style.display='none'">` : ''}
         <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:56px;opacity:0.25;pointer-events:none">${emoji}</div>
@@ -1146,6 +1146,10 @@ function renderTravelList() {
       </div>
     </div>`;
   }).join('');
+  // 事件委派，解決 module scope 問題
+  list.querySelectorAll('.travel-card').forEach(card => {
+    card.addEventListener('click', () => showTravelDetail(parseInt(card.dataset.id)));
+  });
 }
 
 function showTravelDetail(id) {
