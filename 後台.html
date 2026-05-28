@@ -3,343 +3,447 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OmniTask 管理後台</title>
+<title>OmniTask 後台管理系統</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Orbitron:wght@700;900&display=swap');
-
-:root {
-  --bg: #eef2f7;
-  --surface: rgba(255,255,255,0.95);
-  --surface2: rgba(240,245,252,0.97);
-  --border: rgba(100,140,200,0.18);
-  --border2: rgba(80,130,210,0.28);
-  --accent: #2272e8;
-  --accent2: #1a9fd4;
-  --accent3: #1655c0;
-  --glow: rgba(34,114,232,0.25);
-  --green: #0aab6e;
-  --red: #e03f5e;
-  --text: #1a2540;
-  --muted: #7a90b0;
-  --radius: 16px;
+:root{
+  --bg:#0d1117;--surface:rgba(22,27,34,0.95);--surface2:rgba(30,37,46,0.97);
+  --border:rgba(48,54,61,0.8);--border2:rgba(56,68,82,0.9);
+  --accent:#2272e8;--accent2:#1a9fd4;--accent3:#1655c0;
+  --green:#10b981;--red:#f43f5e;--yellow:#f59e0b;--purple:#a78bfa;
+  --text:#e6edf3;--muted:#7d8590;--radius:12px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-body::before { content: ''; position: fixed; inset: 0; z-index: 0; background: radial-gradient(ellipse at 20% 50%, rgba(34,114,232,0.07) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(26,159,212,0.05) 0%, transparent 50%); pointer-events: none; }
-body::after { content: ''; position: fixed; inset: 0; z-index: 0; background-image: linear-gradient(rgba(100,140,200,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(100,140,200,0.06) 1px, transparent 1px); background-size: 40px 40px; pointer-events: none; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 10% 20%,rgba(34,114,232,0.08) 0%,transparent 50%),
+  radial-gradient(ellipse at 90% 80%,rgba(167,139,250,0.06) 0%,transparent 50%);
+  pointer-events:none}
+body::after{content:'';position:fixed;inset:0;z-index:0;
+  background-image:linear-gradient(rgba(48,54,61,0.15) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(48,54,61,0.15) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none}
 
-#auth-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; position: relative; z-index: 1; padding: 20px; }
-.auth-card { background: var(--surface); border: 1px solid var(--border2); border-radius: 22px; padding: 36px 32px; backdrop-filter: blur(20px); box-shadow: 0 0 60px rgba(0,100,255,0.12), 0 8px 32px rgba(30,70,160,0.1); position: relative; overflow: hidden; width: 100%; max-width: 380px; }
-.auth-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent); }
-.auth-card h1 { font-size: 18px; font-weight: 700; color: var(--accent2); margin-bottom: 6px; text-align: center; letter-spacing: 1px; }
-.auth-card > p { color: var(--muted); font-size: 13px; margin-bottom: 26px; text-align: center; }
-.field-label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); text-transform: uppercase; margin-bottom: 7px; margin-top: 16px; }
-.auth-card input { width: 100%; padding: 13px 16px; background: rgba(255,255,255,0.8); border: 1px solid var(--border2); border-radius: 11px; color: var(--text); font-size: 15px; outline: none; font-family: inherit; transition: border-color .2s, box-shadow .2s; }
-.auth-card input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,144,255,0.15); }
-.auth-card input::placeholder { color: rgba(85,119,170,0.7); }
-.auth-login-btn { width: 100%; padding: 14px; margin-top: 22px; background: linear-gradient(135deg, var(--accent3), var(--accent), var(--accent2)); border: none; border-radius: 11px; color: #fff; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; letter-spacing: 1px; box-shadow: 0 4px 24px rgba(0,144,255,0.4); transition: transform .15s, box-shadow .15s; }
-.auth-login-btn:hover { transform: translateY(-1px); }
-.auth-login-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
-#auth-error { color: var(--red); font-size: 13px; margin-top: 12px; text-align: center; display: none; }
+/* Auth */
+#auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;position:relative;z-index:1;padding:20px}
+.auth-card{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:40px 36px;width:100%;max-width:400px;backdrop-filter:blur(20px);box-shadow:0 0 80px rgba(34,114,232,0.12),0 20px 60px rgba(0,0,0,0.5);position:relative;overflow:hidden}
+.auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent)}
+.auth-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+.auth-logo-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:22px}
+.auth-logo-text{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700;color:var(--accent2);letter-spacing:1px}
+.auth-card h1{font-size:22px;font-weight:800;text-align:center;margin-bottom:6px}
+.auth-card p{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.field-label{display:block;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;margin-bottom:7px;margin-top:16px}
+.auth-card input{width:100%;padding:13px 16px;background:rgba(30,37,46,0.8);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-size:15px;outline:none;font-family:inherit;transition:border-color .2s,box-shadow .2s}
+.auth-card input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(34,114,232,0.15)}
+.auth-card input::placeholder{color:rgba(125,133,144,0.6)}
+.login-btn{width:100%;padding:14px;margin-top:24px;background:linear-gradient(135deg,var(--accent3),var(--accent));border:none;border-radius:11px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.5px;box-shadow:0 4px 20px rgba(34,114,232,0.35);transition:transform .15s,box-shadow .15s}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(34,114,232,0.45)}
+.login-btn:disabled{opacity:0.6;cursor:default;transform:none}
+#auth-error{color:var(--red);font-size:13px;margin-top:12px;text-align:center;min-height:20px}
 
-#admin-app { display: none; position: relative; z-index: 1; }
-.top-bar { display: flex; align-items: center; justify-content: space-between; padding: 0 18px; height: 58px; background: rgba(255,255,255,0.95); border-bottom: 1px solid var(--border2); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 100; }
-.top-bar-brand { display: flex; align-items: center; gap: 8px; }
-.top-bar-brand .tb-dot { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 14px; }
-.top-bar-brand h2 { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent3); }
-.top-badge { background: linear-gradient(135deg, var(--accent3), var(--accent)); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-.logout-btn { background: none; border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; font-family: inherit; transition: all .2s; }
-.logout-btn:hover { border-color: var(--red); color: var(--red); }
+/* Main Layout */
+#admin-app{display:none;position:relative;z-index:1;min-height:100vh}
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:56px;background:rgba(13,17,23,0.95);border-bottom:1px solid var(--border2);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100}
+.top-bar-brand{display:flex;align-items:center;gap:10px}
+.top-bar-brand .tb-icon{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:14px}
+.top-bar-brand h2{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;color:var(--accent2);letter-spacing:1px}
+.top-badge{background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;padding:3px 12px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px}
+.logout-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:7px;font-size:11px;cursor:pointer;font-family:inherit;transition:all .2s}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
 
-.admin-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 14px 16px; background: rgba(240,245,252,0.92); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px); }
-.admin-tab-btn { padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all .2s; font-family: inherit; }
-.admin-tab-btn.active { background: linear-gradient(135deg, var(--accent3), var(--accent)); color: #fff; border-color: var(--accent); box-shadow: 0 0 14px rgba(0,144,255,0.35); }
+/* Nav Tabs */
+.nav-tabs{display:flex;background:rgba(22,27,34,0.9);border-bottom:1px solid var(--border);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.nav-tab{flex-shrink:0;padding:12px 20px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;transition:all .2s;font-family:inherit;white-space:nowrap;position:relative}
+.nav-tab.active{color:var(--accent2);border-bottom-color:var(--accent2)}
+.nav-tab .badge{display:inline-block;background:var(--red);color:#fff;border-radius:20px;font-size:9px;font-weight:700;padding:1px 6px;margin-left:5px;vertical-align:middle}
 
-.admin-pane { display: none; padding: 20px 16px; }
-.admin-pane.active { display: block; }
+/* Tab Panes */
+.tab-pane{display:none;padding:20px}
+.tab-pane.active{display:block}
 
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; backdrop-filter: blur(10px); position: relative; overflow: hidden; }
-.card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--border2), transparent); }
-.card h4 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: var(--accent2); letter-spacing: .5px; display: flex; align-items: center; gap: 8px; }
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:16px;margin-bottom:12px;position:relative;overflow:hidden;transition:border-color .2s}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.card.green::before{background:linear-gradient(90deg,var(--green),#34d399)}
+.card.blue::before{background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.card.red::before{background:linear-gradient(90deg,var(--red),#fb7185)}
+.card.yellow::before{background:linear-gradient(90deg,var(--yellow),#fbbf24)}
+.card.purple::before{background:linear-gradient(90deg,var(--purple),#c4b5fd)}
+.card:hover{border-color:rgba(56,68,82,1)}
 
-label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; }
-input[type=text], input[type=password], textarea { width: 100%; padding: 11px 14px; background: rgba(248,251,255,0.9); border: 1px solid var(--border2); border-radius: 9px; color: var(--text); font-size: 14px; outline: none; margin-bottom: 12px; font-family: inherit; transition: border-color .2s; }
-input:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,144,255,0.12); }
-input::placeholder, textarea::placeholder { color: rgba(85,119,170,0.6); }
-textarea { resize: vertical; min-height: 100px; }
+/* Stats Grid */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:16px;text-align:center;position:relative;overflow:hidden}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.stat-num{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:900;line-height:1.1;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.stat-label{font-size:10px;color:var(--muted);letter-spacing:.5px}
 
-.btn { padding: 11px 20px; border-radius: 9px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; transition: transform .15s; font-family: inherit; }
-.btn:hover { transform: translateY(-1px); }
-.btn:disabled { opacity: 0.6; cursor: default; transform: none; }
-.btn-primary { background: linear-gradient(135deg, var(--accent3), var(--accent), var(--accent2)); color: #fff; box-shadow: 0 4px 16px rgba(0,144,255,0.35); }
-.btn-green { background: linear-gradient(135deg, #00b894, var(--green)); color: #fff; box-shadow: 0 4px 16px rgba(0,229,160,0.3); }
-.btn-red { background: var(--red); color: #fff; }
-.btn-sm { padding: 6px 12px; font-size: 11px; }
+/* Review Items */
+.review-item{background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:14px;margin-bottom:10px;transition:border-color .2s}
+.review-item:hover{border-color:var(--border2)}
+.review-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.review-uid{font-size:13px;font-weight:700;color:var(--accent2)}
+.review-date{font-size:11px;color:var(--muted);margin-top:2px}
+.review-task{font-size:12px;color:var(--text);opacity:.8;margin-top:2px}
+.status-badge{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.status-badge.pending{background:rgba(245,158,11,0.15);color:var(--yellow);border:1px solid rgba(245,158,11,0.35)}
+.status-badge.approved{background:rgba(16,185,129,0.12);color:var(--green);border:1px solid rgba(16,185,129,0.3)}
+.status-badge.rejected{background:rgba(244,63,94,0.12);color:var(--red);border:1px solid rgba(244,63,94,0.3)}
 
-.member-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(0,100,255,0.08); }
-.member-row:last-child { border-bottom: none; }
-.member-uid { font-weight: 700; font-size: 14px; color: var(--accent2); }
-.member-info { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.review-img{width:100%;max-height:200px;object-fit:contain;border-radius:8px;background:rgba(0,0,0,0.3);margin-bottom:10px;cursor:zoom-in;display:block}
+.review-comment{background:rgba(22,27,34,0.8);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--text);line-height:1.7;margin-bottom:10px;opacity:.85}
+.review-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .15s;white-space:nowrap}
+.btn:disabled{opacity:0.5;cursor:default}
+.btn-approve{background:linear-gradient(135deg,#059669,var(--green));color:#fff}
+.btn-reject{background:linear-gradient(135deg,#be123c,var(--red));color:#fff}
+.btn-approve:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 12px rgba(16,185,129,0.3)}
+.btn-reject:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 12px rgba(244,63,94,0.3)}
+.btn-secondary{background:rgba(56,68,82,0.6);color:var(--muted);border:1px solid var(--border)}
+.btn-secondary:hover:not(:disabled){background:rgba(56,68,82,0.9);color:var(--text)}
+.btn-primary{background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff}
+.btn-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(34,114,232,0.3)}
+.btn-warning{background:linear-gradient(135deg,#b45309,var(--yellow));color:#fff}
+.btn-bulk{background:linear-gradient(135deg,#065f46,var(--green));color:#fff;padding:9px 18px;border-radius:9px;font-size:13px}
+.btn-bulk:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(16,185,129,0.35)}
 
-.result-box { background: rgba(0,229,160,0.06); border: 1px solid rgba(0,229,160,0.2); border-radius: 9px; padding: 12px 14px; font-size: 13px; color: var(--green); margin-top: 10px; display: none; white-space: pre-wrap; line-height: 1.8; }
+.reject-input{width:100%;padding:8px 12px;background:rgba(22,27,34,0.8);border:1px solid rgba(244,63,94,0.4);border-radius:7px;color:var(--text);font-size:12px;font-family:inherit;outline:none;margin-top:6px}
+.reject-input::placeholder{color:rgba(125,133,144,0.6)}
 
-.section-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 2px; margin: 22px 0 10px; display: flex; align-items: center; gap: 8px; }
-.section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--border2), transparent); }
+/* Bulk approve bar */
+.bulk-bar{background:linear-gradient(135deg,rgba(5,150,105,0.15),rgba(16,185,129,0.08));border:1px solid rgba(16,185,129,0.3);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bulk-bar-info{flex:1;min-width:160px}
+.bulk-bar-info .title{font-size:13px;font-weight:700;color:var(--green);margin-bottom:3px}
+.bulk-bar-info .desc{font-size:11px;color:var(--muted)}
+.bulk-checkbox{width:16px;height:16px;accent-color:var(--green);cursor:pointer}
 
-.quick-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.quick-item { padding: 13px 10px; background: rgba(248,251,255,0.9); border: 1px solid var(--border2); border-radius: 11px; cursor: pointer; text-align: center; font-size: 13px; font-weight: 600; font-family: inherit; transition: all .2s; color: var(--muted); }
-.quick-item:hover { border-color: var(--accent); color: var(--accent2); }
-.quick-item.selected { border-color: var(--accent); color: var(--accent2); background: rgba(0,144,255,0.1); box-shadow: 0 0 12px rgba(0,144,255,0.2); }
+/* Select all row */
+.select-all-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(34,114,232,0.06);border:1px solid rgba(34,114,232,0.2);border-radius:9px;margin-bottom:10px}
+.select-all-row label{font-size:12px;color:var(--accent2);font-weight:600;cursor:pointer}
 
-.toast { position: fixed; bottom: 28px; left: 50%; background: linear-gradient(135deg, #00b894, var(--green)); color: #fff; padding: 12px 26px; border-radius: 30px; font-weight: 700; font-size: 14px; opacity: 0; transition: opacity .3s, transform .3s; z-index: 9999; pointer-events: none; box-shadow: 0 4px 20px rgba(0,229,160,0.4); transform: translateX(-50%) translateY(10px); }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.error { background: linear-gradient(135deg, #c0392b, var(--red)); color: #fff; }
+/* Member table */
+.table-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border2)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead{background:rgba(22,27,34,0.9)}
+th{padding:10px 14px;text-align:left;color:var(--muted);font-weight:600;letter-spacing:.5px;font-size:11px;white-space:nowrap;border-bottom:1px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(56,68,82,0.2)}
 
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+/* Section Title */
+.section-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
 
-.member-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.member-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 620px; }
-.member-table th { padding: 10px 10px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border2); white-space: nowrap; }
-.member-table td { padding: 11px 10px; border-bottom: 1px solid rgba(0,100,255,0.07); vertical-align: middle; }
-.member-table tr:last-child td { border-bottom: none; }
-.member-table tr:hover td { background: rgba(0,100,255,0.04); }
-.mtd-uid { font-weight: 700; font-size: 14px; color: var(--accent2); white-space: nowrap; }
-.mtd-bonus { font-weight: 700; color: var(--green); white-space: nowrap; }
-.status-tag { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: opacity .15s; }
-.status-tag:hover { opacity: .8; }
-.st-in   { background: rgba(0,229,160,0.12); color: var(--green); border: 1px solid rgba(0,229,160,0.3); }
-.st-out  { background: rgba(255,95,126,0.12); color: var(--red); border: 1px solid rgba(255,95,126,0.3); }
-.st-lost { background: rgba(255,200,0,0.12); color: #ffc800; border: 1px solid rgba(255,200,0,0.3); }
-.st-paid { background: rgba(0,229,160,0.12); color: var(--green); border: 1px solid rgba(0,229,160,0.3); }
-.st-wait { background: rgba(255,200,0,0.12); color: #ffc800; border: 1px solid rgba(255,200,0,0.3); }
-.st-none { background: rgba(85,119,170,0.1); color: var(--muted); border: 1px solid var(--border); }
-.note-input { background: transparent; border: none; border-bottom: 1px dashed var(--border2); color: var(--text); font-size: 12px; font-family: inherit; outline: none; width: 90px; padding: 2px 4px; transition: border-color .2s; }
-.note-input:focus { border-bottom-color: var(--accent); }
-.note-input::placeholder { color: var(--muted); }
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 60px rgba(0,0,0,0.6)}
+.modal-title{font-size:15px;font-weight:800;margin-bottom:16px;color:var(--text);display:flex;justify-content:space-between;align-items:center}
+.modal-close{background:rgba(56,68,82,0.5);border:none;color:var(--muted);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
 
-.review-card { background: rgba(248,251,255,0.9); border: 1px solid var(--border2); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
-.review-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; gap: 6px; }
-.review-uid { font-size: 15px; font-weight: 800; color: var(--accent2); }
-.review-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.review-img { width: 100%; max-height: 220px; object-fit: contain; border-radius: 10px; background: rgba(0,0,0,0.3); margin-bottom: 12px; display: block; }
-.review-actions { display: flex; gap: 8px; }
-.review-actions .btn { flex: 1; padding: 10px; font-size: 13px; }
-.review-status { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-.review-status.pending  { background: rgba(255,200,0,0.12); color: #ffc800; border: 1px solid rgba(255,200,0,0.3); }
-.review-status.approved { background: rgba(0,229,160,0.12); color: var(--green); border: 1px solid rgba(0,229,160,0.3); }
-.review-status.rejected { background: rgba(255,95,126,0.12); color: var(--red); border: 1px solid rgba(255,95,126,0.3); }
+/* Image lightbox */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:99999;display:none;align-items:center;justify-content:center;cursor:zoom-out;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:100%;max-height:90vh;border-radius:8px;object-fit:contain}
+
+/* Form */
+.form-group{margin-bottom:14px}
+.form-label{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:block}
+.form-input{width:100%;padding:10px 14px;background:rgba(30,37,46,0.8);border:1px solid var(--border2);border-radius:9px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--accent)}
+.form-input::placeholder{color:rgba(125,133,144,0.5)}
+textarea.form-input{resize:vertical;min-height:80px}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);background:linear-gradient(135deg,#059669,var(--green));color:#fff;padding:12px 28px;border-radius:30px;font-weight:700;font-size:13px;opacity:0;transition:opacity .3s,transform .3s;z-index:99998;pointer-events:none;box-shadow:0 4px 24px rgba(16,185,129,0.4);white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.error{background:linear-gradient(135deg,#be123c,var(--red));box-shadow:0 4px 24px rgba(244,63,94,0.4)}
+
+/* Loading */
+.loading{text-align:center;padding:40px;color:var(--muted);font-size:13px}
+.loading::after{content:'';display:block;width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent2);border-radius:50%;animation:spin .8s linear infinite;margin:12px auto 0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Filter bar */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.filter-chip{padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border2);background:var(--surface);color:var(--muted);transition:all .2s;font-family:inherit}
+.filter-chip.active{background:linear-gradient(135deg,var(--accent3),var(--accent));color:#fff;border-color:transparent}
+
+/* Points input */
+.inline-input{padding:5px 10px;background:rgba(30,37,46,0.8);border:1px solid var(--border2);border-radius:7px;color:var(--text);font-size:12px;font-family:inherit;outline:none;width:90px}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* Store review */
+.qa-item{background:rgba(22,27,34,0.6);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:6px}
+.qa-q{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.qa-a{font-size:12px;color:var(--text);line-height:1.6}
+
+/* Announcement */
+.ann-active{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:12px 14px;margin-bottom:8px}
 </style>
 </head>
 <body>
 
+<!-- Auth -->
 <div id="auth-screen">
   <div class="auth-card">
-    <h1>⚙️ 管理員登入</h1>
-    <p>請輸入管理員密碼</p>
-    <span class="field-label">密碼</span>
-    <input id="pass-input" type="password" placeholder="請輸入密碼">
-    <button class="auth-login-btn" id="login-btn">登 入</button>
+    <div class="auth-logo">
+      <div class="auth-logo-icon">⚡</div>
+      <div>
+        <div class="auth-logo-text">OmniTask Admin</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:1px">後台管理系統</div>
+      </div>
+    </div>
+    <h1>管理員登入</h1>
+    <p>請輸入管理員憑證</p>
+    <span class="field-label">管理員帳號</span>
+    <input id="admin-uid" type="text" placeholder="admin" autocomplete="off">
+    <span class="field-label">管理員密碼</span>
+    <input id="admin-pw" type="password" placeholder="請輸入密碼">
+    <button class="login-btn" id="login-btn">進入後台 →</button>
     <div id="auth-error"></div>
   </div>
 </div>
 
+<!-- Admin App -->
 <div id="admin-app">
   <div class="top-bar">
     <div class="top-bar-brand">
-      <div class="tb-dot">⚙️</div>
-      <h2>管理後台</h2>
+      <div class="tb-icon">⚡</div>
+      <h2>OmniTask Admin</h2>
     </div>
-    <span class="top-badge">ADMIN</span>
-    <button class="logout-btn" id="admin-logout-btn">登出</button>
-  </div>
-  <div class="admin-tabs">
-    <button class="admin-tab-btn active" data-pane="pane-quick">⚡ 快速登記</button>
-    <button class="admin-tab-btn" data-pane="pane-withdraw">💸 領款申請 <span id="withdraw-badge" style="display:none;background:#ffc800;color:#000;border-radius:20px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
-    <button class="admin-tab-btn" data-pane="pane-review">🔍 截圖審核 <span id="review-badge" style="display:none;background:#ff5f7e;color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
-    <button class="admin-tab-btn" data-pane="pane-store-review">🏪 店家審核 <span id="store-badge" style="display:none;background:#ff5f7e;color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
-    <button class="admin-tab-btn" data-pane="pane-ai-review">🤖 AI任務審核 <span id="ai-badge" style="display:none;background:#7c3aed;color:#fff;border-radius:20px;padding:1px 7px;font-size:10px;margin-left:4px">0</span></button>
-    <button class="admin-tab-btn" data-pane="pane-members">👥 會員</button>
-    <button class="admin-tab-btn" data-pane="pane-tasks">📋 任務</button>
-    <button class="admin-tab-btn" data-pane="pane-stats">📊 統計</button>
-    <button class="admin-tab-btn" data-pane="pane-settings">🔒 設定</button>
+    <span class="top-badge">管理員</span>
+    <button class="logout-btn" id="logout-btn">登出</button>
   </div>
 
-  <div class="admin-pane active" id="pane-quick">
-    <div class="card">
-      <h4>⚡ 快速幫會員登記</h4>
-      <label>會員編號</label>
-      <input type="text" id="quick-uid" placeholder="例：12345 或 U12345" autocomplete="off">
-      <div class="section-title" style="margin:0 0 10px">YT 時段</div>
-      <div class="quick-grid" id="quick-yt-grid"></div>
-      <button class="btn btn-green" style="width:100%;margin-top:18px" id="quick-register-btn">✅ 確認登記</button>
-    </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-tab="tab-dashboard">📊 總覽</button>
+    <button class="nav-tab" data-tab="tab-yt">▶️ YT審核 <span class="badge" id="badge-yt">0</span></button>
+    <button class="nav-tab" data-tab="tab-ai">🤖 AI審核 <span class="badge" id="badge-ai">0</span></button>
+    <button class="nav-tab" data-tab="tab-store">🏪 店家審核 <span class="badge" id="badge-store">0</span></button>
+    <button class="nav-tab" data-tab="tab-withdraw">✈️ 提領申請 <span class="badge" id="badge-wd">0</span></button>
+    <button class="nav-tab" data-tab="tab-members">👥 會員管理</button>
+    <button class="nav-tab" data-tab="tab-yttasks">📋 YT任務設定</button>
+    <button class="nav-tab" data-tab="tab-aiconfig">⚙️ AI時段設定</button>
+    <button class="nav-tab" data-tab="tab-pts">💎 點數管理</button>
   </div>
 
-  <div class="admin-pane" id="pane-members">
-    <div class="card">
-      <h4>➕ 新增會員</h4>
-      <label>負責員工（選擇帶入此客戶的員工）</label>
-      <div style="display:flex;gap:8px;margin-bottom:10px">
-        <select id="customer-select" style="flex:1;padding:10px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:9px;color:var(--text);font-size:13px;font-family:inherit">
-          <option value="">── 選擇員工 ──</option>
-        </select>
-        <button class="btn btn-primary" id="manage-customers-btn" style="white-space:nowrap;font-size:12px">✏️ 管理員工</button>
+  <!-- Dashboard -->
+  <div class="tab-pane active" id="tab-dashboard">
+    <div id="stats-grid" class="stats-grid"></div>
+    <div class="section-title">📋 最近待審核項目</div>
+    <div id="recent-pending"></div>
+  </div>
+
+  <!-- YT 審核 -->
+  <div class="tab-pane" id="tab-yt">
+    <div class="filter-bar">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">篩選：</span>
+      <button class="filter-chip active" data-filter="pending" onclick="setFilter('yt','pending',this)">⏳ 待審核</button>
+      <button class="filter-chip" data-filter="approved" onclick="setFilter('yt','approved',this)">✅ 已通過</button>
+      <button class="filter-chip" data-filter="rejected" onclick="setFilter('yt','rejected',this)">❌ 已拒絕</button>
+      <button class="filter-chip" data-filter="all" onclick="setFilter('yt','all',this)">全部</button>
+    </div>
+    <!-- Bulk approve bar for YT -->
+    <div class="bulk-bar" id="yt-bulk-bar" style="display:none">
+      <div class="bulk-bar-info">
+        <div class="title">🚀 批量一鍵通過</div>
+        <div class="desc">勾選項目後可一次全部審核通過，每筆入帳 <strong style="color:var(--green)">+200元旅遊獎金 ＋ +200點</strong></div>
       </div>
-      <label>會員編號（如 U12345）</label>
-      <input type="text" id="new-uid" placeholder="U12345" autocomplete="off">
-      <label>密碼（預設 123456）</label>
-      <input type="text" id="new-pw" placeholder="123456" autocomplete="off">
-      <button class="btn btn-primary" id="add-member-btn">新增會員</button>
-
-      <div id="customer-panel" style="display:none;margin-top:16px;background:rgba(0,144,255,0.05);border:1px solid var(--border2);border-radius:12px;padding:14px">
-        <div style="font-weight:700;color:var(--accent2);margin-bottom:10px">👤 員工名單管理</div>
-        <div style="display:flex;gap:8px;margin-bottom:10px">
-          <input type="text" id="new-customer-name" placeholder="輸入員工名稱" autocomplete="off" style="flex:1">
-          <button class="btn btn-green" id="add-customer-btn" style="white-space:nowrap">新增</button>
-        </div>
-        <div id="customer-list-admin" style="max-height:200px;overflow-y:auto"></div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span id="yt-selected-count" style="font-size:12px;font-weight:700;color:var(--green)">已選 0 筆</span>
+        <button class="btn btn-bulk" id="yt-bulk-approve-btn" onclick="bulkApproveYT()">✅ 一鍵通過選取項目</button>
+        <button class="btn btn-secondary" onclick="clearSelectionYT()">取消選取</button>
       </div>
     </div>
-    <div class="card">
-      <h4>📥 批次匯入</h4>
-      <label>每行一個5碼數字（不含U）</label>
-      <textarea id="batch-input" placeholder="12345&#10;67890&#10;11111"></textarea>
-      <button class="btn btn-primary" id="batch-import-btn">開始匯入</button>
-      <div class="result-box" id="batch-result"></div>
+    <div class="select-all-row" id="yt-select-all-row" style="display:none">
+      <input type="checkbox" class="bulk-checkbox" id="yt-select-all" onchange="toggleSelectAllYT(this)">
+      <label for="yt-select-all">全選此頁待審核項目</label>
     </div>
-    <div class="card">
-      <h4>👥 會員管理</h4>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;align-items:center">
-        <select id="filter-staff" style="padding:7px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">
-          <option value="">👤 全部員工</option>
-        </select>
-        <select id="filter-group" style="padding:7px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">
-          <option value="">🏠 全部群組狀態</option>
-          <option value="in">在群</option>
-          <option value="out">已退群</option>
-          <option value="lost">失聯</option>
-        </select>
-        <select id="filter-pay" style="padding:7px 12px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer">
-          <option value="">💰 全部領款狀態</option>
-          <option value="wait">待領款</option>
-          <option value="paid">已領款</option>
-          <option value="none">未領款</option>
-        </select>
-        <span id="filter-count" style="font-size:12px;color:var(--muted);margin-left:4px"></span>
-        <button id="filter-reset-btn" class="btn btn-sm" style="margin-left:auto;font-size:12px;padding:6px 12px">重置篩選</button>
-      </div>
+    <div id="yt-list"><div class="loading">載入中</div></div>
+  </div>
 
-      <div class="member-table-wrap">
-        <table class="member-table">
-          <thead>
-            <tr>
-              <th>編號</th>
-              <th>群組狀態</th>
-              <th>任務名稱</th>
-              <th>任務狀態</th>
-              <th>已領金額</th>
-              <th>領款狀態</th>
-              <th>簽到天數</th>
-              <th>連續天數</th>
-              <th>密碼</th>
-              <th>備註</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="admin-member-list"></tbody>
-        </table>
+  <!-- AI 審核 -->
+  <div class="tab-pane" id="tab-ai">
+    <div class="filter-bar">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">篩選：</span>
+      <button class="filter-chip active" data-filter="pending" onclick="setFilter('ai','pending',this)">⏳ 待審核</button>
+      <button class="filter-chip" data-filter="approved" onclick="setFilter('ai','approved',this)">✅ 已通過</button>
+      <button class="filter-chip" data-filter="rejected" onclick="setFilter('ai','rejected',this)">❌ 已拒絕</button>
+      <button class="filter-chip" data-filter="all" onclick="setFilter('ai','all',this)">全部</button>
+    </div>
+    <!-- Bulk approve bar for AI -->
+    <div class="bulk-bar" id="ai-bulk-bar" style="display:none">
+      <div class="bulk-bar-info">
+        <div class="title">🚀 批量一鍵通過</div>
+        <div class="desc">勾選項目後可一次全部審核通過，每筆入帳 <strong style="color:var(--green)">+180元起旅遊獎金 ＋ +250點</strong></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <span id="ai-selected-count" style="font-size:12px;font-weight:700;color:var(--green)">已選 0 筆</span>
+        <button class="btn btn-bulk" id="ai-bulk-approve-btn" onclick="bulkApproveAI()">✅ 一鍵通過選取項目</button>
+        <button class="btn btn-secondary" onclick="clearSelectionAI()">取消選取</button>
       </div>
     </div>
+    <div class="select-all-row" id="ai-select-all-row" style="display:none">
+      <input type="checkbox" class="bulk-checkbox" id="ai-select-all" onchange="toggleSelectAllAI(this)">
+      <label for="ai-select-all">全選此頁待審核項目</label>
+    </div>
+    <div id="ai-list"><div class="loading">載入中</div></div>
   </div>
 
-  <div class="admin-pane" id="pane-tasks">
-    <div class="card">
-      <h4>▶️ 新增YT影片任務</h4>
-      <label>YT影片一 名稱</label>
-      <input type="text" id="yt-name1" placeholder="例：YT影片一" autocomplete="off">
-      <label>YT影片一 連結</label>
-      <input type="text" id="yt-url1" placeholder="https://youtu.be/..." autocomplete="off">
-      <label>YT影片二 名稱</label>
-      <input type="text" id="yt-name2" placeholder="例：YT影片二" autocomplete="off">
-      <label>YT影片二 連結</label>
-      <input type="text" id="yt-url2" placeholder="https://youtu.be/..." autocomplete="off">
-      <button class="btn btn-primary" style="width:100%;margin-top:4px" id="add-yt-btn">新增YT影片任務</button>
+  <!-- 店家審核 -->
+  <div class="tab-pane" id="tab-store">
+    <div class="filter-bar">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">篩選：</span>
+      <button class="filter-chip active" data-filter="pending" onclick="setFilter('store','pending',this)">⏳ 待審核</button>
+      <button class="filter-chip" data-filter="approved" onclick="setFilter('store','approved',this)">✅ 已通過</button>
+      <button class="filter-chip" data-filter="rejected" onclick="setFilter('store','rejected',this)">❌ 已拒絕</button>
+      <button class="filter-chip" data-filter="all" onclick="setFilter('store','all',this)">全部</button>
     </div>
-    <div class="card">
-      <h4>📋 現有YT影片任務</h4>
-      <div id="admin-yt-task-list"></div>
-    </div>
-    <div class="card">
-      <h4>🤖 AI數據任務 今日時段設定</h4>
-      <p style="font-size:12px;color:var(--muted);margin-bottom:14px">設定後前台會員即可看到今日時段並上傳截圖，清空即代表該時段尚未公告。</p>
-      <label>時段一 名稱／說明</label>
-      <input type="text" id="ai-slot1-input" placeholder="例：早場 09:00 — 數據任務A" autocomplete="off">
-      <label>時段二 名稱／說明</label>
-      <input type="text" id="ai-slot2-input" placeholder="例：晚場 21:00 — 數據任務B" autocomplete="off">
-      <button class="btn btn-primary" style="width:100%;margin-top:8px" id="save-ai-slots-btn">💾 儲存今日時段</button>
-      <div id="ai-slot-status" style="font-size:12px;color:var(--muted);text-align:center;margin-top:8px"></div>
-    </div>
+    <div id="store-list"><div class="loading">載入中</div></div>
   </div>
 
-  <div class="admin-pane" id="pane-stats">
-    <div class="card">
-      <h4>📊 會員簽到統計排行</h4>
-      <div id="stats-list"></div>
+  <!-- 提領申請 -->
+  <div class="tab-pane" id="tab-withdraw">
+    <div class="filter-bar">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">篩選：</span>
+      <button class="filter-chip active" data-filter="pending" onclick="setFilter('wd','pending',this)">⏳ 待確認</button>
+      <button class="filter-chip" data-filter="approved" onclick="setFilter('wd','approved',this)">✅ 已確認</button>
+      <button class="filter-chip" data-filter="all" onclick="setFilter('wd','all',this)">全部</button>
     </div>
+    <div id="wd-list"><div class="loading">載入中</div></div>
   </div>
 
-  <div class="admin-pane" id="pane-withdraw">
-    <div class="card">
-      <h4>💸 領款申請清單</h4>
-      <div id="withdraw-list"><div style="color:var(--muted);text-align:center;padding:20px">載入中...</div></div>
+  <!-- 會員管理 -->
+  <div class="tab-pane" id="tab-members">
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="openAddMemberModal()">➕ 新增會員</button>
+      <button class="btn btn-secondary" onclick="loadMembers()">🔄 重新整理</button>
     </div>
+    <div id="members-list"><div class="loading">載入中</div></div>
   </div>
 
-  <div class="admin-pane" id="pane-review">
-    <div class="card">
-      <h4>🔍 待審核截圖</h4>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-        <button id="approve-all-review-btn" class="btn btn-green" style="font-size:13px;padding:8px 20px">✅ 一鍵全部通過</button>
+  <!-- YT 任務設定 -->
+  <div class="tab-pane" id="tab-yttasks">
+    <div style="margin-bottom:16px;display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="openAddYTTaskModal()">➕ 新增YT任務</button>
+      <button class="btn btn-secondary" onclick="loadYTTasks()">🔄 重新整理</button>
+    </div>
+    <div id="yttasks-list"><div class="loading">載入中</div></div>
+  </div>
+
+  <!-- AI 時段設定 -->
+  <div class="tab-pane" id="tab-aiconfig">
+    <div class="card blue" style="max-width:500px">
+      <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">🤖 今日 AI 任務時段設定</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:16px">設定後前台會員即可看到任務內容並上傳截圖</div>
+      <div class="form-group">
+        <label class="form-label">時段一任務名稱</label>
+        <input class="form-input" id="ai-slot1" placeholder="例：推流任務 10:00-12:00">
       </div>
-      <div id="review-loading" style="color:var(--muted);text-align:center;padding:20px">載入中...</div>
-      <div id="review-list"></div>
+      <div class="form-group">
+        <label class="form-label">時段二任務名稱</label>
+        <input class="form-input" id="ai-slot2" placeholder="例：推流任務 14:00-16:00">
+      </div>
+      <button class="btn btn-primary" onclick="saveAIConfig()" style="width:100%;padding:12px">💾 儲存今日時段設定</button>
     </div>
+    <div class="section-title">📅 已設定的時段</div>
+    <div id="ai-config-display"></div>
   </div>
 
-  <div class="admin-pane" id="pane-store-review">
-    <div class="card">
-      <h4>🏪 店家任務審核</h4>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-        <button id="approve-all-store-btn" class="btn btn-green" style="font-size:13px;padding:8px 20px">✅ 一鍵全部通過</button>
+  <!-- 點數管理 -->
+  <div class="tab-pane" id="tab-pts">
+    <div class="card blue" style="max-width:500px;margin-bottom:16px">
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px">💎 手動調整點數</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:14px">直接加減會員點數（用於補點或修正）</div>
+      <div class="form-group">
+        <label class="form-label">會員UID</label>
+        <input class="form-input" id="pts-uid" placeholder="例：U001">
       </div>
-      <div id="store-review-loading" style="color:var(--muted);text-align:center;padding:20px">載入中...</div>
-      <div id="store-review-list"></div>
-    </div>
-  </div>
-  <div class="admin-pane" id="pane-ai-review">
-    <div class="card">
-      <h4>🤖 AI任務審核</h4>
-      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
-        <button id="approve-all-ai-btn" class="btn btn-green" style="font-size:13px;padding:8px 20px">✅ 一鍵全部通過</button>
+      <div class="form-group">
+        <label class="form-label">調整點數（正數加點，負數扣點）</label>
+        <input class="form-input" id="pts-amount" type="number" placeholder="例：500 或 -100">
       </div>
-      <div id="ai-review-loading" style="color:var(--muted);text-align:center;padding:20px">載入中...</div>
-      <div id="ai-review-list"></div>
+      <div class="form-group">
+        <label class="form-label">備註說明</label>
+        <input class="form-input" id="pts-note" placeholder="例：補發YT任務點數">
+      </div>
+      <button class="btn btn-primary" onclick="adjustPts()" style="width:100%;padding:12px">確認調整點數</button>
     </div>
+    <div class="section-title">📊 會員點數總覽</div>
+    <div id="pts-list"><div class="loading">載入中</div></div>
   </div>
+</div>
 
-  <div class="admin-pane" id="pane-settings">
-    <div class="card">
-      <h4>🔒 修改管理員密碼</h4>
-      <p style="color:var(--muted);font-size:12px;margin-bottom:14px">修改後需重新上傳檔案才會生效</p>
-      <label>新密碼（至少4位）</label>
-      <input type="password" id="new-pass" placeholder="新密碼" autocomplete="off">
-      <label>確認新密碼</label>
-      <input type="password" id="new-pass2" placeholder="再輸入一次" autocomplete="off">
-      <button class="btn btn-primary" id="change-pass-btn" style="width:100%">顯示新密碼</button>
-      <div class="result-box" id="pass-result"></div>
+<!-- Image Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- Reject Modal -->
+<div class="modal-overlay" id="reject-modal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span>❌ 填寫拒絕原因</span>
+      <button class="modal-close" onclick="closeRejectModal()">✕</button>
     </div>
+    <div class="form-group">
+      <label class="form-label">拒絕原因（將顯示給會員）</label>
+      <textarea class="form-input" id="reject-reason-input" placeholder="例：截圖不清楚，請重新上傳清晰截圖"></textarea>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px">
+      <button class="btn btn-reject" style="flex:1;padding:11px" id="reject-confirm-btn">確認拒絕</button>
+      <button class="btn btn-secondary" onclick="closeRejectModal()" style="flex:1;padding:11px">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Member Modal -->
+<div class="modal-overlay" id="add-member-modal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span>➕ 新增會員</span>
+      <button class="modal-close" onclick="document.getElementById('add-member-modal').classList.remove('open')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">會員UID（例：U001）</label>
+      <input class="form-input" id="new-uid" placeholder="U001">
+    </div>
+    <div class="form-group">
+      <label class="form-label">初始密碼</label>
+      <input class="form-input" id="new-pw" placeholder="請設定初始密碼">
+    </div>
+    <div class="form-group">
+      <label class="form-label">姓名（選填）</label>
+      <input class="form-input" id="new-name" placeholder="會員姓名">
+    </div>
+    <button class="btn btn-primary" onclick="addMember()" style="width:100%;padding:12px;margin-top:4px">新增會員</button>
+    <div id="add-member-error" style="color:var(--red);font-size:12px;margin-top:10px;display:none"></div>
+  </div>
+</div>
+
+<!-- Add YT Task Modal -->
+<div class="modal-overlay" id="add-yt-modal">
+  <div class="modal-box">
+    <div class="modal-title">
+      <span>➕ 新增 YT 任務</span>
+      <button class="modal-close" onclick="document.getElementById('add-yt-modal').classList.remove('open')">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">影片名稱</label>
+      <input class="form-input" id="yt-task-name" placeholder="影片標題">
+    </div>
+    <div class="form-group">
+      <label class="form-label">YouTube 連結</label>
+      <input class="form-input" id="yt-task-url" placeholder="https://youtube.com/watch?v=...">
+    </div>
+    <button class="btn btn-primary" onclick="addYTTask()" style="width:100%;padding:12px;margin-top:4px">新增任務</button>
+    <div id="add-yt-error" style="color:var(--red);font-size:12px;margin-top:10px;display:none"></div>
   </div>
 </div>
 
@@ -347,41 +451,38 @@ textarea { resize: vertical; min-height: 100px; }
 
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+import { getFirestore, doc, getDoc, setDoc, collection, getDocs, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDtwyvkMDRJtZQg05h1Ik_OFVT0P9wKJhc",
-  authDomain: "omni-v2-140e1.firebaseapp.com",
-  projectId: "omni-v2-140e1",
-  storageBucket: "omni-v2-140e1.firebasestorage.app",
-  messagingSenderId: "17704272434",
-  appId: "1:17704272434:web:74aff6da84f4cacd39722b",
+  apiKey:"AIzaSyDtwyvkMDRJtZQg05h1Ik_OFVT0P9wKJhc",
+  authDomain:"omni-v2-140e1.firebaseapp.com",
+  projectId:"omni-v2-140e1",
+  storageBucket:"omni-v2-140e1.firebasestorage.app",
+  messagingSenderId:"17704272434",
+  appId:"1:17704272434:web:74aff6da84f4cacd39722b"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-const ADMIN_PASS = '51686069';
-const isSunday = () => new Date().getDay() === 0;
-const todayStr = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
-const dateStr  = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const ADMIN_ID = '51686069';
+const ADMIN_PW = '51686069';
 
+// ── Helpers ──
 async function fsGet(path) {
-  const parts = path.split('/');
-  const ref = doc(db, parts[0], parts[1]);
-  const snap = await getDoc(ref);
+  const p = path.split('/');
+  const snap = await getDoc(doc(db, p[0], p[1]));
   return snap.exists() ? snap.data() : null;
 }
 async function fsSet(path, data) {
-  const parts = path.split('/');
-  await setDoc(doc(db, parts[0], parts[1]), data, { merge: true });
+  const p = path.split('/');
+  await setDoc(doc(db, p[0], p[1]), data, { merge: true });
 }
-async function fsUpdate(path, data) { return fsSet(path, data); }
 async function fsDelete(path) {
-  const parts = path.split('/');
-  await deleteDoc(doc(db, parts[0], parts[1]));
+  const p = path.split('/');
+  await deleteDoc(doc(db, p[0], p[1]));
 }
 async function fsList(col) {
   const snap = await getDocs(collection(db, col));
@@ -394,872 +495,703 @@ function showToast(msg, err = false) {
   t.className = 'toast' + (err ? ' error' : '');
   void t.offsetWidth;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
+  setTimeout(() => t.classList.remove('show'), 2600);
 }
 
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+window.closeLightbox = () => document.getElementById('lightbox').classList.remove('open');
+
+// ── Auth ──
 document.getElementById('login-btn').addEventListener('click', doLogin);
-document.getElementById('pass-input').addEventListener('keydown', e => e.key === 'Enter' && doLogin());
+['admin-uid','admin-pw'].forEach(id => document.getElementById(id).addEventListener('keydown', e => e.key === 'Enter' && doLogin()));
 
 async function doLogin() {
-  const pass = document.getElementById('pass-input').value.trim();
-  const errEl = document.getElementById('auth-error');
-  if (pass === ADMIN_PASS) {
-    errEl.style.display = 'none';
-    const btn = document.getElementById('login-btn');
-    btn.textContent = '連線中...'; btn.disabled = true;
-    try {
-      await signInAnonymously(auth);
-      localStorage.setItem('omni_admin', '1');
-      document.getElementById('auth-screen').style.display = 'none';
-      document.getElementById('admin-app').style.display = 'block';
-      initAdmin();
-    } catch(e) {
-      errEl.textContent = '連線失敗：' + e.message;
-      errEl.style.display = 'block';
-      btn.textContent = '登 入'; btn.disabled = false;
-    }
-  } else {
-    errEl.textContent = '密碼錯誤';
-    errEl.style.display = 'block';
-  }
-}
-
-(async () => {
-  if (localStorage.getItem('omni_admin') === '1') {
+  const uid = document.getElementById('admin-uid').value.trim();
+  const pw  = document.getElementById('admin-pw').value.trim();
+  const err = document.getElementById('auth-error');
+  err.textContent = '';
+  if (pw !== ADMIN_PW) { err.textContent = '密碼錯誤'; return; }
+  const btn = document.getElementById('login-btn');
+  btn.textContent = '驗證中...'; btn.disabled = true;
+  try {
+    await signInAnonymously(auth);
     document.getElementById('auth-screen').style.display = 'none';
-    try {
-      await signInAnonymously(auth);
-      document.getElementById('admin-app').style.display = 'block';
-      initAdmin();
-    } catch(_) {
-      localStorage.removeItem('omni_admin');
-      document.getElementById('auth-screen').style.display = 'flex';
-    }
-  }
-})();
+    document.getElementById('admin-app').style.display = 'block';
+    initAdmin();
+  } catch(e) { err.textContent = '連線失敗：' + e.message; btn.textContent = '進入後台 →'; btn.disabled = false; }
+}
 
-function initAdmin() {
-  document.getElementById('admin-logout-btn').addEventListener('click', () => {
-    localStorage.removeItem('omni_admin');
-    location.reload();
-  });
-  document.querySelectorAll('.admin-tab-btn').forEach(btn => btn.addEventListener('click', () => {
-    document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
+document.getElementById('logout-btn').addEventListener('click', () => location.reload());
+
+// ── Nav ──
+document.querySelectorAll('.nav-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById(btn.dataset.pane).classList.add('active');
-  }));
-
-  document.getElementById('change-pass-btn').addEventListener('click', () => {
-    const nw = document.getElementById('new-pass').value.trim();
-    const nw2 = document.getElementById('new-pass2').value.trim();
-    if (!nw || nw.length < 4) { showToast('新密碼至少4位', true); return; }
-    if (nw !== nw2) { showToast('兩次輸入不一致', true); return; }
-    const r = document.getElementById('pass-result');
-    r.style.display = 'block';
-    r.textContent = `新密碼：${nw}\n\n請將 admin.html 裡的 ADMIN_PASS 改成上面的值，重新上傳即可生效。`;
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    const tabActions = {
+      'tab-dashboard': loadDashboard,
+      'tab-yt': () => loadYTReviews(),
+      'tab-ai': () => loadAIReviews(),
+      'tab-store': () => loadStoreReviews(),
+      'tab-withdraw': () => loadWithdrawals(),
+      'tab-members': loadMembers,
+      'tab-yttasks': loadYTTasks,
+      'tab-aiconfig': loadAIConfig,
+      'tab-pts': loadPtsOverview,
+    };
+    if (tabActions[btn.dataset.tab]) tabActions[btn.dataset.tab]();
   });
+});
 
-  loadAdminMembers();
-  loadYtTasks();
-  loadCustomers();
-  renderQuickRegister();
-  updateStoreBadge();
-  updateAiBadge();
-  loadAiSlotConfig();
+// ── State ──
+let ytFilter = 'pending', aiFilter = 'pending', storeFilter = 'pending', wdFilter = 'pending';
+let ytSelectedIDs = new Set();
+let aiSelectedIDs = new Set();
 
-  document.querySelectorAll('.admin-tab-btn').forEach(btn => {
-    if (btn.dataset.pane === 'pane-store-review') btn.addEventListener('click', loadStoreReviews);
-    if (btn.dataset.pane === 'pane-ai-review') btn.addEventListener('click', loadAiReviews);
-    if (btn.dataset.pane === 'pane-tasks') btn.addEventListener('click', loadAiSlotConfig);
-    if (btn.dataset.pane === 'pane-withdraw') btn.addEventListener('click', loadWithdrawRequests);
-    if (btn.dataset.pane === 'pane-review') btn.addEventListener('click', loadReviews);
-  });
-  loadMemberStats();
-  loadReviews();
-  loadWithdrawRequests();
+window.setFilter = (type, val, el) => {
+  const prefix = type === 'wd' ? 'wd' : type;
+  document.querySelectorAll(`#tab-${type === 'wd' ? 'withdraw' : type} .filter-chip`).forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  if (type === 'yt') { ytFilter = val; ytSelectedIDs.clear(); loadYTReviews(); }
+  else if (type === 'ai') { aiFilter = val; aiSelectedIDs.clear(); loadAIReviews(); }
+  else if (type === 'store') { storeFilter = val; loadStoreReviews(); }
+  else if (type === 'wd') { wdFilter = val; loadWithdrawals(); }
+};
 
-  const reviewList = document.getElementById('review-list');
-  if (!reviewList._bound) {
-    reviewList._bound = true;
-    reviewList.addEventListener('click', async (e) => {
-      const btn = e.target.closest('[data-action]');
-      if (!btn || btn.disabled) return;
-      const { action, rid, uid, tid, date } = btn.dataset;
-      if (action === 'approve') {
-        btn.disabled = true;
-        btn.closest('.review-actions').querySelectorAll('button').forEach(b => b.disabled = true);
-        await approveReview(rid, uid, tid, date);
-      }
-      if (action === 'reject') {
-        const modal = document.getElementById('reject-modal');
-        modal.style.display = 'flex';
-        document.getElementById('reject-reason-input').value = '';
-        document.getElementById('reject-reason-input').focus();
-        document.getElementById('reject-confirm-btn').onclick = async () => {
-          const reason = document.getElementById('reject-reason-input').value.trim();
-          if (!reason) { alert('請選擇拒絕原因'); return; }
-          modal.style.display = 'none';
-          btn.disabled = true;
-          btn.closest('.review-actions').querySelectorAll('button').forEach(b => b.disabled = true);
-          await rejectReview(rid, uid, tid, date, reason);
-        };
-        document.getElementById('reject-cancel-btn').onclick = () => { modal.style.display = 'none'; };
-      }
-    });
-  }
+// ── Init ──
+function initAdmin() {
+  loadDashboard();
+  loadBadgeCounts();
 }
 
-let _allMemberDocs = [];
-let _ytTaskMap = {};
-
-async function loadAdminMembers() {
-  const list = document.getElementById('admin-member-list');
-  list.innerHTML = '<tr><td colspan="11" style="color:var(--muted);text-align:center;padding:20px">載入中...</td></tr>';
+async function loadBadgeCounts() {
   try {
-    const [memberDocs, ytTaskDocs, staffDocs] = await Promise.all([fsList('members'), fsList('yt_tasks'), fsList('customers')]);
-    _ytTaskMap = {};
-    ytTaskDocs.forEach(({ id, data: t }) => { _ytTaskMap[id] = t.name; });
-    _allMemberDocs = memberDocs;
-    const filterStaff = document.getElementById('filter-staff');
-    const prev = filterStaff.value;
-    filterStaff.innerHTML = '<option value="">👤 全部員工</option>';
-    staffDocs.forEach(({ data: s }) => {
-      const opt = document.createElement('option');
-      opt.value = s.name; opt.textContent = s.name;
-      filterStaff.appendChild(opt);
-    });
-    if (prev) filterStaff.value = prev;
-    renderFilteredMembers();
-  } catch(e) {
-    document.getElementById('admin-member-list').innerHTML = `<tr><td colspan="11" style="color:var(--red);text-align:center;padding:20px">載入失敗：${e.message}</td></tr>`;
-  }
-}
-
-function renderFilteredMembers() {
-  const list = document.getElementById('admin-member-list');
-  const filterStaff = document.getElementById('filter-staff').value;
-  const filterGroup = document.getElementById('filter-group').value;
-  const filterPay   = document.getElementById('filter-pay').value;
-  const today = todayStr();
-  let filtered = _allMemberDocs.filter(({ data: d }) => {
-    if (filterStaff && !(d.note && d.note.includes(filterStaff))) return false;
-    if (filterGroup && (d.groupStatus || 'in') !== filterGroup) return false;
-    if (filterPay   && (d.payStatus   || 'wait') !== filterPay)  return false;
-    return true;
-  });
-  document.getElementById('filter-count').textContent = `共 ${filtered.length} 位`;
-  list.innerHTML = '';
-  if (!filtered.length) { list.innerHTML = '<tr><td colspan="11" style="color:var(--muted);text-align:center;padding:20px">無符合條件的會員</td></tr>'; return; }
-  const grpMap = { in: ['st-in','在群'], out: ['st-out','已退群'], lost: ['st-lost','失聯'] };
-  const payMap = { wait: ['st-wait','待領款'], paid: ['st-paid','已領款'], none: ['st-none','未領款'] };
-  filtered.forEach(({ id: uid, data: d }) => {
-    const ytReviews = d.ytReviews || {};
-    const ytTasks   = d.ytTasks   || {};
-    let taskNames = [], taskStatus = 'none';
-    Object.keys(_ytTaskMap).forEach(tid => {
-      const todayStatus = ytReviews[tid] && ytReviews[tid][today];
-      if (todayStatus === 'approved' || (ytTasks[tid] && ytTasks[tid][today])) {
-        taskNames.push(_ytTaskMap[tid]);
-        taskStatus = todayStatus || 'done';
-      }
-    });
-    const taskLabel = taskNames.length ? taskNames.join('、') : '—';
-    let statusHtml;
-    if (taskStatus === 'approved') statusHtml = '<span class="review-status approved">✅ 已通過</span>';
-    else if (taskStatus === 'rejected') statusHtml = '<span class="review-status rejected">❌ 拒絕</span>';
-    else if (taskStatus === 'done') statusHtml = '<span class="review-status pending">⏳ 待審核</span>';
-    else statusHtml = '<span style="color:var(--muted);font-size:12px">—</span>';
-    const grp = d.groupStatus || 'in';
-    const [grpCls, grpLabel] = grpMap[grp] || grpMap.in;
-    const pay = d.payStatus || 'wait';
-    const [payCls, payLabel] = payMap[pay] || payMap.wait;
-    const bonus = d.bonus || 0;
-    const note = d.note || '';
-    const checkins = d.checkins || {};
-    const totalDays = Object.keys(checkins).filter(k => checkins[k]).length;
-    let streak = 0;
-    const dt = new Date(today);
-    while (checkins[dateStr(dt)]) { streak++; dt.setDate(dt.getDate() - 1); }
-    const pw = d.password || '—';
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="mtd-uid">${uid}</td>
-      <td><span class="status-tag ${grpCls}" data-uid="${uid}" data-field="groupStatus" data-val="${grp}">${grpLabel}</span></td>
-      <td style="font-size:12px;max-width:120px;word-break:break-all">${taskLabel}</td>
-      <td>${statusHtml}</td>
-      <td class="mtd-bonus">$${bonus}</td>
-      <td><span class="status-tag ${payCls}" data-uid="${uid}" data-field="payStatus" data-val="${pay}">${payLabel}</span></td>
-      <td style="text-align:center;font-weight:700;color:var(--accent2)">${totalDays}</td>
-      <td style="text-align:center;font-weight:700;color:var(--green)">${streak}</td>
-      <td style="min-width:130px">
-        <div style="display:flex;align-items:center;gap:5px">
-          <span class="pw-display" style="font-size:12px;color:var(--accent2);font-weight:600;letter-spacing:1px">${pw}</span>
-          <button class="btn btn-sm reset-pw-btn" data-uid="${uid}" style="font-size:11px;padding:3px 8px;background:rgba(0,144,255,0.15);border:1px solid rgba(0,144,255,0.3);color:var(--accent2);white-space:nowrap">重設</button>
-        </div>
-      </td>
-      <td><input class="note-input" type="text" value="${note.replace(/"/g,'&quot;')}" placeholder="備註" data-uid="${uid}"></td>
-      <td><button class="btn btn-red btn-sm" data-uid="${uid}">刪除</button></td>`;
-    tr.querySelector('[data-field="groupStatus"]').addEventListener('click', async (e) => {
-      const el = e.currentTarget;
-      const cycle = { in: 'out', out: 'lost', lost: 'in' };
-      const next = cycle[el.dataset.val] || 'in';
-      const [cls, label] = grpMap[next];
-      el.className = `status-tag ${cls}`; el.textContent = label; el.dataset.val = next;
-      await fsSet(`members/${uid}`, { groupStatus: next }); showToast(`${uid} 群組狀態 → ${label}`);
-    });
-    tr.querySelector('[data-field="payStatus"]').addEventListener('click', async (e) => {
-      const el = e.currentTarget;
-      const cycle = { wait: 'paid', paid: 'none', none: 'wait' };
-      const next = cycle[el.dataset.val] || 'wait';
-      const [cls, label] = payMap[next];
-      el.className = `status-tag ${cls}`; el.textContent = label; el.dataset.val = next;
-      await fsSet(`members/${uid}`, { payStatus: next }); showToast(`${uid} 領款狀態 → ${label}`);
-    });
-    tr.querySelector('.note-input').addEventListener('blur', async (e) => {
-      await fsSet(`members/${uid}`, { note: e.target.value.trim() }); showToast(`${uid} 備註已儲存`);
-    });
-    tr.querySelector('.reset-pw-btn').addEventListener('click', async () => {
-      const newPw = prompt(`重設 ${uid} 的密碼\n（留空則重設為 123456）`);
-      if (newPw === null) return;
-      const finalPw = newPw.trim() || '123456';
-      await fsSet(`members/${uid}`, { password: finalPw });
-      tr.querySelector('.pw-display').textContent = finalPw;
-      showToast(`✅ ${uid} 密碼已重設為：${finalPw}`);
-    });
-    tr.querySelector('.btn-red').addEventListener('click', () => deleteMember(uid));
-    list.appendChild(tr);
-  });
-}
-
-(function bindFilters() {
-  ['filter-staff','filter-group','filter-pay'].forEach(id => {
-    document.getElementById(id).addEventListener('change', renderFilteredMembers);
-  });
-  document.getElementById('filter-reset-btn').addEventListener('click', () => {
-    document.getElementById('filter-staff').value = '';
-    document.getElementById('filter-group').value = '';
-    document.getElementById('filter-pay').value = '';
-    renderFilteredMembers();
-  });
-})();
-
-async function deleteMember(uid) {
-  if (!confirm(`確定刪除 ${uid}？`)) return;
-  try { await fsDelete(`members/${uid}`); showToast('已刪除'); loadAdminMembers(); }
-  catch(e) { showToast('刪除失敗：' + e.message, true); }
-}
-
-async function updateStoreBadge() {
-  try {
-    const docs = await fsList('store_reviews');
-    const pending = docs.filter(({ data: d }) => d.status === 'pending').length;
-    const badge = document.getElementById('store-badge');
-    if (pending > 0) { badge.textContent = pending; badge.style.display = 'inline'; }
-    else badge.style.display = 'none';
+    const [ytDocs, aiDocs, storeDocs, wdDocs] = await Promise.all([
+      fsList('pending_reviews'), fsList('ai_reviews'), fsList('store_reviews'), fsList('withdrawal_requests')
+    ]);
+    document.getElementById('badge-yt').textContent = ytDocs.filter(d => d.data.status === 'pending').length;
+    document.getElementById('badge-ai').textContent = aiDocs.filter(d => d.data.status === 'pending').length;
+    document.getElementById('badge-store').textContent = storeDocs.filter(d => d.data.status === 'pending').length;
+    document.getElementById('badge-wd').textContent = wdDocs.filter(d => d.data.status === 'pending').length;
   } catch(e) {}
 }
 
-async function loadStoreReviews() {
-  const loading = document.getElementById('store-review-loading');
-  const list    = document.getElementById('store-review-list');
-  loading.style.display = 'block'; list.innerHTML = '';
+// ── Dashboard ──
+async function loadDashboard() {
   try {
-    const docs = await fsList('store_reviews');
-    const pending = docs.filter(({ data: d }) => d.status === 'pending');
-    loading.style.display = 'none';
-    if (!pending.length) { list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:30px">目前無待審核的店家回饋</div>'; return; }
-    pending.forEach(({ id, data: r }) => {
-      const card = document.createElement('div');
-      card.style.cssText = 'background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:18px;margin-bottom:16px';
-      const qs = [['接待服務整體感受',r.q1],['店內環境與氛圍',r.q2],['印象最深刻的地方',r.q3],['商品／服務實際感受',r.q4],['店內動線與整體安排',r.q5],['是否願意再次回訪',r.q6],['如何推薦給朋友',r.q7],['其他建議',r.q8]];
-      card.innerHTML = `
-        <div style="font-size:15px;font-weight:800;color:var(--accent2);margin-bottom:4px">${r.uid}</div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:14px">🏪 ${r.storeName} ／ 📅 ${r.date} ／ 送出：${r.createdAt?r.createdAt.slice(0,16).replace('T',' '):''}</div>
-        ${qs.map(([q,a],i)=>`<div style="margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:var(--accent2);margin-bottom:3px">${i+1}️⃣ ${q}</div><div style="font-size:13px;color:var(--text);background:rgba(0,0,0,0.15);border-radius:8px;padding:8px 12px;line-height:1.7">${a||'（未填寫）'}</div></div>`).join('')}
-        <div style="display:flex;gap:10px;margin-top:14px" id="store-actions-${id}">
-          <button class="btn btn-green" style="flex:1" data-sid="${id}" data-uid="${r.uid}" data-action="approve">✅ 通過 +700元</button>
-          <button class="btn btn-red"   style="flex:1" data-sid="${id}" data-uid="${r.uid}" data-action="reject">❌ 拒絕</button>
-        </div>`;
-      list.appendChild(card);
-    });
-    list.addEventListener('click', async (e) => {
-      const btn = e.target.closest('[data-action]');
-      if (!btn || btn.disabled) return;
-      const { action, sid, uid } = btn.dataset;
-      btn.closest(`#store-actions-${sid}`).querySelectorAll('button').forEach(b => b.disabled = true);
-      if (action === 'approve') {
-        btn.textContent = '處理中...';
-        try {
-          await fsSet(`store_reviews/${sid}`, { status: 'approved' });
-          const memberData = await fsGet(`members/${uid}`);
-          const newBonus = ((memberData && memberData.bonus) || 0) + 700;
-          await fsSet(`members/${uid}`, { bonus: newBonus });
-          showToast(`✅ 已通過，入帳 700 元（累積 ${newBonus} 元）`);
-          loadStoreReviews(); updateStoreBadge();
-        } catch(e) { showToast('操作失敗：' + e.message, true); }
-      }
-      if (action === 'reject') {
-        const modal = document.getElementById('reject-modal');
-        modal.style.display = 'flex';
-        document.getElementById('reject-reason-input').value = '';
-        document.getElementById('reject-confirm-btn').onclick = async () => {
-          const reason = document.getElementById('reject-reason-input').value;
-          if (!reason) { alert('請選擇拒絕原因'); return; }
-          modal.style.display = 'none';
-          try {
-            await fsSet(`store_reviews/${sid}`, { status: 'rejected', rejectReason: reason });
-            showToast('🚫 已拒絕'); loadStoreReviews(); updateStoreBadge();
-          } catch(e) { showToast('操作失敗：' + e.message, true); }
-        };
-        document.getElementById('reject-cancel-btn').onclick = () => {
-          modal.style.display = 'none';
-          btn.closest(`#store-actions-${sid}`).querySelectorAll('button').forEach(b => b.disabled = false);
-        };
-      }
-    }, { once: true });
-  } catch(e) {
-    loading.style.display = 'none';
-    list.innerHTML = `<div style="color:var(--red);text-align:center;padding:20px">載入失敗：${e.message}</div>`;
-  }
-}
+    const [members, ytDocs, aiDocs, storeDocs, wdDocs] = await Promise.all([
+      fsList('members'), fsList('pending_reviews'), fsList('ai_reviews'),
+      fsList('store_reviews'), fsList('withdrawal_requests')
+    ]);
+    const totalBonus = members.reduce((s, m) => s + (m.data.bonus || 0), 0);
+    const totalPts = members.reduce((s, m) => s + (m.data.pts || 0), 0);
+    const ytPending = ytDocs.filter(d => d.data.status === 'pending').length;
+    const aiPending = aiDocs.filter(d => d.data.status === 'pending').length;
+    const storePending = storeDocs.filter(d => d.data.status === 'pending').length;
+    const wdPending = wdDocs.filter(d => d.data.status === 'pending').length;
+    const stats = [
+      { label:'會員人數', num: members.length, color:'#2272e8' },
+      { label:'待審YT任務', num: ytPending, color:'#f43f5e' },
+      { label:'待審AI任務', num: aiPending, color:'#a78bfa' },
+      { label:'待審店家', num: storePending, color:'#f59e0b' },
+      { label:'待確認提領', num: wdPending, color:'#10b981' },
+      { label:'總旅遊獎金(元)', num: '$' + totalBonus.toLocaleString(), color:'#34d399' },
+      { label:'總點數', num: totalPts.toLocaleString(), color:'#c4b5fd' },
+    ];
+    document.getElementById('stats-grid').innerHTML = stats.map(s => `
+      <div class="stat-card"><div class="stat-num" style="background:linear-gradient(135deg,${s.color},${s.color}aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent">${s.num}</div><div class="stat-label">${s.label}</div></div>`).join('');
 
-async function loadAiSlotConfig() {
-  const config = await fsGet('ai_config/today');
-  if (config) {
-    document.getElementById('ai-slot1-input').value = config.slot1 || '';
-    document.getElementById('ai-slot2-input').value = config.slot2 || '';
-  }
-}
+    const recentPending = [
+      ...ytDocs.filter(d=>d.data.status==='pending').map(d=>({...d,type:'YT任務',icon:'▶️'})),
+      ...aiDocs.filter(d=>d.data.status==='pending').map(d=>({...d,type:'AI任務',icon:'🤖'})),
+      ...storeDocs.filter(d=>d.data.status==='pending').map(d=>({...d,type:'店家回饋',icon:'🏪'})),
+      ...wdDocs.filter(d=>d.data.status==='pending').map(d=>({...d,type:'提領申請',icon:'✈️'}))
+    ].sort((a,b) => new Date(b.data.createdAt||0) - new Date(a.data.createdAt||0)).slice(0,10);
 
-document.getElementById('save-ai-slots-btn').addEventListener('click', async () => {
-  const slot1 = document.getElementById('ai-slot1-input').value.trim();
-  const slot2 = document.getElementById('ai-slot2-input').value.trim();
-  const btn = document.getElementById('save-ai-slots-btn');
-  const status = document.getElementById('ai-slot-status');
-  btn.textContent = '儲存中...'; btn.disabled = true;
-  try {
-    await fsSet('ai_config/today', { slot1, slot2, updatedAt: new Date().toISOString() });
-    status.textContent = '✅ 已儲存！前台會員即可看到今日時段';
-    status.style.color = 'var(--green)';
-    showToast('✅ AI時段已更新');
-  } catch(e) { status.textContent = '❌ 儲存失敗：' + e.message; status.style.color = 'var(--red)'; }
-  btn.textContent = '💾 儲存今日時段'; btn.disabled = false;
-});
-
-async function updateAiBadge() {
-  try {
-    const docs = await fsList('ai_reviews');
-    const pending = docs.filter(({ data: d }) => d.status === 'pending').length;
-    const badge = document.getElementById('ai-badge');
-    if (pending > 0) { badge.textContent = pending; badge.style.display = 'inline'; }
-    else badge.style.display = 'none';
-  } catch(e) {}
-}
-
-async function loadAiReviews() {
-  const loading = document.getElementById('ai-review-loading');
-  const list    = document.getElementById('ai-review-list');
-  loading.style.display = 'block'; list.innerHTML = '';
-  try {
-    const docs = await fsList('ai_reviews');
-    const pending = docs.filter(({ data: d }) => d.status === 'pending');
-    loading.style.display = 'none';
-    if (!pending.length) { list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:30px">目前無待審核的 AI 任務</div>'; return; }
-    pending.forEach(({ id, data: r }) => {
-      const card = document.createElement('div');
-      card.style.cssText = 'background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:18px;margin-bottom:16px';
-      card.innerHTML = `
-        <div style="font-size:15px;font-weight:800;color:var(--accent2);margin-bottom:4px">${r.uid}</div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:12px">🤖 ${r.taskName||'AI數據任務'} ／ 📅 ${r.date} ／ 送出：${r.createdAt?r.createdAt.slice(0,16).replace('T',' '):''}</div>
-        ${r.imageBase64?`<img src="${r.imageBase64}" style="width:100%;max-width:400px;border-radius:10px;margin-bottom:12px;display:block">`:''}
-        ${r.note?`<div style="background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--text);margin-bottom:12px"><span style="font-size:11px;font-weight:700;color:#7c3aed;display:block;margin-bottom:3px">✍️ 備註</span>${r.note}</div>`:''}
-        <div style="display:flex;gap:10px" id="ai-actions-${id}">
-          <button class="btn btn-green" style="flex:1" data-aid="${id}" data-uid="${r.uid}" data-action="approve">✅ 通過</button>
-          <button class="btn btn-red"   style="flex:1" data-aid="${id}" data-uid="${r.uid}" data-action="reject">❌ 拒絕</button>
-        </div>`;
-      list.appendChild(card);
-    });
-    list.addEventListener('click', async (e) => {
-      const btn = e.target.closest('[data-action]');
-      if (!btn || btn.disabled) return;
-      const { action, aid, uid } = btn.dataset;
-      btn.closest(`#ai-actions-${aid}`).querySelectorAll('button').forEach(b => b.disabled = true);
-      if (action === 'approve') {
-        btn.textContent = '處理中...';
-        try {
-          await fsSet(`ai_reviews/${aid}`, { status: 'approved' });
-          showToast(`✅ 已通過審核`); loadAiReviews(); updateAiBadge();
-        } catch(e) { showToast('操作失敗：' + e.message, true); }
-      }
-      if (action === 'reject') {
-        const modal = document.getElementById('reject-modal');
-        modal.style.display = 'flex';
-        document.getElementById('reject-reason-input').value = '';
-        document.getElementById('reject-confirm-btn').onclick = async () => {
-          const reason = document.getElementById('reject-reason-input').value;
-          if (!reason) { alert('請選擇拒絕原因'); return; }
-          modal.style.display = 'none';
-          try {
-            await fsSet(`ai_reviews/${aid}`, { status: 'rejected', rejectReason: reason });
-            showToast('🚫 已拒絕'); loadAiReviews(); updateAiBadge();
-          } catch(e) { showToast('操作失敗：' + e.message, true); }
-        };
-        document.getElementById('reject-cancel-btn').onclick = () => {
-          modal.style.display = 'none';
-          btn.closest(`#ai-actions-${aid}`).querySelectorAll('button').forEach(b => b.disabled = false);
-        };
-      }
-    }, { once: true });
-  } catch(e) {
-    loading.style.display = 'none';
-    list.innerHTML = `<div style="color:var(--red);text-align:center;padding:20px">載入失敗：${e.message}</div>`;
-  }
-}
-
-async function loadCustomers() {
-  const docs = await fsList('customers');
-  const select = document.getElementById('customer-select');
-  const listEl = document.getElementById('customer-list-admin');
-  const prev = select.value;
-  select.innerHTML = '<option value="">── 選擇客戶 ──</option>';
-  docs.forEach(({ id, data: c }) => {
-    const opt = document.createElement('option');
-    opt.value = c.name; opt.textContent = c.name; opt.dataset.id = id;
-    select.appendChild(opt);
-  });
-  if (prev) select.value = prev;
-  if (!listEl) return;
-  listEl.innerHTML = '';
-  if (!docs.length) { listEl.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:10px">尚無員工名單</div>'; return; }
-  docs.forEach(({ id, data: c }) => {
-    const row = document.createElement('div');
-    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:7px 4px;border-bottom:1px solid var(--border2)';
-    row.innerHTML = `<span style="font-size:13px">${c.name}</span><button class="btn btn-red btn-sm" data-cid="${id}">刪除</button>`;
-    row.querySelector('button').addEventListener('click', async () => { await fsDelete(`customers/${id}`); loadCustomers(); });
-    listEl.appendChild(row);
-  });
-}
-
-document.getElementById('manage-customers-btn').addEventListener('click', () => {
-  const panel = document.getElementById('customer-panel');
-  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
-});
-
-document.getElementById('add-customer-btn').addEventListener('click', async () => {
-  const name = document.getElementById('new-customer-name').value.trim();
-  if (!name) { showToast('請輸入客戶名稱', true); return; }
-  await fsSet(`customers/${Date.now()}`, { name });
-  document.getElementById('new-customer-name').value = '';
-  showToast('✅ 已新增員工'); loadCustomers();
-});
-
-document.getElementById('add-member-btn').addEventListener('click', async () => {
-  const uidRaw = document.getElementById('new-uid').value.trim().toUpperCase();
-  const pw = document.getElementById('new-pw').value.trim() || '123456';
-  const customerName = document.getElementById('customer-select').value;
-  if (!uidRaw) { showToast('請輸入會員編號', true); return; }
-  const uid = uidRaw.startsWith('U') ? uidRaw : 'U' + uidRaw;
-  const btn = document.getElementById('add-member-btn');
-  btn.textContent = '新增中...'; btn.disabled = true;
-  try {
-    const existing = await fsGet(`members/${uid}`);
-    if (existing) { showToast('此編號已存在', true); btn.textContent = '新增會員'; btn.disabled = false; return; }
-    await fsSet(`members/${uid}`, { password: pw, note: customerName || '', checkins: {}, clickTasks: {}, ytTasks: {} });
-    showToast(`✅ 已新增 ${uid}${customerName?'（負責：'+customerName+'）':''}`);
-    document.getElementById('new-uid').value = '';
-    document.getElementById('new-pw').value = '';
-    document.getElementById('customer-select').value = '';
-    loadAdminMembers();
-  } catch(e) { showToast('新增失敗：' + e.message, true); }
-  btn.textContent = '新增會員'; btn.disabled = false;
-});
-
-document.getElementById('batch-import-btn').addEventListener('click', async () => {
-  const raw = document.getElementById('batch-input').value.trim();
-  if (!raw) { showToast('請輸入編號清單', true); return; }
-  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
-  let ok = 0, skip = 0, fail = 0;
-  const resultEl = document.getElementById('batch-result');
-  resultEl.style.display = 'block'; resultEl.textContent = '匯入中...';
-  const btn = document.getElementById('batch-import-btn');
-  btn.disabled = true;
-  for (const line of lines) {
-    const digits = line.replace(/\D/g, '');
-    if (!digits) { fail++; continue; }
-    const uid = 'U' + digits.padStart(5, '0');
-    try {
-      const existing = await fsGet(`members/${uid}`);
-      if (existing) { skip++; continue; }
-      await fsSet(`members/${uid}`, { password: '123456', checkins: {}, clickTasks: {}, ytTasks: {} });
-      ok++;
-    } catch(e) { fail++; }
-  }
-  resultEl.textContent = `✅ 新增 ${ok} 位\n⏭ 跳過 ${skip} 位（已存在）${fail?`\n❌ 失敗 ${fail} 位`:''}`;
-  btn.disabled = false; loadAdminMembers();
-});
-
-async function loadYtTasks() {
-  try {
-    const docs = await fsList('yt_tasks');
-    const list = document.getElementById('admin-yt-task-list');
-    list.innerHTML = '';
-    if (!docs.length) { list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:20px">尚無YT任務</div>'; return; }
-    docs.forEach(({ id, data: t }) => {
-      const row = document.createElement('div');
-      row.className = 'member-row';
-      row.innerHTML = `<div style="flex:1;min-width:0"><div class="member-uid">▶️ ${t.name}</div><div class="member-info" style="word-break:break-all">${t.url||'無連結'}</div></div><button class="btn btn-red btn-sm" style="margin-left:8px;flex-shrink:0">刪除</button>`;
-      row.querySelector('button').addEventListener('click', () => deleteYtTask(id));
-      list.appendChild(row);
-    });
-  } catch(e) { showToast('讀取YT任務失敗：' + e.message, true); }
-}
-
-async function deleteYtTask(id) {
-  if (!confirm('確定刪除此YT任務？')) return;
-  try { await fsDelete(`yt_tasks/${id}`); showToast('已刪除YT任務'); loadYtTasks(); renderQuickRegister(); }
-  catch(e) { showToast('刪除失敗：' + e.message, true); }
-}
-
-document.getElementById('add-yt-btn').addEventListener('click', async () => {
-  const name1 = document.getElementById('yt-name1').value.trim();
-  const url1  = document.getElementById('yt-url1').value.trim();
-  const name2 = document.getElementById('yt-name2').value.trim();
-  const url2  = document.getElementById('yt-url2').value.trim();
-  if (!name1||!url1||!name2||!url2) { showToast('請填寫兩部影片的名稱與連結', true); return; }
-  const btn = document.getElementById('add-yt-btn');
-  btn.textContent = '新增中...'; btn.disabled = true;
-  try {
-    const ts = Date.now();
-    await fsSet(`yt_tasks/yt_${ts}_1`, { name: name1, url: url1, createdAt: new Date().toISOString() });
-    await fsSet(`yt_tasks/yt_${ts}_2`, { name: name2, url: url2, createdAt: new Date().toISOString() });
-    showToast('✅ 已新增兩部YT任務');
-    ['yt-name1','yt-url1','yt-name2','yt-url2'].forEach(id => document.getElementById(id).value = '');
-    loadYtTasks(); renderQuickRegister();
-  } catch(e) { showToast('新增失敗：' + e.message, true); }
-  btn.textContent = '新增YT影片任務'; btn.disabled = false;
-});
-
-async function renderQuickRegister() {
-  const ytGrid = document.getElementById('quick-yt-grid');
-  ytGrid.innerHTML = '';
-  if (!isSunday()) {
-    try {
-      const ytDocs = await fsList('yt_tasks');
-      if (!ytDocs.length) { ytGrid.innerHTML = '<div style="color:var(--muted);font-size:13px">尚無YT影片任務</div>'; }
-      else {
-        ytDocs.forEach(({ id, data: t }) => {
-          const el = document.createElement('div');
-          el.className = 'quick-item'; el.dataset.id = id; el.dataset.type = 'yt';
-          el.textContent = t.name;
-          el.onclick = () => el.classList.toggle('selected');
-          ytGrid.appendChild(el);
-        });
-      }
-    } catch(e) { ytGrid.innerHTML = '<div style="color:var(--muted);font-size:13px">讀取失敗</div>'; }
-  } else { ytGrid.innerHTML = '<div style="color:var(--muted);font-size:13px">今日（週日）無YT任務</div>'; }
-}
-
-document.getElementById('quick-register-btn').addEventListener('click', async () => {
-  const uidRaw = document.getElementById('quick-uid').value.trim().toUpperCase();
-  if (!uidRaw) { showToast('請輸入會員編號', true); return; }
-  const uid = uidRaw.startsWith('U') ? uidRaw : 'U' + uidRaw;
-  const today = todayStr();
-  const selected = document.querySelectorAll('#quick-yt-grid .selected');
-  if (!selected.length) { showToast('請選擇要登記的項目', true); return; }
-  const btn = document.getElementById('quick-register-btn');
-  btn.textContent = '登記中...'; btn.disabled = true;
-  try {
-    const data = await fsGet(`members/${uid}`);
-    if (!data) { showToast(`找不到 ${uid}`, true); btn.textContent = '✅ 確認登記'; btn.disabled = false; return; }
-    const clickTasks = data.clickTasks || {};
-    const ytTasks = data.ytTasks || {};
-    selected.forEach(el => {
-      const id = el.dataset.id, type = el.dataset.type;
-      if (type === 'click') { if (!clickTasks[id]) clickTasks[id] = {}; clickTasks[id][today] = true; }
-      else { if (!ytTasks[id]) ytTasks[id] = {}; ytTasks[id][today] = true; }
-    });
-    await fsUpdate(`members/${uid}`, { clickTasks, ytTasks });
-    showToast(`✅ ${uid} 登記完成！`);
-    document.querySelectorAll('.quick-item.selected').forEach(el => el.classList.remove('selected'));
-    document.getElementById('quick-uid').value = '';
-  } catch(e) { showToast('登記失敗：' + e.message, true); }
-  btn.textContent = '✅ 確認登記'; btn.disabled = false;
-});
-
-async function loadReviews() {
-  const loading = document.getElementById('review-loading');
-  const list    = document.getElementById('review-list');
-  const badge   = document.getElementById('review-badge');
-  loading.style.display = 'block'; list.innerHTML = '';
-  try {
-    const docs = await fsList('pending_reviews');
-    loading.style.display = 'none';
-    const pendingDocs = docs.filter(d => d.data.status === 'pending');
-    const taskCount = {};
-    pendingDocs.forEach(({ data: r }) => { const key = `${r.uid}_${r.taskId}`; taskCount[key] = (taskCount[key]||0)+1; });
-    const pendingCount = pendingDocs.length;
-    if (pendingCount > 0) { badge.textContent = pendingCount; badge.style.display = 'inline-block'; }
-    else badge.style.display = 'none';
-    if (!pendingDocs.length) { list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:20px">目前沒有待審核截圖 🎉</div>'; return; }
-    pendingDocs.forEach(({ id, data: r }) => {
-      const card = document.createElement('div');
-      card.className = 'review-card'; card.id = `rcard-${id}`;
-      const videoLabel = r.taskName||(r.taskId?`影片 ${r.taskId}`:(r.slot?`時段 ${r.slot}`:id));
-      const isDuplicate = r.taskId && (taskCount[`${r.uid}_${r.taskId}`]>1);
-      card.innerHTML = `
-        <div class="review-card-header">
+    document.getElementById('recent-pending').innerHTML = recentPending.length ? recentPending.map(r => `
+      <div class="card" style="padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="font-size:20px">${r.icon}</div>
           <div>
-            <div class="review-uid">${r.uid}${isDuplicate?' <span style="background:#ffc800;color:#000;border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;margin-left:6px">⚠️ 重複上傳</span>':''}</div>
-            <div class="review-meta">▶️ ${videoLabel} ／ 📅 ${r.date||''} ／ 送出：${r.createdAt?r.createdAt.slice(0,16).replace('T',' '):''}</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text)">${r.data.uid||''} · ${r.type}</div>
+            <div style="font-size:11px;color:var(--muted)">${(r.data.taskName||r.data.storeName||r.data.slotName||'').slice(0,30)} · ${(r.data.createdAt||'').slice(0,10)}</div>
           </div>
-          <span class="review-status pending">⏳ 待審核</span>
         </div>
-        ${r.imageBase64?`<img src="${r.imageBase64}" style="width:100%;max-width:400px;border-radius:10px;margin-bottom:12px;display:block">`:''}
-        ${r.invoiceBase64?`<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;color:#d4a017;margin-bottom:5px">🧾 發票</div><img src="${r.invoiceBase64}" style="width:100%;max-width:300px;border-radius:10px;display:block"></div>`:''}
-        <div class="review-actions" id="actions-${id}">
-          <button class="btn btn-green" data-action="approve" data-rid="${id}" data-uid="${r.uid}" data-tid="${r.taskId||''}" data-date="${r.date||''}">✅ 通過 +100元</button>
-          <button class="btn btn-red"   data-action="reject"  data-rid="${id}" data-uid="${r.uid}" data-tid="${r.taskId||''}" data-date="${r.date||''}">❌ 拒絕</button>
-        </div>`;
-      list.appendChild(card);
-    });
-  } catch(e) {
-    loading.style.display = 'none';
-    list.innerHTML = `<div style="color:var(--red);text-align:center;padding:20px">載入失敗：${e.message}</div>`;
-  }
+        <span class="status-badge pending">待審核</span>
+      </div>`).join('') : '<div style="color:var(--muted);text-align:center;padding:24px;font-size:13px">🎉 目前沒有待審核項目</div>';
+  } catch(e) { showToast('載入失敗', true); }
 }
 
-async function approveReview(reviewId, uid, taskId, date) {
-  const btn = document.querySelector(`#actions-${reviewId} .btn-green`);
-  if (btn) { btn.textContent = '處理中...'; btn.disabled = true; }
+// ── YT Reviews ──
+async function loadYTReviews() {
+  document.getElementById('yt-list').innerHTML = '<div class="loading">載入中</div>';
   try {
-    await fsSet(`pending_reviews/${reviewId}`, { status: 'approved' });
-    const memberData = await fsGet(`members/${uid}`);
-    const newBonus = ((memberData && memberData.bonus)||0) + 100;
-    const updateData = { bonus: newBonus };
-    if (taskId) {
-      const ytTasks   = (memberData && memberData.ytTasks)   || {};
-      const ytReviews = (memberData && memberData.ytReviews) || {};
-      if (!ytTasks[taskId])   ytTasks[taskId]   = {};
-      if (!ytReviews[taskId]) ytReviews[taskId] = {};
-      ytTasks[taskId][date]   = true;
-      ytReviews[taskId][date] = 'approved';
-      updateData.ytTasks   = ytTasks;
-      updateData.ytReviews = ytReviews;
+    const docs = await fsList('pending_reviews');
+    let filtered = docs;
+    if (ytFilter !== 'all') filtered = docs.filter(d => d.data.status === ytFilter);
+    filtered.sort((a,b) => new Date(b.data.createdAt||0) - new Date(a.data.createdAt||0));
+
+    const isPending = ytFilter === 'pending';
+    document.getElementById('yt-bulk-bar').style.display = isPending && filtered.length ? 'flex' : 'none';
+    document.getElementById('yt-select-all-row').style.display = isPending && filtered.length ? 'flex' : 'none';
+    document.getElementById('yt-select-all').checked = false;
+    ytSelectedIDs.clear();
+    updateYTBulkCount();
+
+    if (!filtered.length) {
+      document.getElementById('yt-list').innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px;font-size:13px">目前沒有符合條件的記錄</div>';
+      return;
     }
-    await fsSet(`members/${uid}`, updateData);
-    showToast(`✅ 已通過，入帳 100 元（累積 ${newBonus} 元）`);
-    loadReviews();
-  } catch(e) {
-    showToast('操作失敗：' + e.message, true);
-    if (btn) { btn.textContent = '✅ 通過 +100元'; btn.disabled = false; }
-  }
+
+    document.getElementById('yt-list').innerHTML = filtered.map(({ id, data:d }) => {
+      const statusMap = { pending:'pending', approved:'approved', rejected:'rejected' };
+      const labelMap  = { pending:'⏳ 待審核', approved:'✅ 已通過', rejected:'❌ 已拒絕' };
+      const st = statusMap[d.status] || 'pending';
+      const actionHTML = d.status === 'pending' ? `
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <input type="checkbox" class="bulk-checkbox yt-check" data-id="${id}" onchange="toggleYTCheck('${id}',this.checked)">
+          <button class="btn btn-approve" onclick="approveYT('${id}','${d.uid}','${d.taskId}','${d.date}')">✅ 通過 +200元+200點</button>
+          <button class="btn btn-reject"  onclick="openReject('yt','${id}','${d.uid}','${d.taskId}','${d.date}')">❌ 拒絕</button>
+        </div>` : (d.status === 'rejected' && d.rejectReason ? `<div style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--red)">拒絕原因：${d.rejectReason}</div>` : '');
+      return `
+        <div class="review-item" id="yt-item-${id}">
+          <div class="review-header">
+            <div><div class="review-uid">${d.uid}</div><div class="review-date">${d.date} · ${(d.createdAt||'').slice(0,16)}</div><div class="review-task">${d.taskName||''}</div></div>
+            <span class="status-badge ${st}">${labelMap[st]}</span>
+          </div>
+          ${d.imageBase64 ? `<img src="${d.imageBase64}" class="review-img" onclick="openLightbox('${d.imageBase64.substring(0,50)+'...'}')" onerror="this.style.display='none'">` : ''}
+          ${d.comment ? `<div class="review-comment">💬 ${d.comment}</div>` : ''}
+          ${actionHTML}
+        </div>`;
+    }).join('');
+
+    // Fix lightbox for full base64
+    filtered.forEach(({id, data:d}) => {
+      if (d.imageBase64) {
+        const img = document.querySelector(`#yt-item-${id} .review-img`);
+        if (img) { img.src = d.imageBase64; img.onclick = () => openLightbox(d.imageBase64); }
+      }
+    });
+  } catch(e) { document.getElementById('yt-list').innerHTML = '<div style="color:var(--red);text-align:center;padding:24px">載入失敗：'+e.message+'</div>'; }
 }
 
-document.getElementById('approve-all-review-btn').addEventListener('click', async () => {
-  if (!confirm('確定要一鍵通過所有待審核截圖？')) return;
-  const btn = document.getElementById('approve-all-review-btn');
+window.toggleYTCheck = (id, checked) => {
+  checked ? ytSelectedIDs.add(id) : ytSelectedIDs.delete(id);
+  updateYTBulkCount();
+};
+window.toggleSelectAllYT = (cb) => {
+  document.querySelectorAll('.yt-check').forEach(c => {
+    c.checked = cb.checked;
+    cb.checked ? ytSelectedIDs.add(c.dataset.id) : ytSelectedIDs.delete(c.dataset.id);
+  });
+  updateYTBulkCount();
+};
+function updateYTBulkCount() {
+  document.getElementById('yt-selected-count').textContent = `已選 ${ytSelectedIDs.size} 筆`;
+  document.getElementById('yt-bulk-approve-btn').disabled = ytSelectedIDs.size === 0;
+}
+window.clearSelectionYT = () => {
+  ytSelectedIDs.clear();
+  document.querySelectorAll('.yt-check').forEach(c => c.checked = false);
+  document.getElementById('yt-select-all').checked = false;
+  updateYTBulkCount();
+};
+
+window.bulkApproveYT = async () => {
+  if (!ytSelectedIDs.size) return;
+  const btn = document.getElementById('yt-bulk-approve-btn');
   btn.textContent = '處理中...'; btn.disabled = true;
   try {
     const docs = await fsList('pending_reviews');
-    const pending = docs.filter(({ data: d }) => d.status === 'pending');
-    if (!pending.length) { showToast('目前沒有待審核項目'); btn.textContent = '✅ 一鍵全部通過'; btn.disabled = false; return; }
+    const docsMap = Object.fromEntries(docs.map(d => [d.id, d.data]));
     let count = 0;
-    for (const { id, data: r } of pending) {
-      try {
-        await fsSet(`pending_reviews/${id}`, { status: 'approved' });
-        const memberData = await fsGet(`members/${r.uid}`);
-        const newBonus = ((memberData && memberData.bonus)||0) + 100;
-        const updateData = { bonus: newBonus };
-        if (r.taskId) {
-          const ytTasks   = (memberData && memberData.ytTasks)   || {};
-          const ytReviews = (memberData && memberData.ytReviews) || {};
-          if (!ytTasks[r.taskId])   ytTasks[r.taskId]   = {};
-          if (!ytReviews[r.taskId]) ytReviews[r.taskId] = {};
-          ytTasks[r.taskId][r.date]   = true;
-          ytReviews[r.taskId][r.date] = 'approved';
-          updateData.ytTasks   = ytTasks;
-          updateData.ytReviews = ytReviews;
-        }
-        await fsSet(`members/${r.uid}`, updateData); count++;
-      } catch(e) { console.error(e); }
+    for (const id of ytSelectedIDs) {
+      const d = docsMap[id];
+      if (!d || d.status !== 'pending') continue;
+      await fsSet(`pending_reviews/${id}`, { status: 'approved' });
+      const memberData = await fsGet(`members/${d.uid}`);
+      if (memberData) {
+        const ytReviews = memberData.ytReviews || {};
+        if (!ytReviews[d.taskId]) ytReviews[d.taskId] = {};
+        ytReviews[d.taskId][d.date] = 'approved';
+        const newBonus = (memberData.bonus || 0) + 200;
+        const newPts   = (memberData.pts   || 0) + 200;
+        await fsSet(`members/${d.uid}`, { ytReviews, bonus: newBonus, pts: newPts });
+      }
+      count++;
     }
-    showToast(`✅ 已全部通過！共 ${count} 筆，各入帳 100 元`); loadReviews();
-  } catch(e) { showToast('操作失敗：' + e.message, true); }
-  btn.textContent = '✅ 一鍵全部通過'; btn.disabled = false;
-});
+    showToast(`✅ 批量通過 ${count} 筆 YT 任務！`);
+    ytSelectedIDs.clear();
+    loadYTReviews(); loadBadgeCounts();
+  } catch(e) { showToast('批量操作失敗：'+e.message, true); }
+  btn.textContent = '✅ 一鍵通過選取項目'; btn.disabled = false;
+};
 
-document.getElementById('approve-all-ai-btn').addEventListener('click', async () => {
-  if (!confirm('確定要一鍵通過所有待審核 AI 任務？')) return;
-  const btn = document.getElementById('approve-all-ai-btn');
+window.approveYT = async (reviewId, uid, taskId, date) => {
+  const btn = document.querySelector(`#yt-item-${reviewId} .btn-approve`);
+  if (btn) { btn.textContent = '處理中...'; btn.disabled = true; }
+  try {
+    await fsSet(`pending_reviews/${reviewId}`, { status:'approved' });
+    const memberData = await fsGet(`members/${uid}`);
+    if (memberData) {
+      const ytReviews = memberData.ytReviews || {};
+      if (!ytReviews[taskId]) ytReviews[taskId] = {};
+      ytReviews[taskId][date] = 'approved';
+      const newBonus = (memberData.bonus || 0) + 200;
+      const newPts   = (memberData.pts   || 0) + 200;
+      await fsSet(`members/${uid}`, { ytReviews, bonus: newBonus, pts: newPts });
+    }
+    showToast('✅ YT任務已通過，+200元+200點');
+    loadYTReviews(); loadBadgeCounts();
+  } catch(e) { showToast('操作失敗：'+e.message, true); if (btn) { btn.textContent='✅ 通過'; btn.disabled=false; } }
+};
+
+// ── AI Reviews ──
+async function loadAIReviews() {
+  document.getElementById('ai-list').innerHTML = '<div class="loading">載入中</div>';
+  try {
+    const docs = await fsList('ai_reviews');
+    let filtered = docs;
+    if (aiFilter !== 'all') filtered = docs.filter(d => d.data.status === aiFilter);
+    filtered.sort((a,b) => new Date(b.data.createdAt||0) - new Date(a.data.createdAt||0));
+
+    const isPending = aiFilter === 'pending';
+    document.getElementById('ai-bulk-bar').style.display = isPending && filtered.length ? 'flex' : 'none';
+    document.getElementById('ai-select-all-row').style.display = isPending && filtered.length ? 'flex' : 'none';
+    document.getElementById('ai-select-all').checked = false;
+    aiSelectedIDs.clear();
+    updateAIBulkCount();
+
+    if (!filtered.length) {
+      document.getElementById('ai-list').innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px;font-size:13px">目前沒有符合條件的記錄</div>';
+      return;
+    }
+
+    document.getElementById('ai-list').innerHTML = filtered.map(({ id, data:d }) => {
+      const st = d.status || 'pending';
+      const labelMap = { pending:'⏳ 待審核', approved:'✅ 已通過', rejected:'❌ 已拒絕' };
+      const actionHTML = d.status === 'pending' ? `
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <input type="checkbox" class="bulk-checkbox ai-check" data-id="${id}" onchange="toggleAICheck('${id}',this.checked)">
+          <button class="btn btn-approve" onclick="approveAI('${id}','${d.uid}')">✅ 通過 +180元+250點</button>
+          <button class="btn btn-reject"  onclick="openReject('ai','${id}','${d.uid}')">❌ 拒絕</button>
+        </div>` : (d.status === 'rejected' && d.rejectReason ? `<div style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--red)">拒絕原因：${d.rejectReason}</div>` : '');
+      return `
+        <div class="review-item" id="ai-item-${id}">
+          <div class="review-header">
+            <div><div class="review-uid">${d.uid}</div><div class="review-date">${d.date} · ${(d.slotLabel||'')} · ${(d.createdAt||'').slice(0,16)}</div><div class="review-task">${d.slotName||''}</div></div>
+            <span class="status-badge ${st}">${labelMap[st]||st}</span>
+          </div>
+          ${d.imageBase64 ? `<img src="${d.imageBase64}" class="review-img" style="max-height:180px">` : ''}
+          ${d.note ? `<div class="review-comment">📝 ${d.note}</div>` : ''}
+          ${actionHTML}
+        </div>`;
+    }).join('');
+
+    filtered.forEach(({id, data:d}) => {
+      if (d.imageBase64) {
+        const img = document.querySelector(`#ai-item-${id} .review-img`);
+        if (img) { img.src = d.imageBase64; img.onclick = () => openLightbox(d.imageBase64); }
+      }
+    });
+  } catch(e) { document.getElementById('ai-list').innerHTML = '<div style="color:var(--red);text-align:center;padding:24px">載入失敗</div>'; }
+}
+
+window.toggleAICheck = (id, checked) => {
+  checked ? aiSelectedIDs.add(id) : aiSelectedIDs.delete(id);
+  updateAIBulkCount();
+};
+window.toggleSelectAllAI = (cb) => {
+  document.querySelectorAll('.ai-check').forEach(c => {
+    c.checked = cb.checked;
+    cb.checked ? aiSelectedIDs.add(c.dataset.id) : aiSelectedIDs.delete(c.dataset.id);
+  });
+  updateAIBulkCount();
+};
+function updateAIBulkCount() {
+  document.getElementById('ai-selected-count').textContent = `已選 ${aiSelectedIDs.size} 筆`;
+  document.getElementById('ai-bulk-approve-btn').disabled = aiSelectedIDs.size === 0;
+}
+window.clearSelectionAI = () => {
+  aiSelectedIDs.clear();
+  document.querySelectorAll('.ai-check').forEach(c => c.checked = false);
+  document.getElementById('ai-select-all').checked = false;
+  updateAIBulkCount();
+};
+
+window.bulkApproveAI = async () => {
+  if (!aiSelectedIDs.size) return;
+  const btn = document.getElementById('ai-bulk-approve-btn');
   btn.textContent = '處理中...'; btn.disabled = true;
   try {
     const docs = await fsList('ai_reviews');
-    const pending = docs.filter(({ data: d }) => d.status === 'pending');
-    if (!pending.length) { showToast('目前沒有待審核項目'); btn.textContent = '✅ 一鍵全部通過'; btn.disabled = false; return; }
+    const docsMap = Object.fromEntries(docs.map(d => [d.id, d.data]));
     let count = 0;
-    for (const { id } of pending) { try { await fsSet(`ai_reviews/${id}`, { status: 'approved' }); count++; } catch(e) { console.error(e); } }
-    showToast(`✅ 已全部通過！共 ${count} 筆`); loadAiReviews(); updateAiBadge();
-  } catch(e) { showToast('操作失敗：' + e.message, true); }
-  btn.textContent = '✅ 一鍵全部通過'; btn.disabled = false;
+    for (const id of aiSelectedIDs) {
+      const d = docsMap[id];
+      if (!d || d.status !== 'pending') continue;
+      await fsSet(`ai_reviews/${id}`, { status: 'approved' });
+      const memberData = await fsGet(`members/${d.uid}`);
+      if (memberData) {
+        const newBonus = (memberData.bonus || 0) + 180;
+        const newPts   = (memberData.pts   || 0) + 250;
+        await fsSet(`members/${d.uid}`, { bonus: newBonus, pts: newPts });
+      }
+      count++;
+    }
+    showToast(`✅ 批量通過 ${count} 筆 AI 任務！`);
+    aiSelectedIDs.clear();
+    loadAIReviews(); loadBadgeCounts();
+  } catch(e) { showToast('批量操作失敗：'+e.message, true); }
+  btn.textContent = '✅ 一鍵通過選取項目'; btn.disabled = false;
+};
+
+window.approveAI = async (reviewId, uid) => {
+  const btn = document.querySelector(`#ai-item-${reviewId} .btn-approve`);
+  if (btn) { btn.textContent='處理中...'; btn.disabled=true; }
+  try {
+    await fsSet(`ai_reviews/${reviewId}`, { status:'approved' });
+    const memberData = await fsGet(`members/${uid}`);
+    if (memberData) {
+      const newBonus = (memberData.bonus || 0) + 180;
+      const newPts   = (memberData.pts   || 0) + 250;
+      await fsSet(`members/${uid}`, { bonus: newBonus, pts: newPts });
+    }
+    showToast('✅ AI任務已通過，+180元+250點');
+    loadAIReviews(); loadBadgeCounts();
+  } catch(e) { showToast('操作失敗：'+e.message, true); if(btn){btn.textContent='✅ 通過';btn.disabled=false;} }
+};
+
+// ── Reject (shared) ──
+let rejectContext = {};
+window.openReject = (type, id, uid, taskId, date) => {
+  rejectContext = { type, id, uid, taskId, date };
+  document.getElementById('reject-reason-input').value = '';
+  document.getElementById('reject-modal').classList.add('open');
+};
+window.closeRejectModal = () => document.getElementById('reject-modal').classList.remove('open');
+document.getElementById('reject-confirm-btn').addEventListener('click', async () => {
+  const reason = document.getElementById('reject-reason-input').value.trim();
+  if (!reason) { showToast('請填寫拒絕原因', true); return; }
+  const btn = document.getElementById('reject-confirm-btn');
+  btn.textContent='處理中...'; btn.disabled=true;
+  try {
+    const { type, id, uid, taskId, date } = rejectContext;
+    if (type === 'yt') {
+      await fsSet(`pending_reviews/${id}`, { status:'rejected', rejectReason: reason });
+      const memberData = await fsGet(`members/${uid}`);
+      if (memberData) {
+        const ytReviews = memberData.ytReviews || {};
+        if (!ytReviews[taskId]) ytReviews[taskId] = {};
+        ytReviews[taskId][date] = 'rejected';
+        const ytRejectReasons = memberData.ytRejectReasons || {};
+        if (!ytRejectReasons[taskId]) ytRejectReasons[taskId] = {};
+        ytRejectReasons[taskId][date] = reason;
+        await fsSet(`members/${uid}`, { ytReviews, ytRejectReasons });
+      }
+      loadYTReviews();
+    } else if (type === 'ai') {
+      await fsSet(`ai_reviews/${id}`, { status:'rejected', rejectReason: reason });
+      loadAIReviews();
+    } else if (type === 'store') {
+      await fsSet(`store_reviews/${id}`, { status:'rejected', rejectReason: reason });
+      loadStoreReviews();
+    }
+    showToast('已拒絕並記錄原因');
+    closeRejectModal(); loadBadgeCounts();
+  } catch(e) { showToast('操作失敗：'+e.message, true); }
+  btn.textContent='確認拒絕'; btn.disabled=false;
 });
 
-document.getElementById('approve-all-store-btn').addEventListener('click', async () => {
-  if (!confirm('確定要一鍵通過所有待審核店家任務？每筆將入帳 700 元。')) return;
-  const btn = document.getElementById('approve-all-store-btn');
-  btn.textContent = '處理中...'; btn.disabled = true;
+// ── Store Reviews ──
+async function loadStoreReviews() {
+  document.getElementById('store-list').innerHTML = '<div class="loading">載入中</div>';
   try {
     const docs = await fsList('store_reviews');
-    const pending = docs.filter(({ data: d }) => d.status === 'pending');
-    if (!pending.length) { showToast('目前沒有待審核項目'); btn.textContent = '✅ 一鍵全部通過'; btn.disabled = false; return; }
-    let count = 0;
-    for (const { id, data: r } of pending) {
-      try {
-        await fsSet(`store_reviews/${id}`, { status: 'approved' });
-        const memberData = await fsGet(`members/${r.uid}`);
-        const newBonus = ((memberData && memberData.bonus) || 0) + 700;
-        await fsSet(`members/${r.uid}`, { bonus: newBonus });
-        count++;
-      } catch(e) { console.error(e); }
-    }
-    showToast(`✅ 已全部通過！共 ${count} 筆，每筆入帳 700 元`);
-    loadStoreReviews(); updateStoreBadge();
-  } catch(e) { showToast('操作失敗：' + e.message, true); }
-  btn.textContent = '✅ 一鍵全部通過'; btn.disabled = false;
-});
-
-async function rejectReview(reviewId, uid, taskId, date, reason) {
-  const btn = document.querySelector(`#actions-${reviewId} .btn-red`);
-  if (btn) { btn.textContent = '處理中...'; btn.disabled = true; }
-  try {
-    await fsSet(`pending_reviews/${reviewId}`, { status: 'rejected', rejectReason: reason });
-    if (taskId) {
-      const memberData = await fsGet(`members/${uid}`);
-      const ytReviews  = (memberData && memberData.ytReviews) || {};
-      if (!ytReviews[taskId]) ytReviews[taskId] = {};
-      ytReviews[taskId][date] = 'rejected';
-      const ytRejectReasons = (memberData && memberData.ytRejectReasons) || {};
-      if (!ytRejectReasons[taskId]) ytRejectReasons[taskId] = {};
-      ytRejectReasons[taskId][date] = reason;
-      await fsSet(`members/${uid}`, { ytReviews, ytRejectReasons });
-    }
-    showToast(`🚫 已拒絕，原因已通知前台`); loadReviews();
-  } catch(e) {
-    showToast('操作失敗：' + e.message, true);
-    if (btn) { btn.textContent = '❌ 拒絕'; btn.disabled = false; }
-  }
+    let filtered = storeFilter === 'all' ? docs : docs.filter(d => d.data.status === storeFilter);
+    filtered.sort((a,b) => new Date(b.data.createdAt||0) - new Date(a.data.createdAt||0));
+    if (!filtered.length) { document.getElementById('store-list').innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px;font-size:13px">目前沒有符合條件的記錄</div>'; return; }
+    const QUESTIONS = ['本次接待服務給您的整體感受','店內環境與氛圍體驗','印象最深刻的地方','商品／服務內容的實際感受','店內動線與整體安排','是否願意再次回訪？','如何推薦給朋友','其他建議'];
+    document.getElementById('store-list').innerHTML = filtered.map(({id, data:d}) => {
+      const st = d.status || 'pending';
+      const labelMap = { pending:'⏳ 待審核', approved:'✅ 已通過', rejected:'❌ 已拒絕' };
+      const qaHTML = QUESTIONS.map((q,i) => d[`q${i+1}`] ? `<div class="qa-item"><div class="qa-q">${i+1}. ${q}</div><div class="qa-a">${d[`q${i+1}`]}</div></div>` : '').join('');
+      const actionHTML = d.status === 'pending' ? `
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+          <button class="btn btn-approve" onclick="approveStore('${id}','${d.uid}')">✅ 通過 +700元+500點</button>
+          <button class="btn btn-reject" onclick="openReject('store','${id}','${d.uid}')">❌ 拒絕</button>
+        </div>` : '';
+      return `
+        <div class="review-item" id="store-item-${id}">
+          <div class="review-header">
+            <div><div class="review-uid">${d.uid}</div><div class="review-date">${d.date} · ${(d.createdAt||'').slice(0,16)}</div><div class="review-task">🏪 ${d.storeName||''}</div></div>
+            <span class="status-badge ${st}">${labelMap[st]||st}</span>
+          </div>
+          <div style="max-height:300px;overflow-y:auto;margin-bottom:8px">${qaHTML}</div>
+          ${d.invoiceBase64 ? `<div style="margin-bottom:8px"><div style="font-size:11px;color:var(--muted);margin-bottom:4px">🧾 發票截圖</div><img class="review-img" style="max-height:120px" id="store-inv-${id}"></div>` : ''}
+          ${d.status==='rejected'&&d.rejectReason?`<div style="background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.2);border-radius:7px;padding:8px 10px;font-size:12px;color:var(--red);margin-top:8px">拒絕原因：${d.rejectReason}</div>`:''}
+          ${actionHTML}
+        </div>`;
+    }).join('');
+    filtered.forEach(({id, data:d}) => {
+      if (d.invoiceBase64) {
+        const img = document.getElementById(`store-inv-${id}`);
+        if (img) { img.src = d.invoiceBase64; img.onclick = () => openLightbox(d.invoiceBase64); img.style.cursor='zoom-in'; }
+      }
+    });
+  } catch(e) { document.getElementById('store-list').innerHTML = '<div style="color:var(--red);text-align:center;padding:24px">載入失敗</div>'; }
 }
 
-async function loadWithdrawRequests() {
-  const list  = document.getElementById('withdraw-list');
-  const badge = document.getElementById('withdraw-badge');
-  list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:20px">載入中...</div>';
+window.approveStore = async (reviewId, uid) => {
+  const btn = document.querySelector(`#store-item-${reviewId} .btn-approve`);
+  if (btn) { btn.textContent='處理中...'; btn.disabled=true; }
+  try {
+    await fsSet(`store_reviews/${reviewId}`, { status:'approved' });
+    const memberData = await fsGet(`members/${uid}`);
+    if (memberData) {
+      const newBonus = (memberData.bonus || 0) + 700;
+      const newPts   = (memberData.pts   || 0) + 500;
+      await fsSet(`members/${uid}`, { bonus: newBonus, pts: newPts });
+    }
+    showToast('✅ 店家回饋通過，+700元+500點');
+    loadStoreReviews(); loadBadgeCounts();
+  } catch(e) { showToast('操作失敗：'+e.message, true); if(btn){btn.textContent='✅ 通過';btn.disabled=false;} }
+};
+
+// ── Withdrawals ──
+async function loadWithdrawals() {
+  document.getElementById('wd-list').innerHTML = '<div class="loading">載入中</div>';
   try {
     const docs = await fsList('withdrawal_requests');
-    const pending = docs.filter(d => d.data.status === 'pending');
-    const done    = docs.filter(d => d.data.status !== 'pending');
-    badge.textContent = pending.length;
-    badge.style.display = pending.length ? 'inline-block' : 'none';
-    list.innerHTML = '';
-    if (!docs.length) { list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:20px">目前沒有申請 🎉</div>'; return; }
-    if (pending.length) {
-      list.innerHTML += `<div class="section-title" style="margin:0 0 10px">⏳ 待確認（${pending.length} 筆）</div>`;
-      pending.forEach(({ id, data: r }) => {
-        const div = document.createElement('div');
-        div.className = 'review-card'; div.id = `wr-${id}`;
-        div.innerHTML = `
-          <div class="review-card-header">
+    let filtered = wdFilter === 'all' ? docs : docs.filter(d => d.data.status === wdFilter);
+    filtered.sort((a,b) => new Date(b.data.createdAt||0) - new Date(a.data.createdAt||0));
+    if (!filtered.length) { document.getElementById('wd-list').innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px;font-size:13px">目前沒有符合條件的記錄</div>'; return; }
+    document.getElementById('wd-list').innerHTML = filtered.map(({id, data:d}) => {
+      const isPending = d.status === 'pending';
+      return `
+        <div class="review-item" id="wd-item-${id}">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
             <div>
-              <div class="review-uid">${r.uid}</div>
-              <div class="review-meta">申請金額：<strong style="color:var(--green);font-size:15px">$${r.amount}</strong> ／ ${r.createdAt?r.createdAt.slice(0,16).replace('T',' '):''}</div>
+              <div class="review-uid">${d.uid}</div>
+              <div class="review-date">${(d.createdAt||'').slice(0,16)}</div>
+              <div style="font-size:20px;font-weight:800;color:var(--green);font-family:'Orbitron',sans-serif;margin-top:4px">$${(d.amount||0).toLocaleString()} 元</div>
             </div>
-            <span class="review-status pending">⏳ 待確認</span>
+            <span class="status-badge ${isPending?'pending':'approved'}">${isPending?'⏳ 待確認':'✅ 已確認'}</span>
           </div>
-          <div class="review-actions">
-            <button class="btn btn-green" data-wid="${id}" data-uid="${r.uid}" data-amt="${r.amount}" data-action="confirm">✅ 確認發放，扣除 $${r.amount}</button>
-            <button class="btn btn-red"   data-wid="${id}" data-uid="${r.uid}" data-amt="${r.amount}" data-action="reject">❌ 拒絕</button>
-          </div>`;
-        list.appendChild(div);
-      });
-    }
-    if (done.length) {
-      list.innerHTML += `<div class="section-title" style="margin:16px 0 10px">✅ 已處理（最近 ${Math.min(done.length,20)} 筆）</div>`;
-      done.slice(-20).reverse().forEach(({ data: r }) => {
-        const isPaid = r.status === 'confirmed';
-        list.innerHTML += `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(0,100,255,0.08)"><div><div style="font-weight:700;color:var(--accent2)">${r.uid}</div><div style="font-size:11px;color:var(--muted)">$${r.amount} ／ ${r.confirmedAt?r.confirmedAt.slice(0,16).replace('T',' '):r.createdAt?.slice(0,16).replace('T',' ')||''}</div></div><span class="review-status ${isPaid?'approved':'rejected'}">${isPaid?'✅ 已發放':'❌ 已拒絕'}</span></div>`;
-      });
-    }
-    list.querySelectorAll('[data-action]').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const { action, wid, uid, amt } = btn.dataset;
-        btn.disabled = true;
-        if (action === 'confirm') await confirmWithdraw(wid, uid, parseInt(amt));
-        if (action === 'reject')  await rejectWithdraw(wid, uid);
-      });
-    });
-  } catch(e) { list.innerHTML = `<div style="color:var(--red);text-align:center;padding:20px">讀取失敗：${e.message}</div>`; }
+          ${isPending ? `
+            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+              <button class="btn btn-approve" onclick="approveWD('${id}','${d.uid}',${d.amount})">✅ 確認提領，扣除旅遊獎金</button>
+              <button class="btn btn-reject" onclick="rejectWD('${id}')">❌ 拒絕</button>
+            </div>` : ''}
+        </div>`;
+    }).join('');
+  } catch(e) { document.getElementById('wd-list').innerHTML = '<div style="color:var(--red);text-align:center;padding:24px">載入失敗</div>'; }
 }
 
-async function confirmWithdraw(wid, uid, amount) {
+window.approveWD = async (wdId, uid, amount) => {
+  const btn = document.querySelector(`#wd-item-${wdId} .btn-approve`);
+  if (btn) { btn.textContent='處理中...'; btn.disabled=true; }
   try {
     const memberData = await fsGet(`members/${uid}`);
-    const bonus = (memberData && memberData.bonus) || 0;
-    if (amount > bonus) { showToast(`⚠️ ${uid} 獎金不足（餘額 $${bonus}）`, true); loadWithdrawRequests(); return; }
-    const newBonus = bonus - amount;
+    if (!memberData) { showToast('找不到會員', true); return; }
+    const newBonus = Math.max(0, (memberData.bonus||0) - amount);
     await fsSet(`members/${uid}`, { bonus: newBonus });
-    await fsSet(`withdrawal_requests/${wid}`, { status: 'confirmed', confirmedAt: new Date().toISOString(), bonusAfter: newBonus });
-    showToast(`✅ 已確認發放 $${amount}，${uid} 剩餘 $${newBonus}`);
-    loadWithdrawRequests(); loadAdminMembers();
-  } catch(e) { showToast('操作失敗：' + e.message, true); }
-}
+    await fsSet(`withdrawal_requests/${wdId}`, { status:'approved', approvedAt: new Date().toISOString() });
+    showToast(`✅ 已確認提領，扣除 $${amount.toLocaleString()} 元`);
+    loadWithdrawals(); loadBadgeCounts();
+  } catch(e) { showToast('操作失敗：'+e.message, true); if(btn){btn.textContent='✅ 確認';btn.disabled=false;} }
+};
 
-async function rejectWithdraw(wid, uid) {
-  try {
-    await fsSet(`withdrawal_requests/${wid}`, { status: 'rejected', confirmedAt: new Date().toISOString() });
-    showToast(`🚫 已拒絕 ${uid} 的申請`); loadWithdrawRequests();
-  } catch(e) { showToast('操作失敗：' + e.message, true); }
-}
+window.rejectWD = async (wdId) => {
+  if (!confirm('確定要拒絕此提領申請？')) return;
+  await fsSet(`withdrawal_requests/${wdId}`, { status:'rejected' });
+  showToast('已拒絕提領申請');
+  loadWithdrawals(); loadBadgeCounts();
+};
 
-async function loadMemberStats() {
+// ── Members ──
+window.loadMembers = async () => {
+  document.getElementById('members-list').innerHTML = '<div class="loading">載入中</div>';
   try {
     const docs = await fsList('members');
-    const list = document.getElementById('stats-list');
-    list.innerHTML = '';
-    const today = todayStr();
-    const members = [];
-    docs.forEach(({ id: uid, data: d }) => {
-      const checkins = d.checkins || {};
-      const total = Object.keys(checkins).filter(k => checkins[k]).length;
-      let streak = 0, dt = new Date(today);
-      while (checkins[dateStr(dt)]) { streak++; dt.setDate(dt.getDate() - 1); }
-      members.push({ uid, total, streak, checkedToday: !!checkins[today] });
-    });
-    members.sort((a, b) => b.total - a.total);
-    if (!members.length) { list.innerHTML = '<div style="color:var(--muted);text-align:center;padding:20px">尚無資料</div>'; return; }
-    members.forEach((m, i) => {
-      list.innerHTML += `<div class="member-row"><div><div class="member-uid">#${i+1} ${m.uid} ${m.checkedToday?'<span style="color:var(--green);font-size:10px;margin-left:6px">● 今日已簽</span>':''}</div><div class="member-info">累積 ${m.total} 天 ｜ 連續 ${m.streak} 天</div></div></div>`;
-    });
-  } catch(e) { showToast('讀取統計失敗：' + e.message, true); }
+    docs.sort((a,b) => (a.id > b.id ? 1 : -1));
+    if (!docs.length) { document.getElementById('members-list').innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px">尚無會員資料</div>'; return; }
+    document.getElementById('members-list').innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>UID</th><th>姓名</th><th>密碼</th><th>旅遊獎金</th><th>點數</th><th>簽到天數</th><th>連續天數</th><th>操作</th></tr></thead>
+          <tbody>${docs.map(({id, data:d}) => {
+            const checkins = d.checkins || {};
+            const totalCI = Object.values(checkins).filter(Boolean).length;
+            const today = new Date().toISOString().split('T')[0];
+            let streak = 0, dt = new Date(today);
+            while (checkins[dt.toISOString().split('T')[0]]) { streak++; dt.setDate(dt.getDate()-1); }
+            return `<tr>
+              <td><code style="color:var(--accent2);font-weight:700">${id}</code></td>
+              <td>${d.name||'—'}</td>
+              <td><code style="color:var(--muted);font-size:11px">${d.password||''}</code></td>
+              <td><span style="color:var(--green);font-weight:700">$${(d.bonus||0).toLocaleString()}</span></td>
+              <td><span style="color:var(--purple);font-weight:700">${(d.pts||0).toLocaleString()}</span></td>
+              <td>${totalCI}</td>
+              <td>${streak}</td>
+              <td><button class="btn btn-secondary" style="font-size:11px;padding:5px 10px" onclick="resetMemberPW('${id}')">重設密碼</button></td>
+            </tr>`;
+          }).join('')}</tbody>
+        </table>
+      </div>`;
+  } catch(e) { document.getElementById('members-list').innerHTML = '<div style="color:var(--red);text-align:center;padding:24px">載入失敗</div>'; }
+};
+
+window.resetMemberPW = async (uid) => {
+  const newPW = prompt(`重設 ${uid} 的密碼（新密碼至少6位）：`);
+  if (!newPW || newPW.length < 6) { if (newPW !== null) showToast('密碼至少需6位', true); return; }
+  await fsSet(`members/${uid}`, { password: newPW });
+  showToast(`✅ ${uid} 密碼已重設`);
+  loadMembers();
+};
+
+window.openAddMemberModal = () => {
+  document.getElementById('new-uid').value = '';
+  document.getElementById('new-pw').value = '';
+  document.getElementById('new-name').value = '';
+  document.getElementById('add-member-error').style.display = 'none';
+  document.getElementById('add-member-modal').classList.add('open');
+};
+
+window.addMember = async () => {
+  const uid = document.getElementById('new-uid').value.trim().toUpperCase();
+  const pw  = document.getElementById('new-pw').value.trim();
+  const name = document.getElementById('new-name').value.trim();
+  const err = document.getElementById('add-member-error');
+  err.style.display = 'none';
+  if (!uid || !pw) { err.textContent = '請填寫UID和密碼'; err.style.display='block'; return; }
+  if (pw.length < 4) { err.textContent = '密碼至少4位'; err.style.display='block'; return; }
+  try {
+    const existing = await fsGet(`members/${uid}`);
+    if (existing) { err.textContent = `${uid} 已存在`; err.style.display='block'; return; }
+    await fsSet(`members/${uid}`, { password: pw, name: name || uid, bonus: 0, pts: 0, checkins: {}, createdAt: new Date().toISOString() });
+    showToast(`✅ 會員 ${uid} 新增成功`);
+    document.getElementById('add-member-modal').classList.remove('open');
+    loadMembers();
+  } catch(e) { err.textContent = '新增失敗：'+e.message; err.style.display='block'; }
+};
+
+// ── YT Tasks ──
+window.loadYTTasks = async () => {
+  document.getElementById('yttasks-list').innerHTML = '<div class="loading">載入中</div>';
+  try {
+    const docs = await fsList('yt_tasks');
+    if (!docs.length) { document.getElementById('yttasks-list').innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px">尚無 YT 任務，請新增</div>'; return; }
+    document.getElementById('yttasks-list').innerHTML = docs.map(({id, data:d}) => `
+      <div class="card green" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px">▶️ ${d.name||''}</div>
+          <a href="${d.url||'#'}" target="_blank" style="font-size:11px;color:var(--accent2);text-decoration:none">${(d.url||'').slice(0,50)}…</a>
+        </div>
+        <button class="btn btn-reject" style="font-size:11px;padding:6px 12px" onclick="deleteYTTask('${id}')">🗑️ 刪除</button>
+      </div>`).join('');
+  } catch(e) { document.getElementById('yttasks-list').innerHTML = '<div style="color:var(--red);text-align:center;padding:24px">載入失敗</div>'; }
+};
+
+window.openAddYTTaskModal = () => {
+  document.getElementById('yt-task-name').value = '';
+  document.getElementById('yt-task-url').value = '';
+  document.getElementById('add-yt-error').style.display = 'none';
+  document.getElementById('add-yt-modal').classList.add('open');
+};
+
+window.addYTTask = async () => {
+  const name = document.getElementById('yt-task-name').value.trim();
+  const url  = document.getElementById('yt-task-url').value.trim();
+  const err  = document.getElementById('add-yt-error');
+  err.style.display = 'none';
+  if (!name || !url) { err.textContent = '請填寫名稱和連結'; err.style.display='block'; return; }
+  try {
+    const taskId = `yt_${Date.now()}`;
+    await fsSet(`yt_tasks/${taskId}`, { name, url, createdAt: new Date().toISOString() });
+    showToast('✅ YT任務新增成功');
+    document.getElementById('add-yt-modal').classList.remove('open');
+    loadYTTasks();
+  } catch(e) { err.textContent = '新增失敗：'+e.message; err.style.display='block'; }
+};
+
+window.deleteYTTask = async (taskId) => {
+  if (!confirm('確定刪除此 YT 任務？')) return;
+  await fsDelete(`yt_tasks/${taskId}`);
+  showToast('已刪除 YT 任務');
+  loadYTTasks();
+};
+
+// ── AI Config ──
+async function loadAIConfig() {
+  try {
+    const config = await fsGet('ai_config/today');
+    document.getElementById('ai-slot1').value = config?.slot1 || '';
+    document.getElementById('ai-slot2').value = config?.slot2 || '';
+    document.getElementById('ai-config-display').innerHTML = config ? `
+      <div class="ann-active">
+        <div style="font-size:13px;font-weight:700;color:var(--green);margin-bottom:8px">✅ 今日時段已設定</div>
+        <div style="font-size:12px;color:var(--text);margin-bottom:4px">時段一：${config.slot1||'（未設定）'}</div>
+        <div style="font-size:12px;color:var(--text)">時段二：${config.slot2||'（未設定）'}</div>
+      </div>` : '<div style="color:var(--muted);font-size:12px;padding:10px">尚未設定今日時段</div>';
+  } catch(e) {}
 }
+
+window.saveAIConfig = async () => {
+  const slot1 = document.getElementById('ai-slot1').value.trim();
+  const slot2 = document.getElementById('ai-slot2').value.trim();
+  try {
+    await fsSet('ai_config/today', { slot1, slot2, updatedAt: new Date().toISOString() });
+    showToast('✅ AI時段設定已儲存');
+    loadAIConfig();
+  } catch(e) { showToast('儲存失敗：'+e.message, true); }
+};
+
+// ── Points ──
+async function loadPtsOverview() {
+  document.getElementById('pts-list').innerHTML = '<div class="loading">載入中</div>';
+  try {
+    const docs = await fsList('members');
+    docs.sort((a,b) => (b.data.pts||0) - (a.data.pts||0));
+    document.getElementById('pts-list').innerHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>UID</th><th>姓名</th><th>點數</th><th>旅遊獎金</th></tr></thead>
+          <tbody>${docs.map(({id, data:d}) => `<tr>
+            <td><code style="color:var(--accent2)">${id}</code></td>
+            <td>${d.name||'—'}</td>
+            <td><span style="color:var(--purple);font-weight:800;font-size:14px">${(d.pts||0).toLocaleString()}</span></td>
+            <td><span style="color:var(--green);font-weight:700">$${(d.bonus||0).toLocaleString()}</span></td>
+          </tr>`).join('')}</tbody>
+        </table>
+      </div>`;
+  } catch(e) { document.getElementById('pts-list').innerHTML = '<div style="color:var(--red);text-align:center;padding:24px">載入失敗</div>'; }
+}
+
+window.adjustPts = async () => {
+  const uid = document.getElementById('pts-uid').value.trim().toUpperCase();
+  const amount = parseInt(document.getElementById('pts-amount').value);
+  const note = document.getElementById('pts-note').value.trim();
+  if (!uid || isNaN(amount)) { showToast('請填寫UID和點數', true); return; }
+  try {
+    const memberData = await fsGet(`members/${uid}`);
+    if (!memberData) { showToast('找不到此會員', true); return; }
+    const newPts = Math.max(0, (memberData.pts || 0) + amount);
+    await fsSet(`members/${uid}`, { pts: newPts });
+    // Log
+    await fsSet(`pts_log/${uid}_${Date.now()}`, { uid, amount, note, before: memberData.pts||0, after: newPts, createdAt: new Date().toISOString() });
+    showToast(`✅ ${uid} 點數已調整 ${amount>0?'+':''}${amount}，現有 ${newPts} 點`);
+    document.getElementById('pts-uid').value = '';
+    document.getElementById('pts-amount').value = '';
+    document.getElementById('pts-note').value = '';
+    loadPtsOverview();
+  } catch(e) { showToast('調整失敗：'+e.message, true); }
+};
 </script>
-
-<div id="reject-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center">
-  <div style="background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:24px;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,0.3)">
-    <div style="font-weight:700;font-size:16px;color:var(--red);margin-bottom:14px">❌ 選擇拒絕原因</div>
-    <div style="font-size:13px;color:var(--muted);margin-bottom:10px">此原因將顯示給前台會員查看</div>
-    <select id="reject-reason-input" style="width:100%;padding:12px 14px;background:var(--surface2);border:1px solid var(--border2);border-radius:9px;color:var(--text);font-size:14px;font-family:inherit;outline:none;cursor:pointer">
-      <option value="">── 請選擇原因 ──</option>
-      <option value="退回原因：截圖畫面不完整">退回原因：截圖畫面不完整</option>
-      <option value="退回原因：未按訂閱與讚">退回原因：未按訂閱與讚</option>
-      <option value="退回原因：未填寫心得">退回原因：未填寫心得</option>
-      <option value="退回原因：心得填寫過於簡短">退回原因：心得填寫過於簡短</option>
-    </select>
-    <div style="display:flex;gap:10px;margin-top:14px">
-      <button id="reject-cancel-btn" class="btn" style="flex:1;background:var(--surface2);color:var(--muted)">取消</button>
-      <button id="reject-confirm-btn" class="btn btn-red" style="flex:1">確認拒絕</button>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
