@@ -223,10 +223,10 @@ textarea.form-input{resize:vertical;min-height:80px}
 
   <div class="nav-tabs">
     <button class="nav-tab active" data-tab="tab-dashboard">📊 總覽</button>
-    <button class="nav-tab" data-tab="tab-yt">▶️ YT審核 <span class="badge" id="badge-yt">0</span></button>
-    <button class="nav-tab" data-tab="tab-ai">🤖 AI審核 <span class="badge" id="badge-ai">0</span></button>
-    <button class="nav-tab" data-tab="tab-store">🏪 店家審核 <span class="badge" id="badge-store">0</span></button>
-    <button class="nav-tab" data-tab="tab-withdraw">✈️ 提領申請 <span class="badge" id="badge-wd">0</span></button>
+    <button class="nav-tab" data-tab="tab-yt">▶️ YT審核 <span class="badge" id="badge-yt" style="display:none"></span></button>
+    <button class="nav-tab" data-tab="tab-ai">🤖 AI審核 <span class="badge" id="badge-ai" style="display:none"></span></button>
+    <button class="nav-tab" data-tab="tab-store">🏪 店家審核 <span class="badge" id="badge-store" style="display:none"></span></button>
+    <button class="nav-tab" data-tab="tab-withdraw">✈️ 提領申請 <span class="badge" id="badge-wd" style="display:none"></span></button>
     <button class="nav-tab" data-tab="tab-members">👥 會員管理</button>
     <button class="nav-tab" data-tab="tab-yttasks">📋 YT任務設定</button>
     <button class="nav-tab" data-tab="tab-aiconfig">⚙️ AI時段設定</button>
@@ -242,22 +242,25 @@ textarea.form-input{resize:vertical;min-height:80px}
 
   <!-- YT 審核 -->
   <div class="tab-pane" id="tab-yt">
-    <div class="filter-bar">
-      <span style="font-size:12px;color:var(--muted);font-weight:600">篩選：</span>
-      <button class="filter-chip active" data-filter="pending" onclick="setFilter('yt','pending',this)">⏳ 待審核</button>
-      <button class="filter-chip" data-filter="approved" onclick="setFilter('yt','approved',this)">✅ 已通過</button>
-      <button class="filter-chip" data-filter="rejected" onclick="setFilter('yt','rejected',this)">❌ 已拒絕</button>
-      <button class="filter-chip" data-filter="all" onclick="setFilter('yt','all',this)">全部</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <div class="filter-bar" style="margin-bottom:0">
+        <span style="font-size:12px;color:var(--muted);font-weight:600">篩選：</span>
+        <button class="filter-chip active" data-filter="pending" onclick="setFilter('yt','pending',this)">⏳ 待審核</button>
+        <button class="filter-chip" data-filter="approved" onclick="setFilter('yt','approved',this)">✅ 已通過</button>
+        <button class="filter-chip" data-filter="rejected" onclick="setFilter('yt','rejected',this)">❌ 已拒絕</button>
+        <button class="filter-chip" data-filter="all" onclick="setFilter('yt','all',this)">全部</button>
+      </div>
+      <button class="btn btn-bulk" onclick="approveAllYTPending()" style="white-space:nowrap;padding:9px 18px;font-size:13px">⚡ 一鍵全部通過</button>
     </div>
     <!-- Bulk approve bar for YT -->
     <div class="bulk-bar" id="yt-bulk-bar" style="display:none">
       <div class="bulk-bar-info">
-        <div class="title">🚀 批量一鍵通過</div>
-        <div class="desc">勾選項目後可一次全部審核通過，每筆入帳 <strong style="color:var(--green)">+200元旅遊獎金 ＋ +200點</strong></div>
+        <div class="title">🚀 批量勾選通過</div>
+        <div class="desc">勾選項目後可一次審核通過，每筆入帳 <strong style="color:var(--green)">+200元旅遊獎金 ＋ +200點</strong></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span id="yt-selected-count" style="font-size:12px;font-weight:700;color:var(--green)">已選 0 筆</span>
-        <button class="btn btn-bulk" id="yt-bulk-approve-btn" onclick="bulkApproveYT()">✅ 一鍵通過選取項目</button>
+        <button class="btn btn-bulk" id="yt-bulk-approve-btn" onclick="bulkApproveYT()">✅ 通過選取項目</button>
         <button class="btn btn-secondary" onclick="clearSelectionYT()">取消選取</button>
       </div>
     </div>
@@ -270,22 +273,25 @@ textarea.form-input{resize:vertical;min-height:80px}
 
   <!-- AI 審核 -->
   <div class="tab-pane" id="tab-ai">
-    <div class="filter-bar">
-      <span style="font-size:12px;color:var(--muted);font-weight:600">篩選：</span>
-      <button class="filter-chip active" data-filter="pending" onclick="setFilter('ai','pending',this)">⏳ 待審核</button>
-      <button class="filter-chip" data-filter="approved" onclick="setFilter('ai','approved',this)">✅ 已通過</button>
-      <button class="filter-chip" data-filter="rejected" onclick="setFilter('ai','rejected',this)">❌ 已拒絕</button>
-      <button class="filter-chip" data-filter="all" onclick="setFilter('ai','all',this)">全部</button>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+      <div class="filter-bar" style="margin-bottom:0">
+        <span style="font-size:12px;color:var(--muted);font-weight:600">篩選：</span>
+        <button class="filter-chip active" data-filter="pending" onclick="setFilter('ai','pending',this)">⏳ 待審核</button>
+        <button class="filter-chip" data-filter="approved" onclick="setFilter('ai','approved',this)">✅ 已通過</button>
+        <button class="filter-chip" data-filter="rejected" onclick="setFilter('ai','rejected',this)">❌ 已拒絕</button>
+        <button class="filter-chip" data-filter="all" onclick="setFilter('ai','all',this)">全部</button>
+      </div>
+      <button class="btn btn-bulk" onclick="approveAllAIPending()" style="white-space:nowrap;padding:9px 18px;font-size:13px">⚡ 一鍵全部通過</button>
     </div>
     <!-- Bulk approve bar for AI -->
     <div class="bulk-bar" id="ai-bulk-bar" style="display:none">
       <div class="bulk-bar-info">
-        <div class="title">🚀 批量一鍵通過</div>
-        <div class="desc">勾選項目後可一次全部審核通過，每筆入帳 <strong style="color:var(--green)">+180元起旅遊獎金 ＋ +250點</strong></div>
+        <div class="title">🚀 批量勾選通過</div>
+        <div class="desc">勾選項目後可一次審核通過，每筆入帳 <strong style="color:var(--green)">+180元起旅遊獎金 ＋ +250點</strong></div>
       </div>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <span id="ai-selected-count" style="font-size:12px;font-weight:700;color:var(--green)">已選 0 筆</span>
-        <button class="btn btn-bulk" id="ai-bulk-approve-btn" onclick="bulkApproveAI()">✅ 一鍵通過選取項目</button>
+        <button class="btn btn-bulk" id="ai-bulk-approve-btn" onclick="bulkApproveAI()">✅ 通過選取項目</button>
         <button class="btn btn-secondary" onclick="clearSelectionAI()">取消選取</button>
       </div>
     </div>
@@ -574,10 +580,15 @@ async function loadBadgeCounts() {
     const [ytDocs, aiDocs, storeDocs, wdDocs] = await Promise.all([
       fsList('pending_reviews'), fsList('ai_reviews'), fsList('store_reviews'), fsList('withdrawal_requests')
     ]);
-    document.getElementById('badge-yt').textContent = ytDocs.filter(d => d.data.status === 'pending').length;
-    document.getElementById('badge-ai').textContent = aiDocs.filter(d => d.data.status === 'pending').length;
-    document.getElementById('badge-store').textContent = storeDocs.filter(d => d.data.status === 'pending').length;
-    document.getElementById('badge-wd').textContent = wdDocs.filter(d => d.data.status === 'pending').length;
+    const setBadge = (id, count) => {
+      const el = document.getElementById(id);
+      el.textContent = count;
+      el.style.display = count > 0 ? 'inline-block' : 'none';
+    };
+    setBadge('badge-yt',    ytDocs.filter(d => d.data.status === 'pending').length);
+    setBadge('badge-ai',    aiDocs.filter(d => d.data.status === 'pending').length);
+    setBadge('badge-store', storeDocs.filter(d => d.data.status === 'pending').length);
+    setBadge('badge-wd',    wdDocs.filter(d => d.data.status === 'pending').length);
   } catch(e) {}
 }
 
@@ -700,6 +711,55 @@ window.clearSelectionYT = () => {
   document.querySelectorAll('.yt-check').forEach(c => c.checked = false);
   document.getElementById('yt-select-all').checked = false;
   updateYTBulkCount();
+};
+
+window.approveAllYTPending = async () => {
+  const docs = await fsList('pending_reviews');
+  const pending = docs.filter(d => d.data.status === 'pending');
+  if (!pending.length) { showToast('目前沒有待審核的 YT 任務', true); return; }
+  if (!confirm(`確定一鍵通過全部 ${pending.length} 筆 YT 待審核任務？每筆 +200元 +200點`)) return;
+  const btn = document.querySelector('#tab-yt .btn-bulk');
+  if (btn) { btn.textContent='處理中...'; btn.disabled=true; }
+  try {
+    let count = 0;
+    for (const { id, data:d } of pending) {
+      await fsSet(`pending_reviews/${id}`, { status:'approved' });
+      const memberData = await fsGet(`members/${d.uid}`);
+      if (memberData) {
+        const ytReviews = memberData.ytReviews || {};
+        if (!ytReviews[d.taskId]) ytReviews[d.taskId] = {};
+        ytReviews[d.taskId][d.date] = 'approved';
+        await fsSet(`members/${d.uid}`, { ytReviews, bonus:(memberData.bonus||0)+200, pts:(memberData.pts||0)+200 });
+      }
+      count++;
+    }
+    showToast(`⚡ 一鍵通過全部 ${count} 筆 YT 任務！`);
+    loadYTReviews(); loadBadgeCounts();
+  } catch(e) { showToast('操作失敗：'+e.message, true); }
+  if (btn) { btn.textContent='⚡ 一鍵全部通過'; btn.disabled=false; }
+};
+
+window.approveAllAIPending = async () => {
+  const docs = await fsList('ai_reviews');
+  const pending = docs.filter(d => d.data.status === 'pending');
+  if (!pending.length) { showToast('目前沒有待審核的 AI 任務', true); return; }
+  if (!confirm(`確定一鍵通過全部 ${pending.length} 筆 AI 待審核任務？每筆 +180元 +250點`)) return;
+  const btn = document.querySelector('#tab-ai .btn-bulk');
+  if (btn) { btn.textContent='處理中...'; btn.disabled=true; }
+  try {
+    let count = 0;
+    for (const { id, data:d } of pending) {
+      await fsSet(`ai_reviews/${id}`, { status:'approved' });
+      const memberData = await fsGet(`members/${d.uid}`);
+      if (memberData) {
+        await fsSet(`members/${d.uid}`, { bonus:(memberData.bonus||0)+180, pts:(memberData.pts||0)+250 });
+      }
+      count++;
+    }
+    showToast(`⚡ 一鍵通過全部 ${count} 筆 AI 任務！`);
+    loadAIReviews(); loadBadgeCounts();
+  } catch(e) { showToast('操作失敗：'+e.message, true); }
+  if (btn) { btn.textContent='⚡ 一鍵全部通過'; btn.disabled=false; }
 };
 
 window.bulkApproveYT = async () => {
