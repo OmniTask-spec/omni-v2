@@ -107,6 +107,8 @@ body::after{content:'';position:fixed;inset:0;z-index:0;
 .btn-warning{background:linear-gradient(135deg,#b45309,var(--yellow));color:#fff}
 .btn-bulk{background:linear-gradient(135deg,#065f46,var(--green));color:#fff;padding:9px 18px;border-radius:9px;font-size:13px}
 .btn-bulk:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 16px rgba(16,185,129,0.35)}
+.btn-danger{background:linear-gradient(135deg,#9f1239,var(--red));color:#fff}
+.btn-danger:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 14px rgba(244,63,94,0.3)}
 
 .reject-input{width:100%;padding:8px 12px;background:rgba(22,27,34,0.8);border:1px solid rgba(244,63,94,0.4);border-radius:7px;color:var(--text);font-size:12px;font-family:inherit;outline:none;margin-top:6px}
 .reject-input::placeholder{color:rgba(125,133,144,0.6)}
@@ -135,6 +137,10 @@ tr:hover td{background:rgba(56,68,82,0.2)}
 .section-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin:20px 0 10px;display:flex;align-items:center;gap:8px}
 .section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
 
+/* Two-panel grid for pts tab */
+.pts-panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+@media(max-width:700px){.pts-panels{grid-template-columns:1fr}}
+
 /* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:20px}
 .modal-overlay.open{display:flex}
@@ -154,6 +160,8 @@ tr:hover td{background:rgba(56,68,82,0.2)}
 .form-input:focus{border-color:var(--accent)}
 .form-input::placeholder{color:rgba(125,133,144,0.5)}
 textarea.form-input{resize:vertical;min-height:80px}
+.form-input-danger{border-color:rgba(244,63,94,0.5)!important}
+.form-input-danger:focus{border-color:var(--red)!important;box-shadow:0 0 0 3px rgba(244,63,94,0.12)}
 
 /* Toast */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(10px);background:linear-gradient(135deg,#059669,var(--green));color:#fff;padding:12px 28px;border-radius:30px;font-weight:700;font-size:13px;opacity:0;transition:opacity .3s,transform .3s;z-index:99998;pointer-events:none;box-shadow:0 4px 24px rgba(16,185,129,0.4);white-space:nowrap}
@@ -185,6 +193,9 @@ textarea.form-input{resize:vertical;min-height:80px}
 
 /* Announcement */
 .ann-active{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+
+/* Bonus deduct card accent */
+.card.red-card::before{background:linear-gradient(90deg,var(--red),#fb7185)}
 </style>
 </head>
 <body>
@@ -252,7 +263,6 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
       <button class="btn btn-bulk" onclick="approveAllYTPending()" style="white-space:nowrap;padding:9px 18px;font-size:13px">⚡ 一鍵全部通過</button>
     </div>
-    <!-- Bulk approve bar for YT -->
     <div class="bulk-bar" id="yt-bulk-bar" style="display:none">
       <div class="bulk-bar-info">
         <div class="title">🚀 批量勾選通過</div>
@@ -283,7 +293,6 @@ textarea.form-input{resize:vertical;min-height:80px}
       </div>
       <button class="btn btn-bulk" onclick="approveAllAIPending()" style="white-space:nowrap;padding:9px 18px;font-size:13px">⚡ 一鍵全部通過</button>
     </div>
-    <!-- Bulk approve bar for AI -->
     <div class="bulk-bar" id="ai-bulk-bar" style="display:none">
       <div class="bulk-bar-info">
         <div class="title">🚀 批量勾選通過</div>
@@ -362,28 +371,53 @@ textarea.form-input{resize:vertical;min-height:80px}
     <div id="ai-config-display"></div>
   </div>
 
-  <!-- 點數管理 -->
+  <!-- ═══ 點數管理（含獎金管理）═══ -->
   <div class="tab-pane" id="tab-pts">
-    <div class="card blue" style="max-width:500px;margin-bottom:16px">
-      <div style="font-size:14px;font-weight:700;margin-bottom:4px">💎 手動調整點數</div>
-      <div style="font-size:11px;color:var(--muted);margin-bottom:14px">直接加減會員點數（用於補點或修正）</div>
-      <div class="form-group">
-        <label class="form-label">會員UID</label>
-        <input class="form-input" id="pts-uid" placeholder="例：U001">
+
+    <div class="pts-panels">
+      <!-- 左：手動調整點數 -->
+      <div class="card blue" style="margin-bottom:0">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px">💎 手動調整點數</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:14px">直接加減會員點數（用於補點或修正）</div>
+        <div class="form-group">
+          <label class="form-label">會員UID</label>
+          <input class="form-input" id="pts-uid" placeholder="例：U001">
+        </div>
+        <div class="form-group">
+          <label class="form-label">調整點數（正數加點，負數扣點）</label>
+          <input class="form-input" id="pts-amount" type="number" placeholder="例：500 或 -100">
+        </div>
+        <div class="form-group">
+          <label class="form-label">備註說明</label>
+          <input class="form-input" id="pts-note" placeholder="例：補發YT任務點數">
+        </div>
+        <button class="btn btn-primary" onclick="adjustPts()" style="width:100%;padding:12px">確認調整點數</button>
       </div>
-      <div class="form-group">
-        <label class="form-label">調整點數（正數加點，負數扣點）</label>
-        <input class="form-input" id="pts-amount" type="number" placeholder="例：500 或 -100">
+
+      <!-- 右：手動調整旅遊獎金 -->
+      <div class="card red" style="margin-bottom:0">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px">💰 手動調整旅遊獎金</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:14px">直接加減會員旅遊獎金金額（用於補發或扣除）</div>
+        <div class="form-group">
+          <label class="form-label">會員UID</label>
+          <input class="form-input" id="bonus-uid" placeholder="例：U001">
+        </div>
+        <div class="form-group">
+          <label class="form-label">調整金額（正數增加，負數扣除）</label>
+          <input class="form-input form-input-danger" id="bonus-amount" type="number" placeholder="例：200 或 -500">
+        </div>
+        <div class="form-group">
+          <label class="form-label">備註說明</label>
+          <input class="form-input" id="bonus-note" placeholder="例：誤發補扣 / 活動額外補發">
+        </div>
+        <button class="btn btn-danger" onclick="adjustBonus()" style="width:100%;padding:12px">確認調整旅遊獎金</button>
       </div>
-      <div class="form-group">
-        <label class="form-label">備註說明</label>
-        <input class="form-input" id="pts-note" placeholder="例：補發YT任務點數">
-      </div>
-      <button class="btn btn-primary" onclick="adjustPts()" style="width:100%;padding:12px">確認調整點數</button>
     </div>
-    <div class="section-title">📊 會員點數總覽</div>
+
+    <div class="section-title">📊 會員點數與獎金總覽</div>
     <div id="pts-list"><div class="loading">載入中</div></div>
   </div>
+
 </div>
 
 <!-- Image Lightbox -->
@@ -560,7 +594,6 @@ let ytSelectedIDs = new Set();
 let aiSelectedIDs = new Set();
 
 window.setFilter = (type, val, el) => {
-  const prefix = type === 'wd' ? 'wd' : type;
   document.querySelectorAll(`#tab-${type === 'wd' ? 'withdraw' : type} .filter-chip`).forEach(c => c.classList.remove('active'));
   el.classList.add('active');
   if (type === 'yt') { ytFilter = val; ytSelectedIDs.clear(); loadYTReviews(); }
@@ -681,7 +714,6 @@ async function loadYTReviews() {
         </div>`;
     }).join('');
 
-    // Fix lightbox for full base64
     filtered.forEach(({id, data:d}) => {
       if (d.imageBase64) {
         const img = document.querySelector(`#yt-item-${id} .review-img`);
@@ -779,9 +811,7 @@ window.bulkApproveYT = async () => {
         const ytReviews = memberData.ytReviews || {};
         if (!ytReviews[d.taskId]) ytReviews[d.taskId] = {};
         ytReviews[d.taskId][d.date] = 'approved';
-        const newBonus = (memberData.bonus || 0) + 200;
-        const newPts   = (memberData.pts   || 0) + 200;
-        await fsSet(`members/${d.uid}`, { ytReviews, bonus: newBonus, pts: newPts });
+        await fsSet(`members/${d.uid}`, { ytReviews, bonus: (memberData.bonus||0)+200, pts: (memberData.pts||0)+200 });
       }
       count++;
     }
@@ -802,9 +832,7 @@ window.approveYT = async (reviewId, uid, taskId, date) => {
       const ytReviews = memberData.ytReviews || {};
       if (!ytReviews[taskId]) ytReviews[taskId] = {};
       ytReviews[taskId][date] = 'approved';
-      const newBonus = (memberData.bonus || 0) + 200;
-      const newPts   = (memberData.pts   || 0) + 200;
-      await fsSet(`members/${uid}`, { ytReviews, bonus: newBonus, pts: newPts });
+      await fsSet(`members/${uid}`, { ytReviews, bonus: (memberData.bonus||0)+200, pts: (memberData.pts||0)+200 });
     }
     showToast('✅ YT任務已通過，+200元+200點');
     loadYTReviews(); loadBadgeCounts();
@@ -898,9 +926,7 @@ window.bulkApproveAI = async () => {
       await fsSet(`ai_reviews/${id}`, { status: 'approved' });
       const memberData = await fsGet(`members/${d.uid}`);
       if (memberData) {
-        const newBonus = (memberData.bonus || 0) + 180;
-        const newPts   = (memberData.pts   || 0) + 250;
-        await fsSet(`members/${d.uid}`, { bonus: newBonus, pts: newPts });
+        await fsSet(`members/${d.uid}`, { bonus: (memberData.bonus||0)+180, pts: (memberData.pts||0)+250 });
       }
       count++;
     }
@@ -918,9 +944,7 @@ window.approveAI = async (reviewId, uid) => {
     await fsSet(`ai_reviews/${reviewId}`, { status:'approved' });
     const memberData = await fsGet(`members/${uid}`);
     if (memberData) {
-      const newBonus = (memberData.bonus || 0) + 180;
-      const newPts   = (memberData.pts   || 0) + 250;
-      await fsSet(`members/${uid}`, { bonus: newBonus, pts: newPts });
+      await fsSet(`members/${uid}`, { bonus: (memberData.bonus||0)+180, pts: (memberData.pts||0)+250 });
     }
     showToast('✅ AI任務已通過，+180元+250點');
     loadAIReviews(); loadBadgeCounts();
@@ -1014,9 +1038,7 @@ window.approveStore = async (reviewId, uid) => {
     await fsSet(`store_reviews/${reviewId}`, { status:'approved' });
     const memberData = await fsGet(`members/${uid}`);
     if (memberData) {
-      const newBonus = (memberData.bonus || 0) + 700;
-      const newPts   = (memberData.pts   || 0) + 500;
-      await fsSet(`members/${uid}`, { bonus: newBonus, pts: newPts });
+      await fsSet(`members/${uid}`, { bonus: (memberData.bonus||0)+700, pts: (memberData.pts||0)+500 });
     }
     showToast('✅ 店家回饋通過，+700元+500點');
     loadStoreReviews(); loadBadgeCounts();
@@ -1243,7 +1265,6 @@ window.adjustPts = async () => {
     if (!memberData) { showToast('找不到此會員', true); return; }
     const newPts = Math.max(0, (memberData.pts || 0) + amount);
     await fsSet(`members/${uid}`, { pts: newPts });
-    // Log
     await fsSet(`pts_log/${uid}_${Date.now()}`, { uid, amount, note, before: memberData.pts||0, after: newPts, createdAt: new Date().toISOString() });
     showToast(`✅ ${uid} 點數已調整 ${amount>0?'+':''}${amount}，現有 ${newPts} 點`);
     document.getElementById('pts-uid').value = '';
@@ -1251,6 +1272,56 @@ window.adjustPts = async () => {
     document.getElementById('pts-note').value = '';
     loadPtsOverview();
   } catch(e) { showToast('調整失敗：'+e.message, true); }
+};
+
+// ── Bonus Adjustment（新功能）──
+window.adjustBonus = async () => {
+  const uid    = document.getElementById('bonus-uid').value.trim().toUpperCase();
+  const amount = parseInt(document.getElementById('bonus-amount').value);
+  const note   = document.getElementById('bonus-note').value.trim();
+
+  if (!uid || isNaN(amount)) { showToast('請填寫UID和調整金額', true); return; }
+  if (amount === 0) { showToast('調整金額不可為 0', true); return; }
+
+  // 扣款時需要二次確認
+  if (amount < 0) {
+    if (!confirm(`確定要從 ${uid} 扣除旅遊獎金 $${Math.abs(amount).toLocaleString()} 元？\n備註：${note||'（無）'}`)) return;
+  }
+
+  const btn = document.querySelector('#tab-pts .btn-danger');
+  if (btn) { btn.textContent='處理中...'; btn.disabled=true; }
+
+  try {
+    const memberData = await fsGet(`members/${uid}`);
+    if (!memberData) { showToast('找不到此會員', true); return; }
+
+    const before   = memberData.bonus || 0;
+    const newBonus = Math.max(0, before + amount);
+
+    await fsSet(`members/${uid}`, { bonus: newBonus });
+
+    // 寫入操作紀錄
+    await fsSet(`bonus_log/${uid}_${Date.now()}`, {
+      uid,
+      amount,
+      note: note || '',
+      before,
+      after: newBonus,
+      createdAt: new Date().toISOString()
+    });
+
+    const arrow = amount > 0 ? `+$${amount.toLocaleString()}` : `-$${Math.abs(amount).toLocaleString()}`;
+    showToast(`✅ ${uid} 旅遊獎金已調整 ${arrow}，現有 $${newBonus.toLocaleString()} 元`);
+
+    document.getElementById('bonus-uid').value    = '';
+    document.getElementById('bonus-amount').value = '';
+    document.getElementById('bonus-note').value   = '';
+    loadPtsOverview();
+  } catch(e) {
+    showToast('調整失敗：' + e.message, true);
+  }
+
+  if (btn) { btn.textContent='確認調整旅遊獎金'; btn.disabled=false; }
 };
 </script>
 </body>
